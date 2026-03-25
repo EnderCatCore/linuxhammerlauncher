@@ -29,6 +29,8 @@ or brute force sleep(9999999)
 
 -add scrollwheel to main window
 
+-clean up code maybe idk i dont feeeeeeeeeeeeeelll like it /j
+
 '''
 
 
