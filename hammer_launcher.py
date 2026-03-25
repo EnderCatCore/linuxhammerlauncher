@@ -11,12 +11,14 @@ import json
 -fix hl2 missing dlls. they should be in binwin, detect if hl2 hammers being run, and paste tier0.dll and vstdlib.dll from binwin into bin. make sure to 
 find a way to prompt user to set proton on setup for hl2.
 
--fix steam api steamfilesystem missing. installing vbspplusplus and such might help. potentially prompt users to install ++ compile programs for specific games that dont compile otherwise. 
-if ++ compile programs dont fix it, add a button to main window to 'fix steam api', which will prompt them to install the windows version of steam to the prefix.
+-steam api is no longer an issue, but check and make sure other hammer editors havent been broken by the automatic install of plusplus tools, if they have, then turn off plusplus tools install for
+specifically said games.
 
 -fix display scaling for window. its usable rn but ugly
 
 -tf2classified doesnt have any identifiable to windows files in its bin folder, installation process doesnt go further than proton set up. add button to continue maybe
+
+-tf2classified requires a custom gameinfo. include that with program and copy it to tf2c maybe?
 
 -bin is copied as binwin too quickly and misses important files on hdds. either add more file checks than hammerplusplus.exe, find a way to wait until its done, add a button, 
 or brute force sleep(9999999)
@@ -30,6 +32,8 @@ or brute force sleep(9999999)
 -add scrollwheel to main window
 
 -clean up code maybe idk i dont feeeeeeeeeeeeeelll like it /j
+
+-add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
 '''
 
@@ -233,6 +237,15 @@ def subwindow(subwintype):
         root.update()
         time.sleep(1)
         installhammer()
+    #installing tools plus plus
+    elif subwintype == 'toolsplusplusinstall':
+        #root.geometry('260x130')
+        lbl = Label(root, text = "++ compile tools are being installed and set up...\nThese are required for certain games. Please wait. \
+        \n\nHammer++ will start and close on its own. This is normal.", bg='#4c5844', fg='white')
+        lbl.grid()
+        statustext.config(text = "")
+        root.update()
+        time.sleep(7)
     #finishing up
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
@@ -305,11 +318,7 @@ def launchhammer(game, title):
     os.system("ln -s '" + gamefolderfinder + "' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
 
     #game specific stuff
-    '''
-    if game == "Team Fortress 2":
-        if os.path.exists(gamefolderpath + "bin/hammerplusplus.exe") == False:
-            os.system("cp '" + gamefolderfinder + 
-    '''
+    #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
     
     #launch wine9 with hammer using correct prefix
     print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
@@ -410,6 +419,87 @@ def setuphammer():
             subwindow('protonenable')
         #check for hammerplusplus, if not there, open file picker for hammer++ zip.
         subwindow('hammerenable')
+    
+        #install plusplus tools
+        subwindow("toolsplusplusinstall")
+        
+        file_Path = configpath + 'tools_plusplus.zip'
+        tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
+        
+        print("Downloading Tools ++")
+        response = requests.get(tools_plusplusurl)
+        if response.status_code == 200:
+            with open(file_Path, 'wb') as file:
+                file.write(response.content)
+            stateandprint("Downloaded Tools++!")
+        else:
+            stateandprint("Failed to download Tools++. \n Check your internet connection?")
+        print("copying tools files to bin")
+        print("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+        os.system("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+        print("removing temp tools++ files...")
+        os.remove(configpath + "tools_plusplus.zip")
+        os.remove(configpath + "tools_plusplus/bspzipplusplus.exe")
+        os.remove(configpath + "tools_plusplus/vbspplusplus.exe")
+        os.remove(configpath + "tools_plusplus/vradplusplus.exe")
+        os.remove(configpath + "tools_plusplus/vvisplusplus.exe")
+        os.remove(configpath + "tools_plusplus/toolsplusplus.fgd")
+        os.rmdir(configpath + "tools_plusplus/")
+        #gameconfig generation
+        timeout_time = 10
+        
+        #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
+        bashfile = open(configpath + "temprunhammerbash.sh", "w")
+        print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + 'bin/' + bintype + '/hammerplusplus.exe"')
+        bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + 'bin/' + bintype + '/hammerplusplus.exe"')
+        bashfile.close()
+        os.system("chmod +x " + configpath + "temprunhammerbash.sh")
+        
+        #keep starting hammer for increasing amounts of time until gameconfig is generated
+        while os.path.isfile(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
+            print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+            os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+            timeout_time += 5
+            root.update()
+        os.remove(configpath + "temprunhammerbash.sh")
+        
+        #edit gameconfig for hammer
+        
+        print("REPLACING CONFIG")
+        #vbsp
+        search_text = "vbsp"
+        replace_text = "vbspplusplus"
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+            data = file.read()
+            data = data.replace(search_text, replace_text)
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.write(data)
+        #vvis
+        search_text = "vvis"
+        replace_text = "vvisplusplus"
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+            data = file.read()
+            data = data.replace(search_text, replace_text)
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.write(data)
+        #vrad
+        search_text = "vrad"
+        replace_text = "vradplusplus"
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+            data = file.read()
+            data = data.replace(search_text, replace_text)
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.write(data)
+        #binwin
+        search_text = "bin"
+        replace_text = "binwin"
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+            data = file.read()
+            data = data.replace(search_text, replace_text)
+        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.write(data)
+        
+        
         #copy bin folder as binwin in same directory if it does not exist
         print("game folder path is " + gamefolderpath)
         if os.path.exists(gamefolderpath + "binwin") == False:
@@ -418,7 +508,6 @@ def setuphammer():
         
         
         #write new game definition to config file. check if file exists
-        
                     
         gameconfig = open(configpath + "games.txt", "a")
         

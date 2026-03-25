@@ -1,0 +1,1 @@
+WINEPREFIX=/home/artshinea/.config/linuxhammerlauncher/prefix/ /home/artshinea/.config/linuxhammerlauncher/runner/wine-9.0.1/bin/wine '/home/artshinea/.steam/steam/steamapps/common/Counter-Strike Source/bin/x64/hammerplusplus.exe' 
