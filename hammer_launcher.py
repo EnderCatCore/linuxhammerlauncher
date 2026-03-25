@@ -210,7 +210,7 @@ def subwindow(subwintype):
     #hammer++ install window
     elif subwintype == 'hammerinstall':
         #root.geometry('430x140')
-        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it. ", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it.", bg='#4c5844', fg='white')
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg='#4c5844', fg='white')
         lbl.grid(row=1, column=0)
@@ -223,7 +223,7 @@ def subwindow(subwintype):
     #hammer++ install window if you freaked it up
     elif subwintype == 'hammerinstallinvalid':
         #root.geometry('423x140')
-        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive? ", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg='#4c5844', fg='white')
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg='#4c5844', fg='white')
         lbl.grid(row=1, column=0)
