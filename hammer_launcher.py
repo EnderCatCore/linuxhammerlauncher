@@ -427,6 +427,13 @@ def hammerconfig(binfolder):
         data = data.replace("NoGame=0", "NoGame=1")
     with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
         file.write(data)
+    #also change bin folder for people who already have bin directories in use
+    if binfolder == "binwin/":
+        with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+            data = file.read()
+            data = data.replace("\\bin\\", "\\binwin\\")
+        with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+            file.write(data)
 
 '''
 set up hammer wineprefix, set statuses along the way
@@ -560,10 +567,10 @@ def setuphammer():
 #check for prefix folder, if it doesnt exist, make it, dummy.
 if os.path.exists(configpath + "prefix/") == False:
     os.mkdir(configpath + "prefix/")
-#check for runner folder, if it doesnt exist, make it dummy
+#check for runner folder, if it doesnt exist, make it, idiot.
 if os.path.exists(configpath + "runner/") == False:
     os.mkdir(configpath + "runner/")
-#check for games config file, if it doesnt exist, make it dummy
+#check for games config file, if it doesnt exist, make it, fool.
 if os.path.exists(configpath + "games.txt") == False:
     gameconfig = open(configpath + "games.txt", 'w')
     gameconfig.write("")
