@@ -246,6 +246,22 @@ def subwindow(subwintype):
         statustext.config(text = "")
         root.update()
         time.sleep(7)
+    elif subwintype == 'settingsinigeneration':
+        #root.geometry('260x130')
+        lbl = Label(root, text = "In Hammer++, select Tools > Options...\nHit the OK button, and then close Hammer++. \
+        \n\nHammer++ will close once OK is pressed. This is normal.", bg='#4c5844', fg='white')
+        lbl.grid()
+        statustext.config(text = "")
+        root.update()
+        time.sleep(7)
+    elif subwintype == 'editingconfigs':
+        #root.geometry('260x130')
+        lbl = Label(root, text = "Configuring Hammer++... \
+        \n\n\nDo not close this window!", bg='#4c5844', fg='white')
+        lbl.grid()
+        statustext.config(text = "")
+        root.update()
+        time.sleep(1)
     #finishing up
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
@@ -255,10 +271,6 @@ def subwindow(subwintype):
         root.update()
         time.sleep(7)
         
-        
-
-
-
 
 def rendertheframeagainfrick():
     global optionsframe
@@ -298,9 +310,6 @@ def closelauncher():
 # start correct game
 game = "gmod";
 def launchhammer(game, title):
-
-    
-    
     gamefolderfinder = game
     closelauncher()
     print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
@@ -342,11 +351,82 @@ def stateandprint(string):
     #this frick is crapped
     print(string)
 
+#edit hammer config/settings
+def hammerconfig(binfolder):
+    print("using binfolder "  + binfolder)
+    if binfolder == "binwin/":
+        #copy bin folder as binwin in same directory if it does not exist. auto delete if it already exists (though this might mess up user data. open dialog to ask user?)
+        if os.path.exists(gamefolderpath + "binwin") == True:
+            print("BINWIN ALREADY EXISTS! deleting...")
+            os.system("rm -r '" + gamefolderpath + "binwin/'")
+        print("game folder path is " + gamefolderpath)
+        if os.path.exists(gamefolderpath + "binwin") == False:
+            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+            os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
 
+    #gameconfig & settings generation
+    timeout_time = 10
 
+    #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
+    bashfile = open(configpath + "temprunhammerbash.sh", "w")
+    print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + binfolder + bintype + '/hammerplusplus.exe"')
+    bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + binfolder + bintype + '/hammerplusplus.exe"')
+    bashfile.close()
+    os.system("chmod +x " + configpath + "temprunhammerbash.sh")
 
+    #keep starting hammer for increasing amounts of time until gameconfig is generated
+    while os.path.isfile(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
+        print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+        os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+        timeout_time += 5
+        root.update()
 
+    subwindow("settingsinigeneration")
 
+    #ditto but for settings
+    while os.path.isfile(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini") == False:
+        print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+        os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+        timeout_time += 240
+        root.update()
+    os.remove(configpath + "temprunhammerbash.sh")
+
+    subwindow("editingconfigs")
+
+    #edit gameconfig for hammer
+    print("modifiying gameconfig for "  + binfolder)
+    #vbsp
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+        data = file.read()
+        data = data.replace("\\vbsp.exe", "\\vbspplusplus.exe")
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+        file.write(data)
+    #vvis
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+        data = file.read()
+        data = data.replace("\\vvis.exe", "\\vvisplusplus.exe")
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+        file.write(data)
+    #vrad
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+        data = file.read()
+        data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+        file.write(data)
+    #binwin
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+        data = file.read()
+        data = data.replace("\\bin\\", "\\binwin\\")
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+        file.write(data)
+
+    #update settings.ini to stop the game from launching and causing a compile error
+    print("disabling game auto launch for " + binfolder)
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+        data = file.read()
+        data = data.replace("NoGame=0", "NoGame=1")
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+        file.write(data)
 
 '''
 set up hammer wineprefix, set statuses along the way
@@ -445,68 +525,7 @@ def setuphammer():
         os.remove(configpath + "tools_plusplus/vvisplusplus.exe")
         os.remove(configpath + "tools_plusplus/toolsplusplus.fgd")
         os.rmdir(configpath + "tools_plusplus/")
-        #gameconfig generation
-        timeout_time = 10
-        
-        #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
-        bashfile = open(configpath + "temprunhammerbash.sh", "w")
-        print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + 'bin/' + bintype + '/hammerplusplus.exe"')
-        bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + 'bin/' + bintype + '/hammerplusplus.exe"')
-        bashfile.close()
-        os.system("chmod +x " + configpath + "temprunhammerbash.sh")
-        
-        #keep starting hammer for increasing amounts of time until gameconfig is generated
-        while os.path.isfile(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
-            print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-            os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-            timeout_time += 5
-            root.update()
-        os.remove(configpath + "temprunhammerbash.sh")
-        
-        #edit gameconfig for hammer
-        
-        print("REPLACING CONFIG")
-        #vbsp
-        search_text = "vbsp"
-        replace_text = "vbspplusplus"
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace(search_text, replace_text)
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        #vvis
-        search_text = "vvis"
-        replace_text = "vvisplusplus"
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace(search_text, replace_text)
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        #vrad
-        search_text = "vrad"
-        replace_text = "vradplusplus"
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace(search_text, replace_text)
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        #binwin
-        search_text = "bin"
-        replace_text = "binwin"
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace(search_text, replace_text)
-        with open(gamefolderpath + "bin/" + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        
-        
-        #copy bin folder as binwin in same directory if it does not exist
-        print("game folder path is " + gamefolderpath)
-        if os.path.exists(gamefolderpath + "binwin") == False:
-            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-            os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-        
-        
+
         #write new game definition to config file. check if file exists
                     
         gameconfig = open(configpath + "games.txt", "a")
@@ -514,18 +533,16 @@ def setuphammer():
         #hl2s bin folder location matters meaning you cant use binwin for it i guess????? it also just packages in both linux and windows stuff in both versions so??? doesnt matter??? i guess?????? just check for hl2????????
         if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            hammerconfig("bin/")
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            hammerconfig("binwin/")
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
         
         #show finishing up window
         subwindow('finishingup')
-        
-
-        
-        
         
         #make button clickable
         settinguphammer = 0
