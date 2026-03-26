@@ -37,6 +37,10 @@ or brute force sleep(9999999)
 
 -HL2 wont compile at all. Can't find steam app user info error
 
+-i dont imagine itll make a difference but testing on x11 should be done probably
+
+-also not sure if this makes a difference but testing on an nvidia machine is also possibly a good idea
+
 '''
 
 
