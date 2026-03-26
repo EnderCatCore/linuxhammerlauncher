@@ -323,8 +323,16 @@ def launchhammer(game, title):
         print(gamefolderfinder + " found!")
     print(gamefolderfinder + " found!")
     print(os.getlogin())
-    print("ln -s '" + gamefolderfinder + "' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-    os.system("ln -s '" + gamefolderfinder + "' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+    
+    #create mapsrc folder for game
+    if os.path.exists(gamefolderfinder + "/mapsrc/") == False:
+        os.mkdir(gamefolderfinder + "/mapsrc/")
+    #add mapsrc folder for game to favorites
+    print("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+    os.system("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+    #rename to garrys mod
+    print("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
+    os.system("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
 
     #game specific stuff
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
@@ -434,7 +442,8 @@ def hammerconfig(binfolder):
             data = data.replace("\\bin\\", "\\binwin\\")
         with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
             file.write(data)
-
+    
+    
 '''
 set up hammer wineprefix, set statuses along the way
 '''
@@ -547,6 +556,9 @@ def setuphammer():
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
+        
+
+        
         
         #show finishing up window
         subwindow('finishingup')
