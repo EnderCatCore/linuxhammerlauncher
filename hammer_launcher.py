@@ -248,14 +248,6 @@ def subwindow(subwintype):
         statustext.config(text = "")
         root.update()
         time.sleep(7)
-    elif subwintype == 'settingsinigeneration':
-        #root.geometry('260x130')
-        lbl = Label(root, text = "In Hammer++, select Tools > Options...\nHit the OK button, and then close Hammer++. \
-        \n\nHammer++ will close once OK is pressed. This is normal.", bg='#4c5844', fg='white')
-        lbl.grid()
-        statustext.config(text = "")
-        root.update()
-        time.sleep(7)
     elif subwintype == 'editingconfigs':
         #root.geometry('260x130')
         lbl = Label(root, text = "Configuring Hammer++... \
@@ -366,6 +358,7 @@ def stateandprint(string):
 #edit hammer config/settings
 def hammerconfig(binfolder):
     print("using binfolder "  + binfolder)
+    combi3paths = gamefolderpath + binfolder + bintype
     if binfolder == "binwin/":
         #copy bin folder as binwin in same directory if it does not exist. auto delete if it already exists (though this might mess up user data. open dialog to ask user?)
         if os.path.exists(gamefolderpath + "binwin") == True:
@@ -375,89 +368,91 @@ def hammerconfig(binfolder):
         if os.path.exists(gamefolderpath + "binwin") == False:
             print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
             os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+        #update settings.ini for people who already have used hammerplusplus before
+
+        if os.path.exists(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini") == True:
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+                data = file.read()
+                data = data.replace("\\bin\\", "\\binwin\\")
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+                file.write(data)
+
 
     #gameconfig & settings generation
     timeout_time = 10
 
     #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
     bashfile = open(configpath + "temprunhammerbash.sh", "w")
-    print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + binfolder + bintype + '/hammerplusplus.exe"')
-    bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + gamefolderpath + binfolder + bintype + '/hammerplusplus.exe"')
+    print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
+    bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
     bashfile.close()
     os.system("chmod +x " + configpath + "temprunhammerbash.sh")
 
     #keep starting hammer for increasing amounts of time until gameconfig is generated
-    while os.path.isfile(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
+    while os.path.isfile(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
         print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
         os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
         timeout_time += 5
         root.update()
 
-    ''' commented out incase i freaked up and didnt understand what you told me to do here
-    subwindow("settingsinigeneration")
-    #ditto but for settings
-    while os.path.isfile(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini") == False:
-        print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-        os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-        timeout_time += 240
-        root.update()
     os.remove(configpath + "temprunhammerbash.sh")
-    '''
 
     subwindow("editingconfigs")
 
     #edit gameconfig for hammer
     print("modifiying gameconfig for "  + binfolder)
     #vbsp
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
         data = file.read()
         data = data.replace("\\vbsp.exe", "\\vbspplusplus.exe")
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.write(data)
     #vvis
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
         data = file.read()
         data = data.replace("\\vvis.exe", "\\vvisplusplus.exe")
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.write(data)
     #vrad
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
         data = file.read()
         data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.write(data)
     #binwin
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
         data = file.read()
         data = data.replace("\\bin\\", "\\binwin\\")
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.write(data)
 
-    #update settings.ini to stop the game from launching and causing a compile error
-    
-    if os.path.exists(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini") == True:
-        with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
-            data = file.read()
-            data = data.replace("NoGame=0", "NoGame=1")
-        with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
-            file.write(data)
-        #also change bin folder for people who already have bin directories in use
-        if binfolder == "binwin/":
-            with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
-                data = file.read()
-                data = data.replace("\\bin\\", "\\binwin\\")
-            with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
-                file.write(data)
-    
+    #detect appid
+    with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+        print(gamefolderpath + "steam_appid.txt")
+        game_appid = str(appidfile.read())[:-2]
+        print("appid is " + game_appid)
+
+    #create run game bat
+    print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+    batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+    batfile.write('@echo off\nstart /unix /usr/games/steam steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+    batfile.close()
+
+
     #create win version of gamefolderpath
     gamefolderwindowified = "Z:" + gamefolderpath.replace("/", "\\")
+    binfolderwindowified = binfolder.replace("/","\\")
+
     print(gamefolderwindowified)
+    print(binfolderwindowified)
     #set launch game to bat in config
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
         lines = file.readlines()
-    lines[14] = '				"GameExe"		"' + gamefolderwindowified + 'binwin\\linuxhammerlauncher_rungame.bat"\n'
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:  
+    lines[14] = '				"GameExe"		"' + gamefolderwindowified + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.writelines(lines)
+
+
 '''
 set up hammer wineprefix, set statuses along the way
 '''
@@ -467,7 +462,6 @@ def setuphammer():
     global root
     global gamefolderpath
     global gameconfig
-    
     
     if settinguphammer == 0:
         settinguphammer = 1
@@ -570,19 +564,6 @@ def setuphammer():
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
-        
-        #detect appid
-        with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
-            print(gamefolderpath + "steam_appid.txt")
-            game_appid = str(appidfile.read())[:-2]
-            print("appid is " + game_appid)
-        #create run game bat
-        print(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat")
-        batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
-        batfile.write('@echo off\nstart /unix /usr/games/steam steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-        batfile.close()
-        
-
         
         
         #show finishing up window
