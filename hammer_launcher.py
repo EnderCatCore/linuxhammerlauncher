@@ -35,6 +35,8 @@ or brute force sleep(9999999)
 
 -add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
+-HL2 wont compile at all. Can't find steam app user info error
+
 '''
 
 
@@ -328,9 +330,11 @@ def launchhammer(game, title):
     if os.path.exists(gamefolderfinder + "/mapsrc/") == False:
         os.mkdir(gamefolderfinder + "/mapsrc/")
     #add mapsrc folder for game to favorites
-    print("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-    os.system("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-    #rename to garrys mod
+    print(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps")
+    if os.path.exists(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps") == False:
+        print("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+        os.system("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+    #rename to game maps
     print("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
     os.system("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
 
@@ -389,8 +393,8 @@ def hammerconfig(binfolder):
         timeout_time += 5
         root.update()
 
+    ''' commented out incase i freaked up and didnt understand what you told me to do here
     subwindow("settingsinigeneration")
-
     #ditto but for settings
     while os.path.isfile(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini") == False:
         print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
@@ -398,6 +402,7 @@ def hammerconfig(binfolder):
         timeout_time += 240
         root.update()
     os.remove(configpath + "temprunhammerbash.sh")
+    '''
 
     subwindow("editingconfigs")
 
@@ -429,21 +434,30 @@ def hammerconfig(binfolder):
         file.write(data)
 
     #update settings.ini to stop the game from launching and causing a compile error
-    print("disabling game auto launch for " + binfolder)
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
-        data = file.read()
-        data = data.replace("NoGame=0", "NoGame=1")
-    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
-        file.write(data)
-    #also change bin folder for people who already have bin directories in use
-    if binfolder == "binwin/":
+    
+    if os.path.exists(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini") == True:
         with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
             data = file.read()
-            data = data.replace("\\bin\\", "\\binwin\\")
+            data = data.replace("NoGame=0", "NoGame=1")
         with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
             file.write(data)
+        #also change bin folder for people who already have bin directories in use
+        if binfolder == "binwin/":
+            with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+                data = file.read()
+                data = data.replace("\\bin\\", "\\binwin\\")
+            with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+                file.write(data)
     
-    
+    #create win version of gamefolderpath
+    gamefolderwindowified = "Z:" + gamefolderpath.replace("/", "\\")
+    print(gamefolderwindowified)
+    #set launch game to bat in config
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+    lines[14] = '				"GameExe"		"' + gamefolderwindowified + 'binwin\\linuxhammerlauncher_rungame.bat"\n'
+    with open(gamefolderpath + binfolder + bintype + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:  
+        file.writelines(lines)
 '''
 set up hammer wineprefix, set statuses along the way
 '''
@@ -543,8 +557,8 @@ def setuphammer():
         os.rmdir(configpath + "tools_plusplus/")
 
         #write new game definition to config file. check if file exists
-                    
         gameconfig = open(configpath + "games.txt", "a")
+        
         
         #hl2s bin folder location matters meaning you cant use binwin for it i guess????? it also just packages in both linux and windows stuff in both versions so??? doesnt matter??? i guess?????? just check for hl2????????
         if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2":
@@ -556,6 +570,17 @@ def setuphammer():
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
+        
+        #detect appid
+        with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+            print(gamefolderpath + "steam_appid.txt")
+            game_appid = str(appidfile.read())[:-2]
+            print("appid is " + game_appid)
+        #create run game bat
+        print(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat")
+        batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
+        batfile.write('@echo off\nstart /unix /usr/games/steam steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+        batfile.close()
         
 
         
