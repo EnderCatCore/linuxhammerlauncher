@@ -43,6 +43,7 @@ or brute force sleep(9999999)
 
 '''
 
+print("if youre opening this in the terminal because something went wrong, im sorry.")
 
 
 settinguphammer = 0
@@ -70,6 +71,9 @@ def mainwindow():
     #root.geometry('268x400')
     # Set resizability (widthxheight)
     root.resizable(False, False)
+    #set icon
+    iconimg = Image("photo", file="assets/icon.png")
+    root.tk.call('wm','iconphoto',root._w, iconimg)
     # Change the background color using configure
     root.configure(bg='#4c5844')
     # adding a grid why isit called lbl i forgot where i pasted this from oh god
