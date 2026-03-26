@@ -426,23 +426,32 @@ def hammerconfig(binfolder):
     with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.write(data)
 
-    #detect appid
-    with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
-        print(gamefolderpath + "steam_appid.txt")
-        game_appid = str(appidfile.read())[:-2]
-        print("appid is " + game_appid)
+    #check for steam. if find steam make bat!! if not. too bad. fool
+    steampath = os.popen("which steam").read()
+    if os.path.exists(steampath[:-1]) == True:
+        print("found steam!")
+        #detect appid
+        with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+            print(gamefolderpath + "steam_appid.txt")
+            game_appid = str(appidfile.read())[:-2]
+            print("appid is " + game_appid)
 
-    #create run game bat
-    print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-    batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
-    batfile.write('@echo off\nstart /unix /usr/games/steam steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-    batfile.close()
-
+        #create run game bat
+        print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+        batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+        batfile.close()
+    else:
+        print("could not find steam. flatpak moment!")
+        #create run game bat (dummy version)
+        print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+        batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+        batfile.close()
 
     #create win version of gamefolderpath
     gamefolderwindowified = "Z:" + gamefolderpath.replace("/", "\\")
     binfolderwindowified = binfolder.replace("/","\\")
-
     print(gamefolderwindowified)
     print(binfolderwindowified)
     #set launch game to bat in config
@@ -451,7 +460,6 @@ def hammerconfig(binfolder):
     lines[14] = '				"GameExe"		"' + gamefolderwindowified + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
     with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
         file.writelines(lines)
-
 
 '''
 set up hammer wineprefix, set statuses along the way
