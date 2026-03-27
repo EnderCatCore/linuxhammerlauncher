@@ -1,5 +1,7 @@
 from tkinter import *  
 import os
+import sys
+import getopt
 import requests
 import crossfiledialog
 import time
@@ -43,6 +45,28 @@ or brute force sleep(9999999)
 
 '''
 
+vguititlebar = 1
+
+#arguments
+args = sys.argv[1:]
+options = "hnsl:"
+long_options = ["help", "novgui", "setup", "launch"]
+try:
+    arguments, values = getopt.getopt(args, options, long_options)
+    for currentArg, currentVal in arguments:
+        if currentArg in ("-h", "--help"):
+            print("Help info goes here")
+            sys.exit()
+        elif currentArg in ("-n", "--novgui"):
+            print("Disabling custom title bar...")
+            vguititlebar = 0
+        elif currentArg in ("-s", "--setup"):
+            print("STUB!")
+        elif currentArg in ("-l", "--launch"):
+            print("STUB!")
+except getopt.error as err:
+    print("Invalid argument!")
+
 print("if youre opening this in the terminal because something went wrong, im sorry.")
 
 
@@ -68,17 +92,25 @@ def mainwindow():
     # root window title and dimension
     root.title("Linux Hammer Launcher")
     # Set geometry (widthxheight)
-    #root.geometry('268x400')
+    root.minsize(250,400)
     # Set resizability (widthxheight)
-    root.resizable(False, False)
+    root.resizable(True, True)
     #set icon
     iconimg = Image("photo", file="assets/icon.png")
     root.tk.call('wm','iconphoto',root._w, iconimg)
     # Change the background color using configure
     root.configure(bg='#4c5844')
-    # adding a grid why isit called lbl i forgot where i pasted this from oh god
-    lbl = Label(root)
-    lbl.grid()
+
+    if vguititlebar == 1:
+        # no title bar for you!
+        root.wm_attributes('-type', 'splash')
+        titlebar= Frame(root,bg='#4c5844')
+        titlebar.grid(sticky="w")
+        miniicon = Image("photo", file="assets/icon_24.png")
+        faketitle = Label(titlebar, text = "Linux Hammer Launcher", image=miniicon, compound="left", fg='white', bg='#4c5844', font=("Tahoma", 9))
+        faketitle.pack(pady=12, padx=12, anchor="w",fill="x")
+
+
 
 mainwindow()
 '''
@@ -161,13 +193,15 @@ def subwindow(subwintype):
     for child in root.winfo_children(): 
         if not str(child) == '.!label2':
             child.destroy()
-            
+    # i cant figure this out for the life of me
+    #if vguititlebar == 1:
+    #    root.wm_attributes('-type', 'dialog')
+
     #wine set up window
     if subwintype == 'winesetup':
         #root.geometry('210x100')
         lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg='#4c5844', fg='white')
         lbl.grid()
-        statustext.config(text = "")
         root.update()
     #game directory chooser
     elif subwintype == 'gamedirectorypicker':
@@ -198,7 +232,6 @@ def subwindow(subwintype):
         time.sleep(1)
         
         findgame()
-        statustext.config(text = "")
         root.update()
         
     #proton set up window
@@ -208,7 +241,6 @@ def subwindow(subwintype):
         This window should auto-detect Proton on its own.",
         bg='#4c5844', fg='white')
         lbl.grid(row=0, column=0)
-        statustext.config(text = "")
         root.update()
         checkproton()
     #hammer++ set up window THE CORRECT USED ONE
@@ -218,7 +250,6 @@ def subwindow(subwintype):
          \n " + gamefolderpath + "bin/",
         bg='#4c5844', fg='white')
         lbl.grid(row=0, column=0)
-        statustext.config(text = "")
         root.update()
         checkhammer()
     #hammer++ install window
@@ -230,7 +261,7 @@ def subwindow(subwintype):
         lbl.grid(row=1, column=0)
         lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='white')
         lbl.grid(row=2, column=0)
-        
+
         root.update()
         time.sleep(1)
         installhammer()
@@ -253,7 +284,6 @@ def subwindow(subwintype):
         lbl = Label(root, text = "++ compile tools are being installed and set up...\nThese are required for certain games. Please wait. \
         \n\nHammer++ will start and close on its own. This is normal.", bg='#4c5844', fg='white')
         lbl.grid()
-        statustext.config(text = "")
         root.update()
         time.sleep(7)
     elif subwintype == 'editingconfigs':
@@ -261,7 +291,6 @@ def subwindow(subwintype):
         lbl = Label(root, text = "Configuring Hammer++... \
         \n\n\nDo not close this window!", bg='#4c5844', fg='white')
         lbl.grid()
-        statustext.config(text = "")
         root.update()
         time.sleep(1)
     #finishing up
@@ -269,25 +298,10 @@ def subwindow(subwintype):
         #root.geometry('260x130')
         lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg='#4c5844', fg='white')
         lbl.grid()
-        statustext.config(text = "")
         root.update()
         time.sleep(7)
         
 
-def rendertheframeagainfrick():
-    global optionsframe
-    global root
-    
-    print(root.grid_bbox(5, 4))
-    '''
-    Frame creation
-    '''
-    optionsframe = Frame(root, bg="#3e4637", width=268, height=325, relief='raised', bd=0)
-    optionsframe.grid(row=0, column=0)
-    optionsframe.grid_propagate(False)
-    '''
-    frame creation ^^
-    '''
 
 '''
 sub window creation
@@ -591,7 +605,6 @@ def setuphammer():
         root.destroy()
         root = Tk()
         mainwindow()
-        rendertheframeagainfrick()
         rendermainstuff()
         
 #.config/linuxhammerlauncher/
@@ -624,16 +637,25 @@ GUI function stuffs
 
 #makes game button
 def creategamebutton(height, title, hammerpath):
-    btn = Button(optionsframe, text = title , fg = "white", command=lambda: launchhammer(hammerpath, title),width=30, height=0, bg='#3e4637', 
-    activebackground='#4c5844', highlightbackground = "#282e22",activeforeground='white')
-    btn.grid(row=height, column=0)
-
-
+    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title),width=30, height=0, bg='#3e4637',
+    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
+    btn.grid(row=height, column=0,sticky="ew")
 
 
 
 def rendermainstuff():
-    global statustext
+    global optionsframe
+    global root
+
+    '''
+    Frame creation
+    '''
+    optionsframe = Frame(root, bg="#3e4637", width=234, height=325, relief='sunken', bd=0)
+    optionsframe.grid(row=2, column=0,sticky="ew")
+    '''
+    frame creation ^^
+    '''
+
     linenum = 0
     #create game buttons based on game defs
     gameconfig = open(configpath + "games.txt", 'r')
@@ -641,7 +663,7 @@ def rendermainstuff():
     # lines to print (or not to print this list just kinda needs to be here regardless of how little it accomplishes
     specified_lines = [99]
 
-    # loop over lines in a file
+    # loopx` over lines in a file
     for pos, l_num in enumerate(gameconfig):
         # check if the line number is specified in the lines to read array. or not. IDK THERES AN ELSE TOO TO MAKE IT SO IT DOESNT MATTER I HATE THIS GAHH
         if pos in specified_lines:
@@ -656,35 +678,30 @@ def rendermainstuff():
     gameconfig.close()
 
         
-        
+    hammericon = Image("photo",file='./assets/sdk_hammer.png')
+
+
     #set up button
-    setupbtn = Button(optionsframe, text = "Set up a Game" , fg = "white", command=lambda: setuphammer(),width=30, height=0, bg='#3e4637', \
-    activebackground='#4c5844', highlightbackground = "#282e22",activeforeground='#f5f5f5')
+    setupbtn = Button(optionsframe, text = "Set up Hammer", compound="left", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
+    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
+    #remove button
+    removebtn = Button(optionsframe, text = "Remove a Game" , fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
+    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
     
-    setupbtn.grid(row=1, column=0)
+    setupbtn.grid(row=linenum+4, column=0, sticky="ew")
+    removebtn.grid(row=linenum+5, column=0, sticky="ew")
 
     print (setupbtn.cget('activeforeground'))
     '''
     GUI Stuffs
     '''
 
-    #Status Text
-    currentstatus = "Welcome to Linux Hammer Launcher. \n \n Created by EnderCatCore"
-
-
-
-    statustext = Label(root, text = currentstatus, fg='white', bg='#4c5844')
-    statustext.grid()
-
-
     #Options Labels
-    setuptext = Label(optionsframe, text = "Set Up Hammer", fg='white', bg='#3e4637')
-    setuptext.grid(row=0)
+    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
+    setuptext.grid(row=linenum+3, sticky="ew")
 
-    setuptext = Label(optionsframe, text = "Launch Hammer", fg='white', bg='#3e4637')
-    setuptext.grid(row=2)
-
-
+    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
+    setuptext.grid(row=0,sticky="ew")
 
 
 
@@ -694,7 +711,8 @@ def rendermainstuff():
 
 
 
-rendertheframeagainfrick()
+
+
 rendermainstuff()
 
 #Execute Tkinter
