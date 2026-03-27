@@ -210,18 +210,18 @@ def subwindow(subwintype):
     #wine set up window
     if subwintype == 'winesetup':
         #root.geometry('210x100')
-        lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid()
         root.update()
     #game directory chooser
     elif subwintype == 'gamedirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Please navigate to the folder for the \n game you want to map for.", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Please navigate to the folder for the \n game you want to map for.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -231,11 +231,11 @@ def subwindow(subwintype):
     elif subwintype == 'gamedirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find bin... \n Re-select the correct game folder.", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Could not find bin... \n Re-select the correct game folder.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -249,7 +249,7 @@ def subwindow(subwintype):
         #root.geometry('414x100')
         lbl = Label(root, text = "Windows bin folder not detected. \n Go into steam and enable Proton for this game before continuing. \n You can turn off Proton later. \n \n \
         This window should auto-detect Proton on its own.",
-        bg='#4c5844', fg='white')
+        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checkproton()
@@ -258,18 +258,18 @@ def subwindow(subwintype):
         #root.geometry('600x140')
         lbl = Label(root, text = "Hammer++ not detected. download it at \n https://ficool2.github.io/HammerPlusPlus-Website/download.html \nand copy its bin folder into:\
          \n " + gamefolderpath + "bin/",
-        bg='#4c5844', fg='white')
+        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checkhammer()
     #hammer++ install window
     elif subwintype == 'hammerinstall':
         #root.geometry('430x140')
-        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it.", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
 
         root.update()
@@ -278,11 +278,11 @@ def subwindow(subwintype):
     #hammer++ install window if you freaked it up
     elif subwintype == 'hammerinstallinvalid':
         #root.geometry('423x140')
-        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -292,21 +292,21 @@ def subwindow(subwintype):
     elif subwintype == 'toolsplusplusinstall':
         #root.geometry('260x130')
         lbl = Label(root, text = "++ compile tools are being installed and set up...\nThese are required for certain games. Please wait. \
-        \n\nHammer++ will start and close on its own. This is normal.", bg='#4c5844', fg='white')
+        \n\nHammer++ will start and close on its own. This is normal.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid()
         root.update()
         time.sleep(7)
     elif subwintype == 'editingconfigs':
         #root.geometry('260x130')
         lbl = Label(root, text = "Configuring Hammer++... \
-        \n\n\nDo not close this window!", bg='#4c5844', fg='white')
+        \n\n\nDo not close this window!", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid()
         root.update()
         time.sleep(1)
     #finishing up
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
-        lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg='#4c5844', fg='white')
+        lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid()
         root.update()
         time.sleep(7)
