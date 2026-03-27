@@ -41,6 +41,14 @@ or brute force sleep(9999999)
 
 -i dont imagine itll make a difference but testing on x11 should be done probably 
 
+-day of defeat source doesnt come with steam_appid.txt, add a check for if it exists, if it doesnt, then have the rungame bat only echo "thanks!"
+
+-day of defeat source also doesnt prompt user during setup for hammer++??? why i dont know but figure that out
+
+-SFM hammer freaks out during install, neither hammer++ nor vanilla hammer work. oh god. i dont know which hammer++ to use for sfm or how to config it
+
+-SFMs files, including bin, are all inside of "game" in its root folder in common. make it so if the title is detected to be 'SourceFilmmaker', that it goes down into the game folder during setup.
+
 '''
 
 vguititlebar = 1
@@ -670,6 +678,32 @@ GUI function stuffs
 
 #makes game button
 def creategamebutton(height, title, hammerpath):
+    #set icon for game
+    if title == "GarrysMod":
+        gameicon = Image("photo", file="assets/buttonicons/games/garrysmod.png")
+    if title == "Portal 2":
+        gameicon = Image("photo", file="assets/buttonicons/games/portal2.png")
+    if title == "Portal":
+        gameicon = Image("photo", file="assets/buttonicons/games/portal.png")
+    if title == "Counter-Strike Source":
+        gameicon = Image("photo", file="assets/buttonicons/games/cstrike.png")
+    if title == "Counter-Strike Global Offensive":
+        gameicon = Image("photo", file="assets/buttonicons/games/csgo.png")
+    if title == "day of defeat source":
+        gameicon = Image("photo", file="assets/buttonicons/games/dod.png")
+    if title == "Half-Life 2":
+        gameicon = Image("photo", file="assets/buttonicons/games/hl2.png")
+    if title == "SourceFilmmaker":
+        gameicon = Image("photo", file="assets/buttonicons/games/sfm.png")
+    if title == "Team Fortress 2":
+        gameicon = Image("photo", file="assets/buttonicons/games/tf2.png")
+    if title == "Team Fortress 2 Classified":
+        gameicon = Image("photo", file="assets/buttonicons/games/tf2classified.png")
+    gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
+    gameicn.image = gameicon
+    gameicn.grid(row=height, column=0, sticky="ew")
+
+    #create functional button
     btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title), bg='#3e4637',
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
