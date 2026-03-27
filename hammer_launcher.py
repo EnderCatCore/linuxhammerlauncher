@@ -637,7 +637,7 @@ GUI function stuffs
 def creategamebutton(height, title, hammerpath):
     btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title),width=30, height=0, bg='#3e4637',
     activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
-    btn.grid(row=height, column=0,sticky="ew")
+    btn.grid(row=height, column=1,sticky="ew")
 
 
 
@@ -649,7 +649,7 @@ def rendermainwindow():
     Frame creation
     '''
     optionsframe = Frame(root, bg="#3e4637", width=234, height=325, relief='sunken', bd=0)
-    optionsframe.grid(row=2, column=0,sticky="ew")
+    optionsframe.grid(row=1, column=0,sticky="ew")
     '''
     frame creation ^^
     '''
@@ -663,7 +663,7 @@ def rendermainwindow():
 
     #editors title
     setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
-    setuptext.grid(row=0,sticky="ew")
+    setuptext.grid(row=0, column=1, sticky="ew")
 
     # loopx` over lines in a file
     for pos, l_num in enumerate(gameconfig):
@@ -688,7 +688,7 @@ def rendermainwindow():
 
     #UTILITIES
     setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
-    setuptext.grid(row=linenum+3, sticky="ew")
+    setuptext.grid(row=linenum+3, column=1, sticky="ew")
 
     #set up button
     setupbtn = Button(optionsframe, text = "Set up Hammer", compound="left", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
@@ -697,19 +697,19 @@ def rendermainwindow():
     removebtn = Button(optionsframe, text = "Remove a Game" , fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
     activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
 
-    setupbtn.grid(row=linenum+4, column=0, sticky="ew")
-    removebtn.grid(row=linenum+5, column=0, sticky="ew")
+    setupbtn.grid(row=linenum+4, column=1, sticky="ew")
+    removebtn.grid(row=linenum+5, column=1, sticky="ew")
 
     #CREDITS
     setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
-    setuptext.grid(row=linenum+6, sticky="ew")
+    setuptext.grid(row=linenum+6, column=1, sticky="ew")
 
     creditbtn = Button(optionsframe, text = "EnderCatCore", compound="left", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
     activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
-    creditbtn.grid(row=linenum+7, column=0, sticky="ew")
+    creditbtn.grid(row=linenum+7, column=1, sticky="ew")
     creditbtn = Button(optionsframe, text = "Thomasluigi07" , fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
     activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
-    creditbtn.grid(row=linenum+8, column=0, sticky="ew")
+    creditbtn.grid(row=linenum+8, column=1, sticky="ew")
 
 rendermainwindow()
 
