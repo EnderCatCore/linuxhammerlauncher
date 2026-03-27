@@ -29,6 +29,8 @@ or brute force sleep(9999999)
 
 -portal 2 does not run from binwin. either paste all of binwin into native bin on hammer launch and hope it doesnt break, or prompt user to switch to proton before hammer launches.
 
+-portal 2 does not compile unless vmf is saved through full path to sdk_content/maps, symlinks wont work, find a way to change the default directory in wine by changing desktop
+
 -add scrollwheel to main window
 
 -clean up code maybe idk i dont feeeeeeeeeeeeeelll like it /j
