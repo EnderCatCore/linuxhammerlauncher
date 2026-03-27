@@ -7,7 +7,7 @@ import crossfiledialog
 import time
 import zipfile
 import json
-
+import webbrowser
 
 ''' TODO and ISSUES
 -fix hl2 missing dlls. they should be in binwin, detect if hl2 hammers being run, and paste tier0.dll and vstdlib.dll from binwin into bin. make sure to 
@@ -603,7 +603,7 @@ def setuphammer():
         root.destroy()
         root = Tk()
         mainwindow()
-        rendermainstuff()
+        rendermainwindow()
         
 #.config/linuxhammerlauncher/
 
@@ -641,7 +641,7 @@ def creategamebutton(height, title, hammerpath):
 
 
 
-def rendermainstuff():
+def rendermainwindow():
     global optionsframe
     global root
 
@@ -661,6 +661,10 @@ def rendermainstuff():
     # lines to print (or not to print this list just kinda needs to be here regardless of how little it accomplishes
     specified_lines = [99]
 
+    #editors title
+    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
+    setuptext.grid(row=0,sticky="ew")
+
     # loopx` over lines in a file
     for pos, l_num in enumerate(gameconfig):
         # check if the line number is specified in the lines to read array. or not. IDK THERES AN ELSE TOO TO MAKE IT SO IT DOESNT MATTER I HATE THIS GAHH
@@ -678,6 +682,13 @@ def rendermainstuff():
         
     hammericon = Image("photo",file='./assets/sdk_hammer.png')
 
+    '''
+    GUI Stuffs
+    '''
+
+    #UTILITIES
+    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
+    setuptext.grid(row=linenum+3, sticky="ew")
 
     #set up button
     setupbtn = Button(optionsframe, text = "Set up Hammer", compound="left", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
@@ -685,33 +696,22 @@ def rendermainstuff():
     #remove button
     removebtn = Button(optionsframe, text = "Remove a Game" , fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
     activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
-    
+
     setupbtn.grid(row=linenum+4, column=0, sticky="ew")
     removebtn.grid(row=linenum+5, column=0, sticky="ew")
 
-    print (setupbtn.cget('activeforeground'))
-    '''
-    GUI Stuffs
-    '''
+    #CREDITS
+    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
+    setuptext.grid(row=linenum+6, sticky="ew")
 
-    #Options Labels
-    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
-    setuptext.grid(row=linenum+3, sticky="ew")
+    creditbtn = Button(optionsframe, text = "EnderCatCore", compound="left", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
+    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
+    creditbtn.grid(row=linenum+7, column=0, sticky="ew")
+    creditbtn = Button(optionsframe, text = "Thomasluigi07" , fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
+    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w")
+    creditbtn.grid(row=linenum+8, column=0, sticky="ew")
 
-    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w")
-    setuptext.grid(row=0,sticky="ew")
-
-
-
-
-
-
-
-
-
-
-
-rendermainstuff()
+rendermainwindow()
 
 #Execute Tkinter
 root.mainloop()
