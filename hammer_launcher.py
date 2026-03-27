@@ -742,23 +742,25 @@ def rendermainwindow():
     setupbtn = Button(optionsframe, text = "Set up Hammer", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #reset button
-    #deleteicon = Image("photo", file="assets/buttonicons/sdk_delete.png")
-    #removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
-    #removeicn.image = deleteicon #see above
-    #removeicn.grid(row=linenum+7, column=0, sticky="ew")
+    deleteicon = Image("photo", file="assets/buttonicons/sdk_reset.png")
+    removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
+    removeicn.image = deleteicon #see above
+    removeicn.grid(row=linenum+7, column=0, sticky="ew")
     resetbtn = Button(optionsframe, text = "Reset Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
-    #remove button
-    #reseticon = Image("photo", file="assets/buttonicons/sdk_delete.png")
-    #reseticn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
-    #reseticn.image = deleteicon #see above
-    #reseticn.grid(row=linenum+8, column=0, sticky="ew")
-    removebtn = Button(optionsframe, text = "Delete Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
+    #delete button
+    deleteicon = Image("photo", file="assets/buttonicons/sdk_delete.png")
+    deleteicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
+    deleteicn.image = deleteicon
+    deleteicn.grid(row=linenum+8, column=0, sticky="ew")
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+
 
     setupbtn.grid(row=linenum+6, column=1, sticky="ew")
     resetbtn.grid(row=linenum+7, column=1, sticky="ew")
-    removebtn.grid(row=linenum+8, column=1, sticky="ew")
+    deletebtn.grid(row=linenum+8, column=1, sticky="ew")
+
 
     #CREDITS
     setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
@@ -768,18 +770,18 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+10, column=1,sticky="ew")
 
-    #endericon = Image("photo", file="assets/buttonicons/credit_end.png")
-    #crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
-    #crediticn.image = endericon #see above
-    #crediticn.grid(row=linenum+11, column=0, sticky="ew")
+    endericon = Image("photo", file="assets/buttonicons/credit_end.png")
+    crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
+    crediticn.image = endericon #see above
+    crediticn.grid(row=linenum+11, column=0, sticky="ew")
     creditbtn = Button(optionsframe, text = "EnderCatCore", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
 
-    #tommyicon = Image("photo", file="assets/buttonicons/credit_tam.png")
-    #crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
-    #crediticn.image = tommyicon #see above
-    #crediticn.grid(row=linenum+12, column=0, sticky="ew")
+    tommyicon = Image("photo", file="assets/buttonicons/credit_tam.png")
+    crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
+    crediticn.image = tommyicon #see above
+    crediticn.grid(row=linenum+12, column=0, sticky="ew")
     creditbtn = Button(optionsframe, text = "Thomasluigi07", fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
