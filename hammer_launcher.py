@@ -16,8 +16,6 @@ find a way to prompt user to set proton on setup for hl2.
 -steam api is no longer an issue, but check and make sure other hammer editors havent been broken by the automatic install of plusplus tools, if they have, then turn off plusplus tools install for
 specifically said games.
 
--fix display scaling for window. its usable rn but ugly
-
 -tf2classified doesnt have any identifiable to windows files in its bin folder, installation process doesnt go further than proton set up. add button to continue maybe
 
 -tf2classified requires a custom gameinfo. include that with program and copy it to tf2c maybe?
@@ -43,7 +41,7 @@ or brute force sleep(9999999)
 
 '''
 
-# vguititlebar = 1
+vguititlebar = 1
 optionsframe = None
 root = None
 hammericon = None
@@ -63,8 +61,8 @@ try:
             sys.exit()
         elif currentArg in ("-n", "--novgui"):
             print("STUB!")
-        #    print("Disabling custom title bar...")
-        #    vguititlebar = 0
+            print("Disabling custom title bar...")
+            vguititlebar = 0
         elif currentArg in ("-s", "--setup"):
             print("STUB!")
         elif currentArg in ("-l", "--launch"):
@@ -105,20 +103,28 @@ def mainwindow():
     # Change the background color using configure
     root.configure(bg='#4c5844')
 
-    #if vguititlebar == 1:
-    #    # no title bar for you!
-    #    root.wm_attributes('-type', 'splash')
-    #    titlebar= Frame(root,bg='#4c5844')
-    #    titlebar.grid(sticky="w")
-    #    faketitle = Label(titlebar, text = "Linux Hammer Launcher", fg='white', bg='#4c5844', font=("Tahoma", 9))
-    #    faketitle.pack(pady=5, padx=2, anchor="w",fill="x")
+    if vguititlebar == 1:
+        # no title bar for you!
+        root.wm_attributes('-type', 'splash')
+        titlebar= Frame(root,bg='#4c5844')
+        titlebar.grid(sticky="w")
+        
+
+        titlebar.columnconfigure(0, weight=1)
+
+        
+        faketitle = Label(titlebar, text = "Linux Hammer Launcher", fg='white', bg='#4c5844', font=("Tahoma", 9))
+        faketitle.grid(row=0, column=0)
+        Label(titlebar, text='X').grid(row=0, column=0, sticky='e')
+        
 
     titlebar= Frame(root,bg='#4c5844',height=5)
     titlebar.grid(sticky="w")
-
+    
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=1)
     root.columnconfigure(2, weight=1)
+
 
 
 
@@ -672,7 +678,7 @@ def rendermainwindow():
     Frame creation
     '''
     optionsframe = Frame(root, bg="#3e4637", relief='sunken', bd=0, highlightthickness=0)
-    optionsframe.grid(row=1, column=1,sticky="we")
+    optionsframe.grid(row=1, column=0,sticky="we")
     optionsframe.grid_columnconfigure(0, minsize=23, weight=0)
     optionsframe.grid_columnconfigure(1, minsize=211, weight=1)
     '''
@@ -723,7 +729,7 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+5, column=1,sticky="ew")
 
-    hammericon = Image("photo", file="assets/sdk_hammer.png")
+    hammericon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
     setupicn = Label(optionsframe, bg="#3e4637", image=hammericon, anchor="e")
     setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
     setupicn.grid(row=linenum+6, column=0, sticky="ew")
@@ -731,14 +737,14 @@ def rendermainwindow():
     setupbtn = Button(optionsframe, text = "Set up Hammer", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #reset button
-    #deleteicon = Image("photo", file="assets/sdk_delete.png")
+    #deleteicon = Image("photo", file="assets/buttonicons/sdk_delete.png")
     #removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
     #removeicn.image = deleteicon #see above
     #removeicn.grid(row=linenum+7, column=0, sticky="ew")
     resetbtn = Button(optionsframe, text = "Reset Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #remove button
-    #reseticon = Image("photo", file="assets/sdk_delete.png")
+    #reseticon = Image("photo", file="assets/buttonicons/sdk_delete.png")
     #reseticn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
     #reseticn.image = deleteicon #see above
     #reseticn.grid(row=linenum+8, column=0, sticky="ew")
@@ -757,7 +763,7 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+10, column=1,sticky="ew")
 
-    #endericon = Image("photo", file="assets/credit_end.png")
+    #endericon = Image("photo", file="assets/buttonicons/credit_end.png")
     #crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
     #crediticn.image = endericon #see above
     #crediticn.grid(row=linenum+11, column=0, sticky="ew")
@@ -765,7 +771,7 @@ def rendermainwindow():
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
 
-    #tommyicon = Image("photo", file="assets/credit_tam.png")
+    #tommyicon = Image("photo", file="assets/buttonicons/credit_tam.png")
     #crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
     #crediticn.image = tommyicon #see above
     #crediticn.grid(row=linenum+12, column=0, sticky="ew")
