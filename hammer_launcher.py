@@ -43,7 +43,13 @@ or brute force sleep(9999999)
 
 '''
 
-vguititlebar = 1
+# vguititlebar = 1
+optionsframe = None
+root = None
+hammericon = None
+deleteicon = None
+
+
 
 #arguments
 args = sys.argv[1:]
@@ -56,17 +62,18 @@ try:
             print("Help info goes here")
             sys.exit()
         elif currentArg in ("-n", "--novgui"):
-            print("Disabling custom title bar...")
-            vguititlebar = 0
+            print("STUB!")
+        #    print("Disabling custom title bar...")
+        #    vguititlebar = 0
         elif currentArg in ("-s", "--setup"):
             print("STUB!")
         elif currentArg in ("-l", "--launch"):
             print("STUB!")
 except getopt.error as err:
     print("Invalid argument!")
+    sys.exit()
 
 print("if youre opening this in the terminal because something went wrong, im sorry.")
-
 
 settinguphammer = 0
 
@@ -90,23 +97,28 @@ def mainwindow():
     # root window title and dimension
     root.title("Linux Hammer Launcher")
     # Set geometry (widthxheight)
-    root.minsize(250,400)
+    root.minsize(250,200)
     # Set resizability (widthxheight)
-    root.resizable(True, True)
+    root.resizable(False, False)
     #set icon
-    iconimg = Image("photo", file="assets/icon.png")
-    root.tk.call('wm','iconphoto',root._w, iconimg)
+    root.tk.call('wm','iconphoto',root._w, Image("photo", file="assets/icon.png"))
     # Change the background color using configure
     root.configure(bg='#4c5844')
 
-    if vguititlebar == 1:
-        # no title bar for you!
-        root.wm_attributes('-type', 'splash')
-        titlebar= Frame(root,bg='#4c5844')
-        titlebar.grid(sticky="w")
-        miniicon = Image("photo", file="assets/icon_24.png")
-        faketitle = Label(titlebar, text = "Linux Hammer Launcher", image=miniicon, compound="left", fg='white', bg='#4c5844', font=("Tahoma", 9))
-        faketitle.pack(pady=12, padx=12, anchor="w",fill="x")
+    #if vguititlebar == 1:
+    #    # no title bar for you!
+    #    root.wm_attributes('-type', 'splash')
+    #    titlebar= Frame(root,bg='#4c5844')
+    #    titlebar.grid(sticky="w")
+    #    faketitle = Label(titlebar, text = "Linux Hammer Launcher", fg='white', bg='#4c5844', font=("Tahoma", 9))
+    #    faketitle.pack(pady=5, padx=2, anchor="w",fill="x")
+
+    titlebar= Frame(root,bg='#4c5844',height=5)
+    titlebar.grid(sticky="w")
+
+    root.columnconfigure(0, weight=1)
+    root.columnconfigure(1, weight=1)
+    root.columnconfigure(2, weight=1)
 
 
 
@@ -635,24 +647,29 @@ GUI function stuffs
 
 #makes game button
 def creategamebutton(height, title, hammerpath):
-    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title),width=30, height=0, bg='#3e4637',
-    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title), bg='#3e4637',
+    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
-
-
 
 def rendermainwindow():
     global optionsframe
     global root
 
+    padding = Frame(root, bg="#4c5844", relief='flat', bd=0, highlightthickness=0)
+    padding.grid(row=1, column=0,sticky="w")
+
     '''
     Frame creation
     '''
-    optionsframe = Frame(root, bg="#3e4637", width=234, height=325, relief='sunken', bd=0, highlightthickness=0)
-    optionsframe.grid(row=1, column=0,sticky="ew")
+    optionsframe = Frame(root, bg="#3e4637", relief='sunken', bd=0, highlightthickness=0)
+    optionsframe.grid(row=1, column=1,sticky="we")
+    optionsframe.grid_columnconfigure(0, minsize=23, weight=0)
+    optionsframe.grid_columnconfigure(1, minsize=211, weight=1)
     '''
     frame creation ^^
     '''
+    padding = Frame(root, bg="#4c5844", relief='flat', bd=0, highlightthickness=0)
+    padding.grid(row=1, column=2,sticky="e")
 
     linenum = 0
     #create game buttons based on game defs
@@ -662,10 +679,14 @@ def rendermainwindow():
     specified_lines = [99]
 
     #editors title
-    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w", highlightthickness=0)
+    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2,  highlightthickness=0)
     setuptext.grid(row=0, column=1, sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=1, column=0,sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=1, column=1,sticky="ew")
 
-    # loopx` over lines in a file
+    # loop over lines in a file
     for pos, l_num in enumerate(gameconfig):
         # check if the line number is specified in the lines to read array. or not. IDK THERES AN ELSE TOO TO MAKE IT SO IT DOESNT MATTER I HATE THIS GAHH
         if pos in specified_lines:
@@ -680,36 +701,62 @@ def rendermainwindow():
     gameconfig.close()
 
         
-    hammericon = Image("photo",file='./assets/sdk_hammer.png')
-
     '''
     GUI Stuffs
     '''
 
     #UTILITIES
-    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w", highlightthickness=0)
-    setuptext.grid(row=linenum+3, column=1, sticky="ew")
+    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
+    setuptext.grid(row=linenum+4, column=1, sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=linenum+5, column=0,sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=linenum+5, column=1,sticky="ew")
 
+    hammericon = Image("photo", file="assets/sdk_hammer.png")
+    setupicn = Label(optionsframe, bg="#3e4637", image=hammericon, anchor="e")
+    setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
+    setupicn.grid(row=linenum+6, column=0, sticky="ew")
     #set up button
-    setupbtn = Button(optionsframe, text = "Set up Hammer", compound="left", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
-    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    setupbtn = Button(optionsframe, text = "Set up Hammer", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
+    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #remove button
-    removebtn = Button(optionsframe, text = "Remove a Game" , fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
-    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    #deleteicon = Image("photo", file="assets/sdk_delete.png")
+    #removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
+    #removeicn.image = deleteicon #see above
+    #removeicn.grid(row=linenum+7, column=0, sticky="ew")
+    removebtn = Button(optionsframe, text = "Remove a Game", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
+    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
 
-    setupbtn.grid(row=linenum+4, column=1, sticky="ew")
-    removebtn.grid(row=linenum+5, column=1, sticky="ew")
+    setupbtn.grid(row=linenum+6, column=1, sticky="ew")
+    removebtn.grid(row=linenum+7, column=1, sticky="ew")
 
     #CREDITS
-    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 6), anchor="w", highlightthickness=0)
-    setuptext.grid(row=linenum+6, column=1, sticky="ew")
+    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
+    setuptext.grid(row=linenum+8, column=1, sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=linenum+9, column=0,sticky="ew")
+    divider = Frame(optionsframe,bg='#282e22',height=2)
+    divider.grid(row=linenum+9, column=1,sticky="ew")
 
-    creditbtn = Button(optionsframe, text = "EnderCatCore", compound="left", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
-    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
-    creditbtn.grid(row=linenum+7, column=1, sticky="ew")
-    creditbtn = Button(optionsframe, text = "Thomasluigi07" , fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
-    activebackground='#958831', highlightbackground = "#282e22",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
-    creditbtn.grid(row=linenum+8, column=1, sticky="ew")
+    #endericon = Image("photo", file="assets/credit_end.png")
+    #crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
+    #crediticn.image = endericon #see above
+    #crediticn.grid(row=linenum+10, column=0, sticky="ew")
+    creditbtn = Button(optionsframe, text = "EnderCatCore", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
+    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn.grid(row=linenum+10, column=1, sticky="ew")
+
+    #tommyicon = Image("photo", file="assets/credit_tam.png")
+    #crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
+    #crediticn.image = tommyicon #see above
+    #crediticn.grid(row=linenum+11, column=0, sticky="ew")
+    creditbtn = Button(optionsframe, text = "Thomasluigi07", fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
+    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn.grid(row=linenum+11, column=1, sticky="ew")
+
+    dummy = Frame(root,bg='#4c5844',height=5)
+    dummy.grid(sticky="w")
 
 rendermainwindow()
 
