@@ -86,6 +86,12 @@ if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
 '''
 window creation
 '''
+#function needed for vgui titlebar
+def move_window(event):
+    root.geometry('+{0}+{1}'.format(event.x_root, event.y_root))
+
+
+
 # create root window
 root = Tk()
 def mainwindow():
@@ -103,19 +109,18 @@ def mainwindow():
     # Change the background color using configure
     root.configure(bg='#4c5844')
 
+    ''' yea idk what im doing. old titlebar code.
     if vguititlebar == 1:
-        # no title bar for you!
-        root.wm_attributes('-type', 'splash')
-        titlebar= Frame(root,bg='#4c5844')
-        titlebar.grid(sticky="w")
+        root.overrideredirect(True)
+        title_bar = Frame(root, bg='white', relief='raised', bd=2)
+        close_button = Button(title_bar, text='X', command=root.destroy)
+        window = Canvas(root, bg='black')
         
-
-        titlebar.columnconfigure(0, weight=1)
-
-        
-        faketitle = Label(titlebar, text = "Linux Hammer Launcher", fg='white', bg='#4c5844', font=("Tahoma", 9))
-        faketitle.grid(row=0, column=0)
-        Label(titlebar, text='X').grid(row=0, column=0, sticky='e')
+        title_bar.pack(expand=1, fill=X)
+        close_button.pack(side=RIGHT)
+        window.pack(expand=1, fill=BOTH)
+        title_bar.bind('<B1-Motion>', move_window)
+    '''
         
 
     titlebar= Frame(root,bg='#4c5844',height=5)
