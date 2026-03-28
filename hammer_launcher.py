@@ -32,8 +32,6 @@ for portal 1 now that thats up and functioning
 
 -i dont imagine itll make a difference but testing on x11 should be done probably 
 
--day of defeat source doesnt come with steam_appid.txt, add a check for if it exists, if it doesnt, then have the rungame bat only echo "thanks!"
-
 -day of defeat source also doesnt prompt user during setup for hammer++??? why i dont know but figure that out
 
 -SFM hammer freaks out during install, neither hammer++ nor vanilla hammer work. oh god. i dont know which hammer++ to use for sfm or how to config it
@@ -511,28 +509,31 @@ def hammerconfig(binfolder, plusplusconfig):
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.write(data)
 
+    # dummy version
+    batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+    batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+    batfile.close()
+
     #check for steam. if find steam make bat!! if not. too bad. fool
     steampath = os.popen("which steam").read()
     if os.path.exists(steampath[:-1]) == True:
         print("found steam!")
         #detect appid
-        with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
-            print(gamefolderpath + "steam_appid.txt")
-            game_appid = str(appidfile.read())[:-2]
-            print("appid is " + game_appid)
+        if os.path.exists(gamefolderpath + "steam_appid.txt") == True:
+            with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+                print(gamefolderpath + "steam_appid.txt")
+                game_appid = str(appidfile.read())[:-2]
+                print("appid is " + game_appid)
 
-        #create run game bat
-        print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-        batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
-        batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-        batfile.close()
+            #create TRUE run game bat
+            print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+            batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
+            batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+            batfile.close()
+        else:
+            print("steam_appid missing from game directory!")
     else:
         print("could not find steam. flatpak moment!")
-        #create run game bat (dummy version)
-        print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
-        batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-        batfile.close()
 
     #create win version of gamefolderpath
     gamefolderwindowified = "Z:" + gamefolderpath.replace("/", "\\")
