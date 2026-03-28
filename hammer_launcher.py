@@ -714,6 +714,7 @@ GUI function stuffs
 #makes game button
 def creategamebutton(height, title, hammerpath):
     #set icon for game
+    gameicon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
     if title == "GarrysMod":
         gameicon = Image("photo", file="assets/buttonicons/games/garrysmod.png")
     if title == "Portal 2":
@@ -805,7 +806,7 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+5, column=1,sticky="ew")
 
-    hammericon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
+    hammericon = Image("photo", file="assets/buttonicons/sdk_setup.png")
     setupicn = Label(optionsframe, bg="#3e4637", image=hammericon, anchor="e")
     setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
     setupicn.grid(row=linenum+6, column=0, sticky="ew")
