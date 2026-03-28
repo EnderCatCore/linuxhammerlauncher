@@ -19,6 +19,8 @@ import webbrowser
 
 -tell people to update hammer++, they copy to binwin
 
+-portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
+
 -portal 2 does not run from binwin. either paste all of binwin into native bin on hammer launch and hope it doesnt break, or prompt user to switch to proton before hammer launches.
 
 -portal 2 does not compile unless vmf is saved through full path to sdk_content/maps, symlinks wont work. portal 2 needs to have its map vmf location configured to be in portal 2/sdk_content/maps so
@@ -372,7 +374,7 @@ def launchhammer(game, title):
     closelauncher()
     print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
     print("directory up one is " + gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])])
-    #set favorites in wineprefix to games map folder
+    #set favorites in wineprefix to game folder
     gamefolderfinder = gamefolderfinder[:-19]
     print(gamefolderfinder + " HAMMER TEXT REMOVED!")
     while os.path.basename(gamefolderfinder) != title:
@@ -398,14 +400,11 @@ def launchhammer(game, title):
     #create mapsrc folder for game
     if os.path.exists(gamefolderfinder + "/mapsrc/") == False:
         os.mkdir(gamefolderfinder + "/mapsrc/")
-    #add mapsrc folder for game to favorites
+    #add game folder for game to favorites
     print(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps")
     if os.path.exists(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps") == False:
-        print("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-        os.system("ln -s '" + gamefolderfinder + "/mapsrc/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-    #rename to game maps
-    print("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
-    os.system("mv '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/mapsrc' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps'")
+        print("ln -s '" + gamefolderfinder + "/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
+        os.system("ln -s '" + gamefolderfinder + "/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
 
     #game specific stuff
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
@@ -540,9 +539,9 @@ def hammerconfig(binfolder, plusplusconfig):
         print("could not find steam. flatpak moment!")
 
     #create win version of gamefolderpath
-    gamefolderwindowified = "Z:" + gamefolderpath.replace("/", "\\")
+    gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
     binfolderwindowified = binfolder.replace("/","\\")
-    print(gamefolderwindowified)
+    print(os.path.realpath(gamefolderwindowified))
     print(binfolderwindowified)
     #set launch game to bat in config, find GameExe lines to change (some games like hl2 have multiple game config defs)
     print("THE LINE NUMS TO REPLACE ARE:")
@@ -553,11 +552,23 @@ def hammerconfig(binfolder, plusplusconfig):
         lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.writelines(lines)
+    #set map vmf directory in config. check for picky map locations per hammer and config (like portal 2)
+    print("THE LINE NUMS TO REPLACE ARE:")
+    linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"MapDir"'))
+    for i in range(len(linestoconfig)):
+        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+        if gamefolderpath[:-1] == "Portal 2":
+            lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
+        else:
+            lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
+        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.writelines(lines)
 
 '''
 set up hammer wineprefix, set statuses along the way
 '''
-
+print(os.path.realpath("/home/artshinea/.steam/steam/steamapps/common/Counter-Strike Source/binwin/x64/hammerplusplus/"))
 def setuphammer():
     global settinguphammer
     global root
