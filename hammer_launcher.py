@@ -21,11 +21,6 @@ import webbrowser
 
 -portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
 
--portal 2 does not run from binwin. either paste all of binwin into native bin on hammer launch and hope it doesnt break, or prompt user to switch to proton before hammer launches.
-
--portal 2 does not compile unless vmf is saved through full path to sdk_content/maps, symlinks wont work. portal 2 needs to have its map vmf location configured to be in portal 2/sdk_content/maps so
-the file picker defaults to there, no longer needing a symlink favorite. maybe we should do this for all games if it works? and keep the symlinks to just be the games root folder rather than mapsrc?
-
 -add scrollwheel to main window (should we still add this now that the window resizes itself?)
 
 -add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
@@ -145,7 +140,7 @@ def findgame():
     
     if subwinpressable == 1:
         subwinpressable = 0
-        gamefolderpath = crossfiledialog.choose_folder()
+        gamefolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(gamefolderpath)
         if not gamefolderpath.endswith("/"):
             gamefolderpath = gamefolderpath + "/"
@@ -190,10 +185,20 @@ def checkproton():
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
+    elif os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+        if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
+            time.sleep(1)
+            subwindow('protonenable')
     else:
         if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
             time.sleep(1)
             subwindow('protonenable')
+def checksdk():
+    global gamefolderpath
+    if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+        if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
+            time.sleep(1)
+            subwindow('p2sdkenable')
 #check for hammer install
 bintype = "undetected"
 def checkhammer():
@@ -271,6 +276,15 @@ def subwindow(subwintype):
         lbl.grid(row=0, column=0)
         root.update()
         checkproton()
+    #P2SDK set up window for portal 2
+    if subwintype == 'p2sdkenable':
+        #root.geometry('414x100')
+        lbl = Label(root, text = "Portal 2 Authoring Tools not detected. \n Go into steam and install Portal 2 Authoring Tools before continuing. \n \n This \
+window should auto-detect Portal 2 Authoring Tools on its own.",
+        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        root.update()
+        checksdk()
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
@@ -329,10 +343,14 @@ def subwindow(subwintype):
         time.sleep(1)
     elif subwintype == 'waiting':
         #root.geometry('260x130')
-        lbl = Label(root, text = "Setting up...", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Setting up...\nPlease wait.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Hammer++ may start and close on its own. This is normal.", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl.grid(row=2, column=0)
         root.update()
-        time.sleep(1)
+        time.sleep(7)
     #finishing up
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
@@ -397,9 +415,6 @@ def launchhammer(game, title):
         print("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
         os.system("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
     
-    #create mapsrc folder for game
-    if os.path.exists(gamefolderfinder + "/mapsrc/") == False:
-        os.mkdir(gamefolderfinder + "/mapsrc/")
     #add game folder for game to favorites
     print(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps")
     if os.path.exists(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps") == False:
@@ -441,6 +456,7 @@ def stateandprint(string):
 
 #edit hammer config/settings
 def hammerconfig(binfolder, plusplusconfig):
+    global gamefolderpath
     print("using binfolder "  + binfolder)
     combi3paths = gamefolderpath + binfolder + bintype
     
@@ -549,16 +565,24 @@ def hammerconfig(binfolder, plusplusconfig):
     for i in range(len(linestoconfig)):
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
             lines = file.readlines()
-        lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
+        lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + "\\" + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.writelines(lines)
+    #create mapsrc folder for game
+    print(os.path.basename(gamefolderpath[:-1]) + "UGH COME ON")
+    print(os.path.basename(gamefolderpath[:-1]) == "Portal 2")
+    if gamefolderpath[:-1] == "Portal 2":
+        pass
+    else:
+        if os.path.exists(gamefolderpath + "/mapsrc/") == False:
+            os.mkdir(gamefolderpath + "/mapsrc/")
     #set map vmf directory in config. check for picky map locations per hammer and config (like portal 2)
     print("THE LINE NUMS TO REPLACE ARE:")
     linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"MapDir"'))
     for i in range(len(linestoconfig)):
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
             lines = file.readlines()
-        if gamefolderpath[:-1] == "Portal 2":
+        if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
             lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
         else:
             lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
@@ -568,7 +592,7 @@ def hammerconfig(binfolder, plusplusconfig):
 '''
 set up hammer wineprefix, set statuses along the way
 '''
-print(os.path.realpath("/home/artshinea/.steam/steam/steamapps/common/Counter-Strike Source/binwin/x64/hammerplusplus/"))
+
 def setuphammer():
     global settinguphammer
     global root
@@ -631,7 +655,11 @@ def setuphammer():
         subwindow('gamedirectorypicker')
         
         #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
-        subwindow('protonenable')
+        if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+            subwindow('protonenable')
+            subwindow('p2sdkenable')
+        else:
+            subwindow('protonenable')
         #check for hammerplusplus
         subwindow('hammerenable')
     
@@ -681,6 +709,12 @@ def setuphammer():
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
         elif os.path.basename(gamefolderpath[:-1]) == "Portal":
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
+                os.remove(gamefolderpath + "bin/GameConfig.txt")
+            hammerconfig("bin/", False)
+            os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+        elif os.path.basename(gamefolderpath[:-1]) == "Portal 2":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
