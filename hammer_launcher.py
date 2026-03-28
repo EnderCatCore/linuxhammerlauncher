@@ -17,14 +17,12 @@ import webbrowser
 
 -tf2classified requires a custom gameinfo. include that with program and copy it to tf2c maybe?
 
--portal 1 doesnt work, crashes when run from binwin. find some way to merge the bin folders of native and windows or add a prompt forcing proton on portal 1 launch. we can probably use the hl2 setup
-for portal 1 now that thats up and functioning
-
 -tell people to update hammer++, they copy to binwin
 
 -portal 2 does not run from binwin. either paste all of binwin into native bin on hammer launch and hope it doesnt break, or prompt user to switch to proton before hammer launches.
 
--portal 2 does not compile unless vmf is saved through full path to sdk_content/maps, symlinks wont work, find a way to change the default directory in wine by changing desktop
+-portal 2 does not compile unless vmf is saved through full path to sdk_content/maps, symlinks wont work. portal 2 needs to have its map vmf location configured to be in portal 2/sdk_content/maps so
+the file picker defaults to there, no longer needing a symlink favorite. maybe we should do this for all games if it works? and keep the symlinks to just be the games root folder rather than mapsrc?
 
 -add scrollwheel to main window (should we still add this now that the window resizes itself?)
 
@@ -185,7 +183,7 @@ def checkproton():
     global gamefolderpath
     print("CHECKING FOR PROTON NOW")
     print(os.path.basename(gamefolderpath[:-1]))
-    print(gamefolderpath + "bin/tier0.dll")
+    #game specific checking, should only need to be used for HL2 and Portal 2 but who knows
     if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2":
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
@@ -385,11 +383,17 @@ def launchhammer(game, title):
     print(os.getlogin())
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
-    if title == "Half-Life 2": 
+    delcopybins = ['Half-Life 2']
+    mergecopybins = ['Portal', 'Portal 2']
+    
+    if title in delcopybins: 
         if os.path.isdir(gamefolderfinder + "/bin/"):
             os.system("rm -r '" + gamefolderfinder + "/bin/'")
         print("cp -r '" + gamefolderfinder + "/binwin/' '" + gamefolderfinder + "/bin/'" )
         os.system("cp -r '" + gamefolderfinder + "/binwin/' '" + gamefolderfinder + "/bin/'" )
+    elif title in mergecopybins: 
+        print("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
+        os.system("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
     
     #create mapsrc folder for game
     if os.path.exists(gamefolderfinder + "/mapsrc/") == False:
@@ -622,7 +626,7 @@ def setuphammer():
     
     
         #install plusplus tools, some games dont work for this
-        noplusplus = ['Portal 2', 'Half-Life 2']
+        noplusplus = ['Portal 2', 'Half-Life 2', 'Portal']
         if os.path.basename(gamefolderpath[:-1]) not in noplusplus:
             subwindow("toolsplusplusinstall")
             
@@ -664,6 +668,12 @@ def setuphammer():
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
+            os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+        elif os.path.basename(gamefolderpath[:-1]) == "Portal":
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
+                os.remove(gamefolderpath + "bin/GameConfig.txt")
+            hammerconfig("bin/", False)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
