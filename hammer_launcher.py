@@ -34,6 +34,18 @@ import webbrowser
 -SFMs files, including bin, are all inside of "game" in its root folder in common. make it so if the title is detected to be 'SourceFilmmaker', that it goes down into the game folder during setup.
 
 '''
+#--------
+
+''' games to add support to
+HL2DM
+csgo(?)
+sfm(?)
+tf2classified
+half life source
+left 4 dead
+left 4 dead 2
+day of defeat source
+'''
 
 #vguititlebar = 1
 
