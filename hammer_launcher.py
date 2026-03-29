@@ -817,7 +817,7 @@ def rendermainwindow():
     '''
     Frame creation
     '''
-    optionsframe = Frame(root, bg="#3e4637", relief='sunken', bd=0, highlightthickness=0)
+    optionsframe = Frame(root, bg="#3e4637", relief='sunken', bd=1, highlightthickness=0)
     optionsframe.grid(row=1, column=1,sticky="we")
     optionsframe.grid_columnconfigure(0, minsize=23, weight=0)
     optionsframe.grid_columnconfigure(1, minsize=211, weight=1)
