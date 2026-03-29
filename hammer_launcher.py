@@ -856,6 +856,7 @@ def rendermainwindow():
         linenum += 1
     gameconfig.close()
 
+    
         
     '''
     GUI Stuffs
