@@ -35,12 +35,7 @@ import webbrowser
 
 '''
 
-vguititlebar = 1
-optionsframe = None
-root = None
-hammericon = None
-deleteicon = None
-
+#vguititlebar = 1
 
 
 #arguments
@@ -55,8 +50,8 @@ try:
             sys.exit()
         elif currentArg in ("-n", "--novgui"):
             print("STUB!")
-            print("Disabling custom title bar...")
-            vguititlebar = 0
+            #print("Disabling custom title bar...")
+            #vguititlebar = 0
         elif currentArg in ("-s", "--setup"):
             print("STUB!")
         elif currentArg in ("-l", "--launch"):
