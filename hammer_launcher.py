@@ -702,7 +702,24 @@ def setuphammer():
             subwindow("waiting")
             time.sleep(10)
         
+        gameconfig = open(configpath + "games.txt", 'r')
+
+        specified_lines = [99]
         
+        gameline = None
+
+        # this code does literally nothign i cannot figure ou tfor th elife of me how to edit files. Fail!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        for pos, l_num in enumerate(gameconfig):
+            if pos in specified_lines:
+                currentgamedef = l_num
+            else:
+                currentgamedef = l_num
+            print(json.loads(currentgamedef.replace("'", '"'))[0])
+            if os.path.basename(gamefolderpath[:-1]) == json.loads(currentgamedef.replace("'", '"'))[0]:
+                print("GAME ALREADY EXISTS ON LINE " + str(pos))
+                gameline = pos
+
+        gameconfig.close()
 
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
