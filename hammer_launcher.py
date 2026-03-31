@@ -21,7 +21,7 @@ import webbrowser
 
 -portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
 
--add scrollwheel to main window (should we still add this now that the window resizes itself?)
+-add scrollwheel to main window (should we still add this now that the window resizes itself? yes at some point it could go off screen)
 
 -add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
@@ -702,24 +702,46 @@ def setuphammer():
             subwindow("waiting")
             time.sleep(10)
         
+        # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
+
+        print("CHECKING FOR CONFIG DUPLICATES")
+
+        gameline = []
+
+        lines = []
+
         gameconfig = open(configpath + "games.txt", 'r')
 
         specified_lines = [99]
-        
-        gameline = None
 
-        # this code does literally nothign i cannot figure ou tfor th elife of me how to edit files. Fail!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         for pos, l_num in enumerate(gameconfig):
             if pos in specified_lines:
                 currentgamedef = l_num
             else:
                 currentgamedef = l_num
-            print(json.loads(currentgamedef.replace("'", '"'))[0])
             if os.path.basename(gamefolderpath[:-1]) == json.loads(currentgamedef.replace("'", '"'))[0]:
-                print("GAME ALREADY EXISTS ON LINE " + str(pos))
-                gameline = pos
+                # murdering THESE specifically becuase i hate them
+                print("duplicate game detected in config on line " + str(pos))
+                gameline.append(pos)
+
+        print(gameline)
 
         gameconfig.close()
+
+        # there's probably a cleaner way of doing this but What Ever
+        with open(configpath + "games.txt", 'r') as gr:
+            lines = gr.readlines()
+
+        print("CLEANING CONFIG")
+
+        # cleanup all duplicates. should probably only do when there are actually duplicates but Who Cares
+        with open(configpath + "games.txt", 'w') as gc:
+            for duplicate, line in enumerate(lines):
+                if duplicate not in gameline:
+                    print("not removing line "+ str(duplicate))
+                    gc.write(line)
+
+        print("SETTING UP NEW CONFIG")
 
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
