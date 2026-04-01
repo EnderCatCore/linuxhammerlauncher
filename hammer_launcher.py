@@ -13,10 +13,6 @@ import webbrowser
 
 -find games that are broken by plusplus tools and add them to the noplusplus list
 
--tf2classified doesnt have any identifiable to windows files in its bin folder, installation process doesnt go further than proton set up. add button to continue maybe
-
--tf2classified requires a custom gameinfo. include that with program and copy it to tf2c maybe?
-
 -tell people to update hammer++, they copy to binwin
 
 -portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
@@ -40,7 +36,6 @@ import webbrowser
 HL2DM
 csgo(?)
 sfm(?)
-tf2classified
 half life source
 left 4 dead
 left 4 dead 2
@@ -48,6 +43,12 @@ day of defeat source
 '''
 
 #vguititlebar = 1
+
+
+
+
+
+
 
 
 #arguments
@@ -194,6 +195,10 @@ def checkproton():
             subwindow('protonenable')
     elif os.path.basename(gamefolderpath[:-1]) == "Portal 2":
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
+            time.sleep(1)
+            subwindow('protonenable')
+    elif os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
+        if os.path.exists(gamefolderpath + "bin/x64/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
     else:
@@ -388,9 +393,6 @@ Non GUI functions
 # close window when program is launched
 def closelauncher():
     root.destroy()
-    
-
-
 
 # start correct game
 game = "gmod";
@@ -431,6 +433,32 @@ def launchhammer(game, title):
     #game specific stuff
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
     
+    #tf2c needs to update gameinfo, this goes here instead of confighammer because tf2c updates revert the gameinfo back to the broken one
+    if title == "Team Fortress 2 Classified":
+        with open(gamefolderfinder + '/tf2classified/gameinfo.txt', 'r') as file:
+            data = file.read()
+            data = data.replace('			//game+mod	|appid_440|tf/custom/*', '			//game+mod	"|all_source_engine_paths|../Team Fortress 2/tf/custom/*')
+            #data = data.replace('			game+mod+vgui		|gameinfo_path|vpks/tf2c_assets.vpk', '')
+            data = data.replace('			game+mod	|gameinfo_path|vpks/tf2c_overrides.vpk', '			game+mod	|gameinfo_path|overrides')
+            data = data.replace('			game_lv				|appid_440|tf/tf2_lv.vpk', '			game_lv				"|all_source_engine_paths|../Team Fortress 2/tf/tf2_lv.vpk"')
+            data = data.replace('			game+mod			|appid_440|tf/tf2_textures.vpk', '			game+mod			"|all_source_engine_paths|../Team Fortress 2/tf/tf2_textures.vpk"')
+            data = data.replace('			game+mod			|appid_440|tf/tf2_sound_vo_english.vpk', '			game+mod			"|all_source_engine_paths|../Team Fortress 2/tf/tf2_sound_vo_english.vpk"')
+            data = data.replace('			game+mod			|appid_440|tf/tf2_sound_misc.vpk', '			game+mod			"|all_source_engine_paths|../Team Fortress 2/tf/tf2_sound_misc.vpk"')
+            data = data.replace('			game+mod+vgui		|appid_440|tf/tf2_misc.vpk', '			game+mod+vgui		"|all_source_engine_paths|../Team Fortress 2/tf/tf2_misc.vpk"')
+            data = data.replace('			game				|appid_440|hl2/hl2_textures.vpk', '			game				"|all_source_engine_paths|../Team Fortress 2/hl2/hl2_textures.vpk"')
+            data = data.replace('			game				|appid_440|hl2/hl2_sound_vo_english.vpk', '			game				"|all_source_engine_paths|../Team Fortress 2/hl2/hl2_sound_vo_english.vpk"')
+            data = data.replace('			game				|appid_440|hl2/hl2_sound_misc.vpk', '			game				"|all_source_engine_paths|../Team Fortress 2/hl2/hl2_sound_misc.vpk"')
+            data = data.replace('			game+vgui			|appid_440|hl2/hl2_misc.vpk', '			game+vgui			"|all_source_engine_paths|../Team Fortress 2/hl2/hl2_misc.vpk"')
+            data = data.replace('			platform+vgui		|appid_440|platform/platform_misc.vpk', '			platform+vgui		"|all_source_engine_paths|../Team Fortress 2/platform/platform_misc.vpk"')
+            data = data.replace('			// game				|appid_440|tf', '			// game				"|all_source_engine_paths|../Team Fortress 2/tf"')
+            data = data.replace('			game				|appid_440|hl2', '			game				"|all_source_engine_paths|../Team Fortress 2/hl2"')
+            data = data.replace('			platform			|appid_440|platform', '			platform			"|all_source_engine_paths|../Team Fortress 2/platform"')
+        with open(gamefolderfinder + '/tf2classified/gameinfo.txt', 'w') as file:
+            file.write(data)
+            
+            
+            
+    
     #launch wine9 with hammer using correct prefix
     print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
     os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
@@ -463,7 +491,11 @@ def stateandprint(string):
 
 #edit hammer config/settings
 def hammerconfig(binfolder, plusplusconfig):
+    global gamefolderwindowified
     global gamefolderpath
+    global binfolderwindowified
+    global bintypewindowified
+    global combi3paths
     print("using binfolder "  + binfolder)
     combi3paths = gamefolderpath + binfolder + bintype
     
@@ -484,7 +516,7 @@ def hammerconfig(binfolder, plusplusconfig):
             data = data.replace("\\bin\\", "\\binwin\\")
         with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
             file.write(data)
-
+    
     
     #gameconfig & settings generation
     timeout_time = 10
@@ -564,6 +596,7 @@ def hammerconfig(binfolder, plusplusconfig):
     #create win version of gamefolderpath
     gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
     binfolderwindowified = binfolder.replace("/","\\")
+    bintypewindowified = bintype.replace("/","\\")
     print(os.path.realpath(gamefolderwindowified))
     print(binfolderwindowified)
     #set launch game to bat in config, find GameExe lines to change (some games like hl2 have multiple game config defs)
@@ -595,6 +628,52 @@ def hammerconfig(binfolder, plusplusconfig):
             lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.writelines(lines)
+    
+    #TF2C needs its gameconfig made from scratch
+    if os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
+            gameconfigmake("tf2c")
+
+
+
+    
+
+#create a gameconfig
+def gameconfigmake(game):
+    global bintypewindowified
+    global gamefolderwindowified
+    global gamefolderpath
+    global combi3paths
+    global binfolderwindowified
+    if game == "tf2c":
+        codename = "tf2classified"
+        fgdname = "tf2c"
+        pluspluscomp = "plusplus"
+        
+    hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
+    + '			"Hammer"\n			{\n				"GameData0"		"' + gamefolderwindowified + '\\binwin\\' + fgdname + '.fgd"\n' + '				"TextureFormat"		"5"\n\
+                    "MapFormat"		"4"\n				"DefaultTextureScale"		"0.250000"\n				"DefaultLightmapScale"		"16"\n				"GameExe"		"' + \
+    gamefolderwindowified + "\\" + binfolderwindowified + \
+    'linuxhammerlauncher_rungame.bat"\n' + '				"DefaultSolidEntity"		"func_detail"\n\
+				"DefaultPointEntity"		"info_player_start"\n				"BSP"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\"\
+    'vbsp' + pluspluscomp + '.exe"\n' + \
+    '				"Vis"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'vvis' + pluspluscomp + '.exe"\n' + \
+    '				"Light"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'vrad' + pluspluscomp + '.exe"\n' + \
+    '				"MDL"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'studiomdl.exe"\n' + \
+    '				"GameExeDir"		"' + gamefolderwindowified + '"\n' + \
+    '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n' + \
+    '				"BSPDir"		"' + gamefolderwindowified + "\\" + codename + '\\maps"\n' + \
+    '				"PrefabDir"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + '\\Prefabs"\n' + \
+    '				"CordonTexture"		"tools/toolsskybox"\n				"MaterialExcludeCount"		"0"\n				"Previous"		"1"\n			}\n		}\n	}\n}\n'
+    
+    print("\n\n\n\n\n\n")
+    print(hammerconfig)
+    with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as hppgameconfigfile:
+        hppgameconfigfile.write(hammerconfig)
+    
+
+
+
+
 
 '''
 set up hammer wineprefix, set statuses along the way
@@ -772,6 +851,7 @@ def setuphammer():
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
+        
         
         
         #show finishing up window
