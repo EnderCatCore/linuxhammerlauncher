@@ -413,7 +413,7 @@ def launchhammer(game, title):
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
     delcopybins = ['Half-Life 2']
-    mergecopybins = ['Portal', 'Portal 2']
+    mergecopybins = ['Portal', 'Portal 2', 'Half-Life 1 Source Deathmatch']
     
     if title in delcopybins: 
         if os.path.isdir(gamefolderfinder + "/bin/"):
@@ -432,6 +432,12 @@ def launchhammer(game, title):
 
     #game specific stuff
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
+
+    # HL1MP does not have a built in gameinfo. re-copying it here just in case it decides to Die
+    if title == "Half-Life 1 Source Deathmatch":
+        print("COPYING HL1MP TXT")
+        print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderfinder + "/hl2/gameinfo.txt'")
+        os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderfinder + "/hl2/gameinfo.txt'")
     
     #tf2c needs to update gameinfo, this goes here instead of confighammer because tf2c updates revert the gameinfo back to the broken one
     if title == "Team Fortress 2 Classified":
@@ -507,17 +513,7 @@ def hammerconfig(binfolder, plusplusconfig):
     if os.path.exists(gamefolderpath + "binwin") == False:
         print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
         os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-    
-    #update settings.ini for people who already have used hammerplusplus before
-    
-    if os.path.exists(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini") == True:
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
-            data = file.read()
-            data = data.replace("\\bin\\", "\\binwin\\")
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
-            file.write(data)
-    
-    
+
     #gameconfig & settings generation
     timeout_time = 10
 
@@ -541,6 +537,7 @@ def hammerconfig(binfolder, plusplusconfig):
     if plusplusconfig == True:
         #edit gameconfig for hammer
         print("modifiying gameconfig for "  + binfolder)
+        print(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt")
         #vbsp
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
             data = file.read()
@@ -566,6 +563,14 @@ def hammerconfig(binfolder, plusplusconfig):
             data = data.replace("\\bin\\", "\\binwin\\")
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.write(data)
+
+        #update settings.ini for people who already have used hammerplusplus before
+        if os.path.exists(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini") == True:
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+                data = file.read()
+                data = data.replace("\\bin\\", "\\binwin\\")
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+                file.write(data)
 
     # dummy version
     batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
@@ -629,9 +634,11 @@ def hammerconfig(binfolder, plusplusconfig):
         with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
             file.writelines(lines)
     
-    #TF2C needs its gameconfig made from scratch
+    #TF2C and HL1MP needs its gameconfig made from scratch
     if os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
             gameconfigmake("tf2c")
+    if os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
+            gameconfigmake("hl1mp")
 
 
 
@@ -647,6 +654,10 @@ def gameconfigmake(game):
     if game == "tf2c":
         codename = "tf2classified"
         fgdname = "tf2c"
+        pluspluscomp = "plusplus"
+    if game == "hl1mp":
+        codename = "hl1mp"
+        fgdname = "halflife2"
         pluspluscomp = "plusplus"
         
     hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
@@ -748,6 +759,13 @@ def setuphammer():
             subwindow('protonenable')
         #check for hammerplusplus
         subwindow('hammerenable')
+
+
+        # HL1MP does not have a built in gameinfo. why? no idea.
+        if os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
+            print("COPYING HL1MP TXT")
+            print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
+            os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
     
     
         #install plusplus tools, some games dont work for this
@@ -825,25 +843,18 @@ def setuphammer():
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
         
-        
         #game specific configuring.
-        if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2":
+        if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2" or os.path.basename(gamefolderpath[:-1]) == "Portal" or os.path.basename(gamefolderpath[:-1]) == "Portal 2":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        elif os.path.basename(gamefolderpath[:-1]) == "Portal":
+        elif os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
-            hammerconfig("bin/", False)
-            os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        elif os.path.basename(gamefolderpath[:-1]) == "Portal 2":
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
-            if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
-                os.remove(gamefolderpath + "bin/GameConfig.txt")
-            hammerconfig("bin/", False)
+            hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
@@ -917,6 +928,8 @@ def creategamebutton(height, title, hammerpath):
         gameicon = Image("photo", file="assets/buttonicons/games/tf2.png")
     if title == "Team Fortress 2 Classified":
         gameicon = Image("photo", file="assets/buttonicons/games/tf2classified.png")
+    if title == "Half-Life 1 Source Deathmatch":
+        gameicon = Image("photo", file="assets/buttonicons/games/hl1mp.png")
     gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
