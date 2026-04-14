@@ -25,22 +25,19 @@ import webbrowser
 
 -day of defeat source also doesnt prompt user during setup for hammer++??? why i dont know but figure that out
 
--SFM hammer freaks out during install, neither hammer++ nor vanilla hammer work. oh god. i dont know which hammer++ to use for sfm or how to config it
-
--SFMs files, including bin, are all inside of "game" in its root folder in common. make it so if the title is detected to be 'SourceFilmmaker', that it goes down into the game folder during setup.
-
 '''
 #--------
 
 ''' games to add support to
-HL2DM
+HL2DM (havent even tested this one it might work right out the box, dunno though.)
 csgo(?)
-sfm(?)
-half life source
+half life source (might be easy if we snag the gameinfo? im guessing we can reuse hl1mp stuff but not sure)
 left 4 dead
 left 4 dead 2
-day of defeat source
+day of defeat source (should be easy ish it already works with finagling)
 '''
+
+
 
 #vguititlebar = 1
 
@@ -150,13 +147,42 @@ def findgame():
         subwinpressable = 0
         gamefolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(gamefolderpath)
-        if not gamefolderpath.endswith("/"):
-            gamefolderpath = gamefolderpath + "/"
-        if gamefolderpath == "/":
-            subwindow('gamedirectorypickerinvalid')
-        elif os.path.exists(gamefolderpath + "bin/") == False:
-            subwindow('gamedirectorypickerinvalid')
-        elif os.path.exists(gamefolderpath + "bin/") == True:
+        if os.path.basename(gamefolderpath[:-1]) == "SourceFilmmaker":
+            print("YEA ITS SFM")
+            if not gamefolderpath.endswith("/"):
+                gamefolderpath = gamefolderpath + "/"
+            if gamefolderpath == "/":
+                subwindow('gamedirectorypickerinvalid')
+            elif os.path.exists(gamefolderpath + "game/bin/") == False:
+                subwindow('gamedirectorypickerinvalid')
+            elif os.path.exists(gamefolderpath + "game/bin/") == True:
+                freetocontinue = 1
+        else:
+            if not gamefolderpath.endswith("/"):
+                gamefolderpath = gamefolderpath + "/"
+            if gamefolderpath == "/":
+                subwindow('gamedirectorypickerinvalid')
+            elif os.path.exists(gamefolderpath + "bin/") == False:
+                subwindow('gamedirectorypickerinvalid')
+            elif os.path.exists(gamefolderpath + "bin/") == True:
+                freetocontinue = 1
+#open file picker for tf path
+def findtf():
+    global subwinpressable
+    global freetocontinue
+    global tffolderpath
+    
+    if subwinpressable == 1:
+        subwinpressable = 0
+        tffolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
+        print(tffolderpath)
+        if not tffolderpath.endswith("/"):
+            tffolderpath = tffolderpath + "/"
+        if tffolderpath == "/":
+            subwindow('tfdirectorypickerinvalid')
+        elif os.path.exists(tffolderpath + "tf/") == False:
+            subwindow('tfdirectorypickerinvalid')
+        elif os.path.exists(tffolderpath + "tf/") == True:
             freetocontinue = 1
             
 #open file picker for hammer++ archive, if valid, extract to game winbin
@@ -279,6 +305,38 @@ def subwindow(subwintype):
         findgame()
         root.update()
         
+    #tf2 directory chooser
+    elif subwintype == 'tfdirectorypicker':
+        subwinpressable == 1
+        #root.geometry('228x140')
+        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\n Please navigate to your Team Fortress 2 folder.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl.grid(row=2, column=0)
+        
+        root.update()
+        time.sleep(3)
+        findtf()
+    #tf directory chooser if you frick it up   
+    elif subwintype == 'tfdirectorypickerinvalid':
+        subwinpressable == 1
+        #root.geometry('228x140')
+        lbl = Label(root, text = "Could not find TF2... \n SFM requires Team Fortress 2 to be installed for setup.\n Please re-select your Team Fortress 2 folder.", bg='#4c5844', \
+        fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl.grid(row=2, column=0)
+        
+        root.update()
+        time.sleep(1)
+        
+        findtf()
+        root.update()
+        
     #proton set up window
     if subwintype == 'protonenable':
         #root.geometry('414x100')
@@ -288,6 +346,7 @@ def subwindow(subwintype):
         lbl.grid(row=0, column=0)
         root.update()
         checkproton()
+        
     #P2SDK set up window for portal 2
     if subwintype == 'p2sdkenable':
         #root.geometry('414x100')
@@ -461,6 +520,19 @@ def launchhammer(game, title):
             data = data.replace('			platform			|appid_440|platform', '			platform			"|all_source_engine_paths|../Team Fortress 2/platform"')
         with open(gamefolderfinder + '/tf2classified/gameinfo.txt', 'w') as file:
             file.write(data)
+    #stupid sfm grabage
+    if title == "SourceFilmmaker":
+        with open(gamefolderfinder + '/game/usermod/gameinfo.txt', 'r') as file:
+            data = file.read()
+            if '"Game"		"|all_source_engine_paths|hl2/hl2_textures.vpk"' in data:
+                print("no need to change anything gameinfo has teh stuffs")
+            else:
+                print("need to add to gameinfo to work")
+                data = data.replace('		"SearchPaths"\n		{\n', '		"SearchPaths"\n		{\n			"Game"		"|all_source_engine_paths|hl2/hl2_textures.vpk"\n\
+			"Game"		"|all_source_engine_paths|hl2/hl2_sound_vo_english.vpk"\n			"Game"		"|all_source_engine_paths|hl2/hl2_sound_misc.vpk"\n\
+			"Game"		"|all_source_engine_paths|hl2/hl2_misc.vpk"\n')
+        with open(gamefolderfinder + '/game/usermod/gameinfo.txt', 'w') as file:
+            file.write(data)
             
             
             
@@ -499,6 +571,8 @@ def stateandprint(string):
 def hammerconfig(binfolder, plusplusconfig):
     global gamefolderwindowified
     global gamefolderpath
+    global backupgamefolderpath
+    global tffolderpath
     global binfolderwindowified
     global bintypewindowified
     global combi3paths
@@ -506,139 +580,171 @@ def hammerconfig(binfolder, plusplusconfig):
     combi3paths = gamefolderpath + binfolder + bintype
     
     #copy bin folder as binwin in same directory if it does not exist. auto delete if it already exists (though this might mess up user data. open dialog to ask user?)
-    if os.path.exists(gamefolderpath + "binwin") == True:
-        print("BINWIN ALREADY EXISTS! deleting...")
-        os.system("rm -r '" + gamefolderpath + "binwin/'")
-    print("game folder path is " + gamefolderpath)
-    if os.path.exists(gamefolderpath + "binwin") == False:
-        print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-        os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    #sfm specific garbage
+    if os.path.basename(gamefolderpath[:-1]) == "game":
+        if os.path.exists(gamefolderpath + "binwin") == True:
+            print("BINWIN ALREADY EXISTS! deleting...")
+            os.system("rm -r '" + gamefolderpath + "binwin/'")
+        print("game folder path is " + gamefolderpath)
+        if os.path.exists(gamefolderpath + "binwin") == False:
+            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+            os.system("cp -r '" + tffolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    else:
+        if os.path.exists(gamefolderpath + "binwin") == True:
+            print("BINWIN ALREADY EXISTS! deleting...")
+            os.system("rm -r '" + gamefolderpath + "binwin/'")
+        print("game folder path is " + gamefolderpath)
+        if os.path.exists(gamefolderpath + "binwin") == False:
+            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+            os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
 
     #gameconfig & settings generation
     timeout_time = 10
 
     #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
-    bashfile = open(configpath + "temprunhammerbash.sh", "w")
-    print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
-    bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
-    bashfile.close()
-    os.system("chmod +x " + configpath + "temprunhammerbash.sh")
+    #i do not know why sfm is trying to use a bash file to run. i dont need to know why as long as this works. sfm has its gameconfig made from scratch there is zero reason for it to launch
+    #hammer
+    print(gamefolderpath + "IS IT SFM????")
+    if os.path.basename(gamefolderpath[:-1]) == "game":
+        print("please for the love of god stop using the sh file you dont need it sfm. why are we even generating them like this anymore anyways we have a thing to make them from scratch now is there\
+any point in using such a jank system still whyd i make it like this")
+    else:
+        bashfile = open(configpath + "temprunhammerbash.sh", "w")
+        print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
+        bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
+        bashfile.close()
+        os.system("chmod +x " + configpath + "temprunhammerbash.sh")
+        #keep starting hammer for increasing amounts of time until gameconfig is generated
+        #this whole system should probably be changed to just be a fallback option for when a game is run that we havent defined in the gameconfigmaker
+        while os.path.isfile(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
+            print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+            os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+            timeout_time += 5
+            root.update()
 
-    #keep starting hammer for increasing amounts of time until gameconfig is generated
-    while os.path.isfile(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt") == False:
-        print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-        os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-        timeout_time += 5
-        root.update()
-
-    os.remove(configpath + "temprunhammerbash.sh")
-
-    subwindow("editingconfigs")
-    if plusplusconfig == True:
-        #edit gameconfig for hammer
-        print("modifiying gameconfig for "  + binfolder)
-        print(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt")
-        #vbsp
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace("\\vbsp.exe", "\\vbspplusplus.exe")
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        #vvis
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace("\\vvis.exe", "\\vvisplusplus.exe")
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-        #vrad
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-    #binwin, if HL2 or any other game that cant run from binwin, dont config this.
-    if binfolder == "binwin/":
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
-            data = file.read()
-            data = data.replace("\\bin\\", "\\binwin\\")
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.write(data)
-
-        #update settings.ini for people who already have used hammerplusplus before
-        if os.path.exists(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini") == True:
-            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+        os.remove(configpath + "temprunhammerbash.sh")
+    #all this should only frickig do when the file exists god
+    if os.path.isfile(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt") == True:
+        subwindow("editingconfigs")
+        if plusplusconfig == True:
+            #edit gameconfig for hammer
+            print("modifiying gameconfig for "  + binfolder)
+            print(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt")
+            #vbsp
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+                data = file.read()
+                data = data.replace("\\vbsp.exe", "\\vbspplusplus.exe")
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+                file.write(data)
+            #vvis
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+                data = file.read()
+                data = data.replace("\\vvis.exe", "\\vvisplusplus.exe")
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+                file.write(data)
+            #vrad
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
+                data = file.read()
+                data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+                file.write(data)
+        #binwin, if HL2 or any other game that cant run from binwin, dont config this.
+        if binfolder == "binwin/":
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r') as file:
                 data = file.read()
                 data = data.replace("\\bin\\", "\\binwin\\")
-            with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
                 file.write(data)
 
-    # dummy version
-    batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
-    batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-    batfile.close()
+            #update settings.ini for people who already have used hammerplusplus before
+            if os.path.exists(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini") == True:
+                with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'r') as file:
+                    data = file.read()
+                    data = data.replace("\\bin\\", "\\binwin\\")
+                with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
+                    file.write(data)
 
-    #check for steam. if find steam make bat!! if not. too bad. fool
-    steampath = os.popen("which steam").read()
-    if os.path.exists(steampath[:-1]) == True:
-        print("found steam!")
-        #detect appid
-        if os.path.exists(gamefolderpath + "steam_appid.txt") == True:
-            with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
-                print(gamefolderpath + "steam_appid.txt")
-                game_appid = str(appidfile.read())[:-2]
-                print("appid is " + game_appid)
+        # dummy version
+        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+        batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+        batfile.close()
 
-            #create TRUE run game bat
-            print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-            batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
-            batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-            batfile.close()
+        #check for steam. if find steam make bat!! if not. too bad. fool
+        steampath = os.popen("which steam").read()
+        if os.path.exists(steampath[:-1]) == True:
+            print("found steam!")
+            #detect appid
+            if os.path.exists(gamefolderpath + "steam_appid.txt") == True:
+                with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+                    print(gamefolderpath + "steam_appid.txt")
+                    game_appid = str(appidfile.read())[:-2]
+                    print("appid is " + game_appid)
+
+                #create TRUE run game bat
+                print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+                batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
+                batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+                batfile.close()
+            else:
+                print("steam_appid missing from game directory!")
         else:
-            print("steam_appid missing from game directory!")
-    else:
-        print("could not find steam. flatpak moment!")
+            print("could not find steam. flatpak moment!")
 
-    #create win version of gamefolderpath
-    gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
-    binfolderwindowified = binfolder.replace("/","\\")
-    bintypewindowified = bintype.replace("/","\\")
-    print(os.path.realpath(gamefolderwindowified))
-    print(binfolderwindowified)
-    #set launch game to bat in config, find GameExe lines to change (some games like hl2 have multiple game config defs)
-    print("THE LINE NUMS TO REPLACE ARE:")
-    linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"GameExe"'))
-    for i in range(len(linestoconfig)):
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-        lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + "\\" + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.writelines(lines)
-    #create mapsrc folder for game
-    print(os.path.basename(gamefolderpath[:-1]) + "UGH COME ON")
-    print(os.path.basename(gamefolderpath[:-1]) == "Portal 2")
-    if gamefolderpath[:-1] == "Portal 2":
-        pass
+        #create win version of gamefolderpath
+        gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
+        binfolderwindowified = binfolder.replace("/","\\")
+        bintypewindowified = bintype.replace("/","\\")
+        print(os.path.realpath(gamefolderwindowified))
+        print(binfolderwindowified)
+        #set map vmf directory in config. check for picky map locations per hammer and config (like portal 2)
+        print("THE LINE NUMS TO REPLACE ARE:")
+        linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"MapDir"'))
+        for i in range(len(linestoconfig)):
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+                lines = file.readlines()
+            if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
+            else:
+                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+                file.writelines(lines)
+        #set gameExe to .bat
+        print("THE LINE NUMS TO REPLACE ARE:")
+        linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"GameExe"'))
+        for i in range(len(linestoconfig)):
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+                lines = file.readlines()
+            lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + "\\" + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
+            with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+                file.writelines(lines)
     else:
-        if os.path.exists(gamefolderpath + "/mapsrc/") == False:
-            os.mkdir(gamefolderpath + "/mapsrc/")
-    #set map vmf directory in config. check for picky map locations per hammer and config (like portal 2)
-    print("THE LINE NUMS TO REPLACE ARE:")
-    linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"MapDir"'))
-    for i in range(len(linestoconfig)):
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-        if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
-            lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
-        else:
-            lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
-        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
-            file.writelines(lines)
+        #create win version of gamefolderpath. still need these.
+        gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
+        binfolderwindowified = binfolder.replace("/","\\")
+        bintypewindowified = bintype.replace("/","\\")
+        print(os.path.realpath(gamefolderwindowified))
+        print(binfolderwindowified)
+        #still need the game bat too
+        # dummy version
+        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+        batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+        batfile.close()
     
-    #TF2C and HL1MP needs its gameconfig made from scratch
+    #TF2C and HL1MP (and and SFM) needs its gameconfig made from scratch
     if os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
-            gameconfigmake("tf2c")
+        gameconfigmake("tf2c")
     if os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
-            gameconfigmake("hl1mp")
+        gameconfigmake("hl1mp")
+    if os.path.basename(gamefolderpath[:-1]) == "game":
+        gameconfigmake("sfm")
+    #sfm garbage stupid garbage that i hate so much copy paste hl2 garbage but not from half life but instead from team fortress 2 because screw you and into sfm because hammer++ hates having its 
+    #stupif shaders outside of vpks in just plain files because it oH SO NEEDS THEM TO BE IN VPKS im so normal im so normal im so normal im so normal
+    if os.path.basename(gamefolderpath[:-1]) == "game":
+        print("A SINGULAR 'GUH' SO I KNOW WHERE THE THING IS")
+        print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
+        os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
+        
+        
 
 
 
@@ -659,6 +765,10 @@ def gameconfigmake(game):
         codename = "hl1mp"
         fgdname = "halflife2"
         pluspluscomp = "plusplus"
+    if game == "sfm":
+        codename = "usermod"
+        fgdname = "tf"
+        pluspluscomp = "plusplus"
         
     hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
     + '			"Hammer"\n			{\n				"GameData0"		"' + gamefolderwindowified + '\\binwin\\' + fgdname + '.fgd"\n' + '				"TextureFormat"		"5"\n\
@@ -674,12 +784,22 @@ def gameconfigmake(game):
     '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n' + \
     '				"BSPDir"		"' + gamefolderwindowified + "\\" + codename + '\\maps"\n' + \
     '				"PrefabDir"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + '\\Prefabs"\n' + \
-    '				"CordonTexture"		"tools/toolsskybox"\n				"MaterialExcludeCount"		"0"\n				"Previous"		"1"\n			}\n		}\n	}\n}\n'
+    '				"CordonTexture"		"tools/toolsskybox"\n				"MaterialExcludeCount"		"0"\n				"Previous"		"1"\n			}\n		}\n	}\n	"SDKVersion"		"5"\n}\n'
     
     print("\n\n\n\n\n\n")
     print(hammerconfig)
     with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as hppgameconfigfile:
         hppgameconfigfile.write(hammerconfig)
+        
+    #set gameexe
+    print("THE LINE NUMS TO REPLACE ARE:")
+    linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"GameExe"'))
+    for i in range(len(linestoconfig)):
+        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+        lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + "\\" + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
+        with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
+            file.writelines(lines)
     
 
 
@@ -691,10 +811,13 @@ set up hammer wineprefix, set statuses along the way
 '''
 
 def setuphammer():
+    global tffolderpath
     global settinguphammer
     global root
     global gamefolderpath
+    global backupgamefolderpath
     global gameconfig
+    backupgamefolderpath = "na"
     
     if settinguphammer == 0:
         settinguphammer = 1
@@ -751,11 +874,23 @@ def setuphammer():
         freetocontinue = 0
         subwindow('gamedirectorypicker')
         
-        #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
+        #check if sfm is being used and ask for tf2 install
+        if os.path.basename(gamefolderpath[:-1]) == "SourceFilmmaker":
+            subwindow('tfdirectorypicker')
+            print(tffolderpath)
+            #swap out gamefolderpath for tffolderpath and switch back later when SFM one is needed
+            backupgamefolderpath = gamefolderpath
+            gamefolderpath = tffolderpath
+            
+            
+        
+        
+        #check if portal 2 is used, ask for enable proton and sdk
         if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
             subwindow('protonenable')
             subwindow('p2sdkenable')
         else:
+            #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
             subwindow('protonenable')
         #check for hammerplusplus
         subwindow('hammerenable')
@@ -808,6 +943,9 @@ def setuphammer():
             time.sleep(10)
         
         # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
+        if os.path.basename(backupgamefolderpath[:-1]) == "SourceFilmmaker":
+            gamefolderpath = backupgamefolderpath
+
 
         print("CHECKING FOR CONFIG DUPLICATES")
 
@@ -847,7 +985,6 @@ def setuphammer():
                     gc.write(line)
 
         print("SETTING UP NEW CONFIG")
-
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
         
@@ -858,15 +995,22 @@ def setuphammer():
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+        
         elif os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+        
+        elif os.path.basename(backupgamefolderpath[:-1]) == "SourceFilmmaker":
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "game/binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            gamefolderpath = backupgamefolderpath + "game/"
+            hammerconfig("binwin/", True)
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
             hammerconfig("binwin/", True)
+        
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
