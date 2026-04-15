@@ -256,30 +256,51 @@ def checkhammer():
 def autohammer():
     global gamefolderpath
     #auto set up hammer++. wow
-    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source','SourceFilmmaker']
-    otherbranch = ['Klonoa 2 Lunateas Veil']
+    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source','SourceFilmmaker','Team Fortress 2 Classified']
+    sp2013branch = ['Half-Life 2','Portal','Source SDK Base 2013 Singleplayer','Source SDK Base 2007','Source SDK Base 2006']
+    mp2013branch = ['Klonoa 2 Lunateas Veil']
+    gmodbranch = ['GarrysMod','Black Mesa','Alien Swarm']
+    portal2branch = ['Portal 2']
+    l4d2branch = ['left 4 dead','Left 4 Dead 2']
+    csgobranch = ['Counter-Strike Global Offensive']
     #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
 
     hammerplusplustype = ""
+    version = ""
+    frozenbuild = False
 
     if os.path.basename(gamefolderpath[:-1]) in tf2branch:
         hammerplusplustype = "tf2"
-    elif os.path.basename(gamefolderpath[:-1]) in otherbranch:
-        hammerplusplustype = "klonoa2"
+    elif os.path.basename(gamefolderpath[:-1]) in sp2013branch:
+        hammerplusplustype = "2013sp"
+    elif os.path.basename(gamefolderpath[:-1]) in mp2013branch:
+        hammerplusplustype = "2013mp"
+    elif os.path.basename(gamefolderpath[:-1]) in gmodbranch:
+        hammerplusplustype = "gmod"
+    elif os.path.basename(gamefolderpath[:-1]) in portal2branch:
+        hammerplusplustype = "portal2"
+    elif os.path.basename(gamefolderpath[:-1]) in l4d2branch:
+        hammerplusplustype = "l4d2"
+    elif os.path.basename(gamefolderpath[:-1]) in csgobranch:
+        hammerplusplustype = "csgo"
+        version = "8864"
+        frozenbuild = True
     else:
-        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
+        print("unknown game branch!")
         return
 
-    print("getting the latest hammer plus plsu verison WOWWWWWWWWWWWWWWWWWWW")
-    hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-    version = ""
-    response = requests.get(hammerplusplusversiontxt)
-    if response.status_code == 200:
-        print("LATEST HAMMER++ VERSION: "+response.text)
-        version = response.text
-    else:
-        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
-        return
+
+    if not frozenbuild:
+        print("getting the latest hammer plus plsu verison WOWWWWWWWWWWWWWWWWWWW")
+        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+        response = requests.get(hammerplusplusversiontxt)
+        if response.status_code == 200:
+            version = response.text
+        else:
+            print("failed to get the latest hammer++ version!")
+            return
+
+    print("using hammer++ version "+version)
 
     hammerpluspluszip = "hammerplusplus_"+hammerplusplustype+"_build"+version
 
@@ -301,7 +322,7 @@ def autohammer():
         print("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
         os.system("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
     else:
-        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
+        print("hammer++ zip FAILED to download. Too bad!")
         return
 
 '''subwindow creation'''
