@@ -256,7 +256,7 @@ def checkhammer():
 def autohammer():
     global gamefolderpath
     #auto set up hammer++. wow
-    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source']
+    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source','SourceFilmmaker']
     otherbranch = ['Klonoa 2 Lunateas Veil']
     #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
 
