@@ -253,6 +253,57 @@ def checkhammer():
         time.sleep(1)
         subwindow('hammerenable')
 
+def autohammer():
+    global gamefolderpath
+    #auto set up hammer++. wow
+    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source']
+    otherbranch = ['Klonoa 2 Lunateas Veil']
+    #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
+
+    hammerplusplustype = ""
+
+    if os.path.basename(gamefolderpath[:-1]) in tf2branch:
+        hammerplusplustype = "tf2"
+    elif os.path.basename(gamefolderpath[:-1]) in otherbranch:
+        hammerplusplustype = "klonoa2"
+    else:
+        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
+        return
+
+    print("getting the latest hammer plus plsu verison WOWWWWWWWWWWWWWWWWWWW")
+    hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+    version = ""
+    response = requests.get(hammerplusplusversiontxt)
+    if response.status_code == 200:
+        print("LATEST HAMMER++ VERSION: "+response.text)
+        version = response.text
+    else:
+        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
+        return
+
+    hammerpluspluszip = "hammerplusplus_"+hammerplusplustype+"_build"+version
+
+    hammerplusplusurl = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download/"+version+"/"+hammerpluspluszip+".zip"
+
+    file_Path = configpath + hammerpluspluszip+".zip"
+    print("Downloading "+hammerpluspluszip)
+    response = requests.get(hammerplusplusurl)
+    if response.status_code == 200:
+        with open(file_Path, 'wb') as file:
+            file.write(response.content)
+        print("downloaded hammer++ for "+hammerplusplustype)
+        version = response.text
+        print("copying hammerplusplus files to bin")
+        print("cd " + configpath + " && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + "bin/'")
+        os.system("cd " + configpath + " && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + "bin/'")
+        print("removing temp hammer++ files...")
+        os.remove(file_Path)
+        print("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
+        os.system("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
+    else:
+        stateandprint("Failed to get the latest Hammer++. \n Please install it manually.")
+        return
+
 '''subwindow creation'''
 def subwindow(subwintype):
     global gamefolderpath
@@ -366,11 +417,11 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
-        checkhammer()
+        autohammer()
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
-        lbl = Label(root, text = "Hammer++ not detected. download it at \n https://ficool2.github.io/HammerPlusPlus-Website/download.html \nand copy its bin folder into:\
+        lbl = Label(root, text = "Hammer++ could not be automatically installed. Please download it at \n https://ficool2.github.io/HammerPlusPlus-Website/download.html \nand copy its bin folder into:\
          \n " + gamefolderpath + "bin/",
         bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
@@ -900,6 +951,7 @@ def setuphammer():
             #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
             subwindow('protonenable')
         #check for hammerplusplus
+        subwindow('hammerautomated')
         subwindow('hammerenable')
 
 
