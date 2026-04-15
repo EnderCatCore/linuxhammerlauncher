@@ -253,7 +253,6 @@ def checkhammer():
         time.sleep(1)
         subwindow('hammerenable')
 
-
 '''subwindow creation'''
 def subwindow(subwintype):
     global gamefolderpath
@@ -356,6 +355,18 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         lbl.grid(row=0, column=0)
         root.update()
         checksdk()
+    #hammer++ set up window if it was automated
+    if subwintype == 'hammerautomated':
+        #root.geometry('600x140')
+        lbl = Label(root, text = "Downloading Hammer++...", bg='#4c5844', \
+        fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl.grid(row=2, column=0)
+        root.update()
+        checkhammer()
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
@@ -608,6 +619,7 @@ def hammerconfig(binfolder, plusplusconfig):
     if os.path.basename(gamefolderpath[:-1]) == "game":
         print("please for the love of god stop using the sh file you dont need it sfm. why are we even generating them like this anymore anyways we have a thing to make them from scratch now is there\
 any point in using such a jank system still whyd i make it like this")
+        print("idk :3")
     else:
         bashfile = open(configpath + "temprunhammerbash.sh", "w")
         print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + '/hammerplusplus.exe"')
@@ -743,11 +755,6 @@ any point in using such a jank system still whyd i make it like this")
         print("A SINGULAR 'GUH' SO I KNOW WHERE THE THING IS")
         print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
         os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
-        
-        
-
-
-
     
 
 #create a gameconfig
@@ -923,21 +930,9 @@ def setuphammer():
             print("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
             os.system("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
             print("removing temp tools++ files...")
-            os.remove(configpath + "tools_plusplus.zip")
-            os.remove(configpath + "tools_plusplus/tools/bspzipplusplus.exe")
-            os.remove(configpath + "tools_plusplus/tools/vbspplusplus.exe")
-            os.remove(configpath + "tools_plusplus/tools/vradplusplus.exe")
-            os.remove(configpath + "tools_plusplus/tools/vvisplusplus.exe")
-            os.remove(configpath + "tools_plusplus/tools/toolsplusplus.fgd")
-            os.remove(configpath + "tools_plusplus/tools/studiomdlplusplus.exe")
-            os.remove(configpath + "tools_plusplus/toolsplusplus_installer.exe")
-            os.remove(configpath + "tools_plusplus/compatibility/filesystem_stdio.dll")
-            os.remove(configpath + "tools_plusplus/compatibility/tier0.dll")
-            os.remove(configpath + "tools_plusplus/compatibility/vphysics.dll")
-            os.remove(configpath + "tools_plusplus/compatibility/vstdlib.dll")
-            os.rmdir(configpath + "tools_plusplus/compatibility/")
-            os.rmdir(configpath + "tools_plusplus/tools/")
-            os.rmdir(configpath + "tools_plusplus/")
+            os.remove(file_Path)
+            print("cd " + configpath + " && rm -rv tools_plusplus/")
+            os.system("cd " + configpath + " && rm -rv tools_plusplus/")
         else:
             subwindow("waiting")
             time.sleep(10)
