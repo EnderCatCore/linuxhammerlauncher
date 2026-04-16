@@ -11,30 +11,25 @@ import webbrowser
 
 ''' TODO and ISSUES
 
--find games that are broken by plusplus tools and add them to the noplusplus list
+-csgo wont be supported, sdk costs money
 
--tell people to update hammer++, they copy to binwin
+-allow setup hammer to update hammer++ automatically?
 
 -portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
-
--add scrollwheel to main window (should we still add this now that the window resizes itself? yes at some point it could go off screen)
 
 -add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
 -i dont imagine itll make a difference but testing on x11 should be done probably 
 
--day of defeat source also doesnt prompt user during setup for hammer++??? why i dont know but figure that out
+-make reset and delete hammer buttons do something
 
 '''
 #--------
 
 ''' games to add support to
-HL2DM (havent even tested this one it might work right out the box, dunno though.)
-csgo(?)
 half life source (might be easy if we snag the gameinfo? im guessing we can reuse hl1mp stuff but not sure)
 left 4 dead
 left 4 dead 2
-day of defeat source (should be easy ish it already works with finagling)
 '''
 
 
@@ -256,13 +251,13 @@ def checkhammer():
 def autohammer():
     global gamefolderpath
     #auto set up hammer++. wow
-    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','half-life 2 deathmatch','Day of Defeat Source','SourceFilmmaker','Team Fortress 2 Classified']
+    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','half-life 2 deathmatch','day of defeat source','SourceFilmmaker','Team Fortress 2 Classified']
     sp2013branch = ['Half-Life 2','Portal','Source SDK Base 2013 Singleplayer','Source SDK Base 2007','Source SDK Base 2006']
     mp2013branch = ['Klonoa 2 Lunateas Veil']
     gmodbranch = ['GarrysMod','Black Mesa','Alien Swarm']
     portal2branch = ['Portal 2']
     l4d2branch = ['left 4 dead','Left 4 Dead 2']
-    csgobranch = ['Counter-Strike Global Offensive']
+    csgobranch = ['csgo legacy']
     #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
 
     hammerplusplustype = ""
@@ -788,6 +783,8 @@ any point in using such a jank system still whyd i make it like this")
                 lines = file.readlines()
             if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
+            if os.path.basename(gamefolderpath[:-1]) == "day of defeat source":
+                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\dod\\maps"\n'
             else:
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
