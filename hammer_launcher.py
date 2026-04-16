@@ -256,7 +256,7 @@ def checkhammer():
 def autohammer():
     global gamefolderpath
     #auto set up hammer++. wow
-    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','Half-Life 2 Deathmatch','Day of Defeat Source','SourceFilmmaker','Team Fortress 2 Classified']
+    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','half-life 2 deathmatch','Day of Defeat Source','SourceFilmmaker','Team Fortress 2 Classified']
     sp2013branch = ['Half-Life 2','Portal','Source SDK Base 2013 Singleplayer','Source SDK Base 2007','Source SDK Base 2006']
     mp2013branch = ['Klonoa 2 Lunateas Veil']
     gmodbranch = ['GarrysMod','Black Mesa','Alien Swarm']
@@ -821,6 +821,8 @@ any point in using such a jank system still whyd i make it like this")
         gameconfigmake("hl1mp")
     if os.path.basename(gamefolderpath[:-1]) == "game":
         gameconfigmake("sfm")
+    if os.path.basename(gamefolderpath[:-1]) == "half-life 2 deathmatch":
+        gameconfigmake("hl2mp")
     #sfm garbage stupid garbage that i hate so much copy paste hl2 garbage but not from half life but instead from team fortress 2 because screw you and into sfm because hammer++ hates having its 
     #stupif shaders outside of vpks in just plain files because it oH SO NEEDS THEM TO BE IN VPKS im so normal im so normal im so normal im so normal
     if os.path.basename(gamefolderpath[:-1]) == "game":
@@ -847,6 +849,10 @@ def gameconfigmake(game):
     if game == "sfm":
         codename = "usermod"
         fgdname = "tf"
+        pluspluscomp = "plusplus"
+    if game == "hl2mp":
+        codename = "hl2mp"
+        fgdname = "hl2mp"
         pluspluscomp = "plusplus"
         
     hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
@@ -1150,6 +1156,8 @@ def creategamebutton(height, title, hammerpath):
         gameicon = Image("photo", file="assets/buttonicons/games/tf2classified.png")
     if title == "Half-Life 1 Source Deathmatch":
         gameicon = Image("photo", file="assets/buttonicons/games/hl1mp.png")
+    if title == "half-life 2 deathmatch":
+        gameicon = Image("photo", file="assets/buttonicons/games/hl2mp.png")
     gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
