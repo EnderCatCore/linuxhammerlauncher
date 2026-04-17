@@ -661,7 +661,7 @@ def hammerconfig(binfolder, plusplusconfig):
     
     #copy bin folder as binwin in same directory if it does not exist. auto delete if it already exists (though this might mess up user data. open dialog to ask user?)
     #sfm specific garbage
-    if os.path.basename(gamefolderpath[:-1]) == "game":
+    if gamename == "game":
         if os.path.exists(gamefolderpath + "binwin") == True:
             print("BINWIN ALREADY EXISTS! deleting...")
             os.system("rm -r '" + gamefolderpath + "binwin/'")
@@ -1061,26 +1061,37 @@ def setuphammer():
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
         
+        version = "1"
+        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+        response = requests.get(hammerplusplusversiontxt)
+        if response.status_code == 200:
+            version = response.text
+
         #game specific configuring.
+        noupdate = ['csgo legacy','counter-strike global offensive']
+        if gamename in noupdate:
+            print("not autoupdating this hammer++")
+            version = "0"
+
         nobinwin = ['half-life 2', 'portal', 'portal2']
         if gamename in nobinwin:
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe', '"+version+"']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
         elif gamename == "half-life 1 source deathmatch":
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe', '"+version+"']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
         elif gamename == "sourcefilmmaker":
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "game/binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "game/binwin/" + bintype + "/hammerplusplus.exe', '"+version+"']" + "\n"
             gamefolderpath = backupgamefolderpath + "game/"
             hammerconfig("binwin/", True)
         else:
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
+            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/hammerplusplus.exe', '"+version+"']" + "\n"
             hammerconfig("binwin/", True)
         
         gameconfig.write(gamedefinition)
