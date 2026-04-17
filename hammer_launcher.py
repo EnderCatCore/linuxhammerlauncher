@@ -246,9 +246,30 @@ def checkhammer():
         time.sleep(1)
         subwindow('hammerenable')
 
-def autohammer():
+def autohammer(updatefolder,updatename):
     global gamefolderpath
     global gamename
+
+    if updatefolder and updatename:
+        gamefolderpath = updatefolder+"/"
+        gamename = updatename
+
+    directory = "bin/"
+
+    if gamename == 'sourcefilmmaker':
+        directory = "game/bin/"
+
+    #update specific stuff
+    if updatefolder and updatename:
+        print(gamefolderpath)
+        if os.path.exists(gamefolderpath + "/binwin/") == True:
+            directory = "binwin/"
+        if gamename == 'sourcefilmmaker':
+            if os.path.exists(gamefolderpath + "/game/binwin/") == True:
+                directory = "game/binwin/"
+
+    print("using " + directory + " for automated install")
+
     #auto set up hammer++. wow
     tf2branch = ['team fortress 2','counter-strike source','half-life 1 source deathmatch','half-life 2 deathmatch','day of defeat source','sourcefilmmaker','team fortress 2 classified']
     sp2013branch = ['half-life 2','portal','source sdk base 2013 singleplayer','source sdk base 2007','source sdk base 2006']
@@ -258,6 +279,7 @@ def autohammer():
     l4d2branch = ['left 4 dead','left 4 dead 2']
     csgobranch = ['csgo legacy','counter-strike global offensive']
     #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
+
 
     hammerplusplustype = ""
     version = ""
@@ -309,8 +331,8 @@ def autohammer():
         print("downloaded hammer++ for "+hammerplusplustype)
         version = response.text
         print("copying hammerplusplus files to bin")
-        print("cd " + configpath + " && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + "bin/'")
-        os.system("cd " + configpath + " && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + "bin/'")
+        print("cd " + configpath + " && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
+        os.system("cd " + configpath + " && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
         print("removing temp hammer++ files...")
         os.remove(file_Path)
         print("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
@@ -338,6 +360,12 @@ def subwindow(subwintype):
     if subwintype == 'winesetup':
         #root.geometry('210x100')
         lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid()
+        root.update()
+    #hammer launch
+    if subwintype == 'hammerlaunch':
+        #root.geometry('210x100')
+        lbl = Label(root, text = "Launching Hammer++...", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid()
         root.update()
     #game directory chooser
@@ -445,7 +473,6 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
-        autohammer()
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
@@ -545,10 +572,10 @@ def closelauncher():
 
 # start correct game
 game = "gmod";
-def launchhammer(game, title):
+def launchhammer(game, title, version):
     gamefolderfinder = game
-    closelauncher()
     titlelowered = title.casefold()
+    subwindow('hammerlaunch')
     print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
     print("directory up one is " + gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])])
     #set favorites in wineprefix to game folder
@@ -561,13 +588,27 @@ def launchhammer(game, title):
     print(gamefolderfinder + " found!")
     print(os.getlogin())
 
-    latestversion = "0"
-    hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-    response = requests.get(hammerplusplusversiontxt)
-    if response.status_code == 200:
-        latestversion = response.text
+    version = int(version)
+
+    if version == 0:
+        print("skipping update check")
     else:
-        print("couldn't check for hammer++ updates!")
+        print("checking for updates...")
+        latestversion = "0"
+        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+        response = requests.get(hammerplusplusversiontxt)
+        if response.status_code == 200:
+            latestversion = response.text
+            latestversion = int(latestversion)
+            if latestversion > version:
+                # UPDATE PROMPT GOES HERE. SET THE JSON THINGIE TO 0 IF USER DOES NOT WANT TO UPDATE
+                print("update detected! new version: "+str(latestversion)+" installed version: "+str(version))
+                subwindow('hammerupdate')
+                autohammer(gamefolderfinder,titlelowered)
+            else:
+                print("no new version of hammer++ found. skipping'")
+        else:
+            print("couldn't check for hammer++ updates!")
 
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
@@ -633,9 +674,8 @@ def launchhammer(game, title):
 			"Game"		"|all_source_engine_paths|hl2/hl2_misc.vpk"\n')
         with open(gamefolderfinder + '/game/usermod/gameinfo.txt', 'w') as file:
             file.write(data)
-            
-            
-            
+
+    closelauncher()
     
     #launch wine9 with hammer using correct prefix
     print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
@@ -1161,7 +1201,7 @@ GUI function stuffs
 
 
 #makes game button
-def creategamebutton(height, title, hammerpath):
+def creategamebutton(height, title, hammerpath, version):
     #set icon for game
     titlelowered = title.casefold()
     if titlelowered == "garrysmod":
@@ -1195,7 +1235,7 @@ def creategamebutton(height, title, hammerpath):
     gameicn.grid(row=height, column=0, sticky="ew")
 
     #create functional button
-    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title), bg='#3e4637',
+    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title, version), bg='#3e4637',
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
 
@@ -1244,7 +1284,12 @@ def rendermainwindow():
         else:
             currentgamedef = l_num
         print(json.loads(currentgamedef.replace("'", '"'))[0])
-        creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1])
+        version = "0"
+        try:
+            version = json.loads(currentgamedef.replace("'", '"'))[2]
+        except:
+            print("DANGER! "+json.loads(currentgamedef.replace("'", '"'))[0]+" IS MISSING A VERSION NUMBER FOR HAMMER++! UPDATES HAVE BEEN DISABLED FOR THAT GAME.")
+        creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1],version)
         linenum += 1
     gameconfig.close()
 
