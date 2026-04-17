@@ -99,7 +99,7 @@ def mainwindow():
     # Set resizability (widthxheight)
     root.resizable(False, False)
     #set icon
-    root.tk.call('wm','iconphoto',root._w, Image("photo", file="assets/icon.png"))
+    root.tk.call('wm','iconphoto',root._w, Image("photo", file=os.path.dirname(__file__)+"/assets/icon.png"))
     # Change the background color using configure
     root.configure(bg='#4c5844')
 
@@ -434,6 +434,18 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         lbl.grid(row=2, column=0)
         root.update()
         autohammer()
+    #hammer++ set up window if it was updated
+    if subwintype == 'hammerupdate':
+        #root.geometry('600x140')
+        lbl = Label(root, text = "Updating Hammer++...", bg='#4c5844', \
+        fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl.grid(row=2, column=0)
+        root.update()
+        autohammer()
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
@@ -548,6 +560,15 @@ def launchhammer(game, title):
         print(gamefolderfinder + " found!")
     print(gamefolderfinder + " found!")
     print(os.getlogin())
+
+    latestversion = "0"
+    hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+    response = requests.get(hammerplusplusversiontxt)
+    if response.status_code == 200:
+        latestversion = response.text
+    else:
+        print("couldn't check for hammer++ updates!")
+
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
     delcopybins = ['half-life 2']
@@ -1144,31 +1165,31 @@ def creategamebutton(height, title, hammerpath):
     #set icon for game
     titlelowered = title.casefold()
     if titlelowered == "garrysmod":
-        gameicon = Image("photo", file="assets/buttonicons/games/garrysmod.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/garrysmod.png")
     elif titlelowered == "portal 2":
-        gameicon = Image("photo", file="assets/buttonicons/games/portal2.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal2.png")
     elif titlelowered == "portal":
-        gameicon = Image("photo", file="assets/buttonicons/games/portal.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal.png")
     elif titlelowered == "counter-strike source":
-        gameicon = Image("photo", file="assets/buttonicons/games/cstrike.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/cstrike.png")
     elif titlelowered == "counter-strike global offensive":
-        gameicon = Image("photo", file="assets/buttonicons/games/csgo.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/csgo.png")
     elif titlelowered == "day of defeat source":
-        gameicon = Image("photo", file="assets/buttonicons/games/dod.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/dod.png")
     elif titlelowered == "half-life 2":
-        gameicon = Image("photo", file="assets/buttonicons/games/hl2.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2.png")
     elif titlelowered == "sourcefilmmaker":
-        gameicon = Image("photo", file="assets/buttonicons/games/sfm.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/sfm.png")
     elif titlelowered == "team fortress 2":
-        gameicon = Image("photo", file="assets/buttonicons/games/tf2.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/tf2.png")
     elif titlelowered == "team fortress 2 classified":
-        gameicon = Image("photo", file="assets/buttonicons/games/tf2classified.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/tf2classified.png")
     elif titlelowered == "half-life 1 source deathmatch":
-        gameicon = Image("photo", file="assets/buttonicons/games/hl1mp.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl1mp.png")
     elif titlelowered == "half-life 2 deathmatch":
-        gameicon = Image("photo", file="assets/buttonicons/games/hl2mp.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2mp.png")
     else:
-        gameicon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_hammer.png")
     gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
@@ -1241,7 +1262,7 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+5, column=1,sticky="ew")
 
-    hammericon = Image("photo", file="assets/buttonicons/sdk_setup.png")
+    hammericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
     setupicn = Label(optionsframe, bg="#3e4637", image=hammericon, anchor="e")
     setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
     setupicn.grid(row=linenum+6, column=0, sticky="ew")
@@ -1249,14 +1270,14 @@ def rendermainwindow():
     setupbtn = Button(optionsframe, text = "Set up Hammer", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #reset button
-    deleteicon = Image("photo", file="assets/buttonicons/sdk_reset.png")
+    deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
     removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
     removeicn.image = deleteicon #see above
     removeicn.grid(row=linenum+7, column=0, sticky="ew")
     resetbtn = Button(optionsframe, text = "Reset Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #delete button
-    deleteicon = Image("photo", file="assets/buttonicons/sdk_delete.png")
+    deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_delete.png")
     deleteicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
     deleteicn.image = deleteicon
     deleteicn.grid(row=linenum+8, column=0, sticky="ew")
@@ -1277,7 +1298,7 @@ def rendermainwindow():
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+10, column=1,sticky="ew")
 
-    endericon = Image("photo", file="assets/buttonicons/credit_end.png")
+    endericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_end.png")
     crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
     crediticn.image = endericon #see above
     crediticn.grid(row=linenum+11, column=0, sticky="ew")
@@ -1285,7 +1306,7 @@ def rendermainwindow():
     activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
 
-    tommyicon = Image("photo", file="assets/buttonicons/credit_tam.png")
+    tommyicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam.png")
     crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
     crediticn.image = tommyicon #see above
     crediticn.grid(row=linenum+12, column=0, sticky="ew")
