@@ -461,7 +461,7 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
-        autohammer()
+        autohammer(None,None)
     #hammer++ set up window if it was updated
     if subwintype == 'hammerupdate':
         #root.geometry('600x140')
