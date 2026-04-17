@@ -142,7 +142,7 @@ def findgame():
         subwinpressable = 0
         gamefolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(gamefolderpath)
-        if os.path.basename(gamefolderpath[:-1]) == "SourceFilmmaker":
+        if os.path.basename(gamefolderpath[:-1]).casefold() == "sourcefilmmaker":
             print("YEA ITS SFM")
             if not gamefolderpath.endswith("/"):
                 gamefolderpath = gamefolderpath + "/"
@@ -207,18 +207,15 @@ def installhammer():
 #detect if proton is installed, if not, recreate subwindow. this sucks and is stupif but idk how else to do it and idk if ubtton will work because itll just skip and GAH
 def checkproton():
     global gamefolderpath
+    global gamename
     print("CHECKING FOR PROTON NOW")
-    print(os.path.basename(gamefolderpath[:-1]))
+    print(gamename)
     #game specific checking, should only need to be used for HL2 and Portal 2 but who knows
-    if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2":
+    if gamename == "half-life 2" or gamename == "portal 2":
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
-    elif os.path.basename(gamefolderpath[:-1]) == "Portal 2":
-        if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
-            time.sleep(1)
-            subwindow('protonenable')
-    elif os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
+    elif gamename == "team fortress 2 classified":
         if os.path.exists(gamefolderpath + "bin/x64/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
@@ -228,7 +225,8 @@ def checkproton():
             subwindow('protonenable')
 def checksdk():
     global gamefolderpath
-    if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+    global gamename
+    if gamename == "portal 2":
         if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
             time.sleep(1)
             subwindow('p2sdkenable')
@@ -250,33 +248,34 @@ def checkhammer():
 
 def autohammer():
     global gamefolderpath
+    global gamename
     #auto set up hammer++. wow
-    tf2branch = ['Team Fortress 2','Counter-Strike Source','Half-Life 1 Source Deathmatch','half-life 2 deathmatch','day of defeat source','SourceFilmmaker','Team Fortress 2 Classified']
-    sp2013branch = ['Half-Life 2','Portal','Source SDK Base 2013 Singleplayer','Source SDK Base 2007','Source SDK Base 2006']
-    mp2013branch = ['Klonoa 2 Lunateas Veil']
-    gmodbranch = ['GarrysMod','Black Mesa','Alien Swarm']
-    portal2branch = ['Portal 2']
-    l4d2branch = ['left 4 dead','Left 4 Dead 2']
-    csgobranch = ['csgo legacy']
+    tf2branch = ['team fortress 2','counter-strike source','half-life 1 source deathmatch','half-life 2 deathmatch','day of defeat source','sourcefilmmaker','team fortress 2 classified']
+    sp2013branch = ['half-life 2','portal','source sdk base 2013 singleplayer','source sdk base 2007','source sdk base 2006']
+    mp2013branch = ['klonoa 2 lunateas veil']
+    gmodbranch = ['garrysmod','black mesa','alien swarm']
+    portal2branch = ['portal 2']
+    l4d2branch = ['left 4 dead','left 4 dead 2']
+    csgobranch = ['csgo legacy','counter-strike global offensive']
     #source sdk base mp 2013 is also in the tf2branch but idk how to detect for it. why valve did you not make a seperate appid just for the tf2 branch of mp
 
     hammerplusplustype = ""
     version = ""
     frozenbuild = False
 
-    if os.path.basename(gamefolderpath[:-1]) in tf2branch:
+    if gamename in tf2branch:
         hammerplusplustype = "tf2"
-    elif os.path.basename(gamefolderpath[:-1]) in sp2013branch:
+    elif gamename in sp2013branch:
         hammerplusplustype = "2013sp"
-    elif os.path.basename(gamefolderpath[:-1]) in mp2013branch:
+    elif gamename in mp2013branch:
         hammerplusplustype = "2013mp"
-    elif os.path.basename(gamefolderpath[:-1]) in gmodbranch:
+    elif gamename in gmodbranch:
         hammerplusplustype = "gmod"
-    elif os.path.basename(gamefolderpath[:-1]) in portal2branch:
+    elif gamename in portal2branch:
         hammerplusplustype = "portal2"
-    elif os.path.basename(gamefolderpath[:-1]) in l4d2branch:
+    elif gamename in l4d2branch:
         hammerplusplustype = "l4d2"
-    elif os.path.basename(gamefolderpath[:-1]) in csgobranch:
+    elif gamename in csgobranch:
         hammerplusplustype = "csgo"
         version = "8864"
         frozenbuild = True
@@ -323,6 +322,7 @@ def autohammer():
 '''subwindow creation'''
 def subwindow(subwintype):
     global gamefolderpath
+    global gamename
     global subwinpressable
     global bintype
     subwinpressable = 1
@@ -536,6 +536,7 @@ game = "gmod";
 def launchhammer(game, title):
     gamefolderfinder = game
     closelauncher()
+    titlelowered = title.casefold()
     print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
     print("directory up one is " + gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])])
     #set favorites in wineprefix to game folder
@@ -549,15 +550,15 @@ def launchhammer(game, title):
     print(os.getlogin())
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
-    delcopybins = ['Half-Life 2']
-    mergecopybins = ['Portal', 'Portal 2', 'Half-Life 1 Source Deathmatch']
+    delcopybins = ['half-life 2']
+    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch']
     
-    if title in delcopybins: 
+    if titlelowered in delcopybins:
         if os.path.isdir(gamefolderfinder + "/bin/"):
             os.system("rm -r '" + gamefolderfinder + "/bin/'")
         print("cp -r '" + gamefolderfinder + "/binwin/' '" + gamefolderfinder + "/bin/'" )
         os.system("cp -r '" + gamefolderfinder + "/binwin/' '" + gamefolderfinder + "/bin/'" )
-    elif title in mergecopybins: 
+    elif titlelowered in mergecopybins:
         print("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
         os.system("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
     
@@ -571,13 +572,13 @@ def launchhammer(game, title):
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
 
     # HL1MP does not have a built in gameinfo. re-copying it here just in case it decides to Die
-    if title == "Half-Life 1 Source Deathmatch":
+    if titlelowered == "half-life 1 source deathmatch":
         print("COPYING HL1MP TXT")
         print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderfinder + "/hl2/gameinfo.txt'")
         os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderfinder + "/hl2/gameinfo.txt'")
     
     #tf2c needs to update gameinfo, this goes here instead of confighammer because tf2c updates revert the gameinfo back to the broken one
-    if title == "Team Fortress 2 Classified":
+    if titlelowered == "team fortress 2 classified":
         with open(gamefolderfinder + '/tf2classified/gameinfo.txt', 'r') as file:
             data = file.read()
             data = data.replace('			//game+mod	|appid_440|tf/custom/*', '			//game+mod	"|all_source_engine_paths|../Team Fortress 2/tf/custom/*')
@@ -599,7 +600,7 @@ def launchhammer(game, title):
         with open(gamefolderfinder + '/tf2classified/gameinfo.txt', 'w') as file:
             file.write(data)
     #stupid sfm grabage
-    if title == "SourceFilmmaker":
+    if titlelowered == "sourcefilmmaker":
         with open(gamefolderfinder + '/game/usermod/gameinfo.txt', 'r') as file:
             data = file.read()
             if '"Game"		"|all_source_engine_paths|hl2/hl2_textures.vpk"' in data:
@@ -649,6 +650,7 @@ def stateandprint(string):
 def hammerconfig(binfolder, plusplusconfig):
     global gamefolderwindowified
     global gamefolderpath
+    global gamename
     global backupgamefolderpath
     global tffolderpath
     global binfolderwindowified
@@ -683,7 +685,7 @@ def hammerconfig(binfolder, plusplusconfig):
     #i do not know why sfm is trying to use a bash file to run. i dont need to know why as long as this works. sfm has its gameconfig made from scratch there is zero reason for it to launch
     #hammer
     print(gamefolderpath + "IS IT SFM????")
-    if os.path.basename(gamefolderpath[:-1]) == "game":
+    if gamename == "game":
         print("please for the love of god stop using the sh file you dont need it sfm. why are we even generating them like this anymore anyways we have a thing to make them from scratch now is there\
 any point in using such a jank system still whyd i make it like this")
         print("idk :3")
@@ -781,16 +783,15 @@ any point in using such a jank system still whyd i make it like this")
         for i in range(len(linestoconfig)):
             with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
                 lines = file.readlines()
-            if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+            if gamename == "portal 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
-            if os.path.basename(gamefolderpath[:-1]) == "day of defeat source":
+            elif gamename == "day of defeat source":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\dod\\maps"\n'
             else:
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
                 file.writelines(lines)
         #set gameExe to .bat
-        print("THE LINE NUMS TO REPLACE ARE:")
         linestoconfig = (find_gameexe_line_numbers(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", '"GameExe"'))
         for i in range(len(linestoconfig)):
             with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'r', encoding='utf-8') as file:
@@ -812,17 +813,17 @@ any point in using such a jank system still whyd i make it like this")
         batfile.close()
     
     #TF2C and HL1MP (and and SFM) needs its gameconfig made from scratch
-    if os.path.basename(gamefolderpath[:-1]) == "Team Fortress 2 Classified":
+    if gamename == "team fortress 2 classified":
         gameconfigmake("tf2c")
-    if os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
+    if gamename == "half-life 1 source deathmatch":
         gameconfigmake("hl1mp")
-    if os.path.basename(gamefolderpath[:-1]) == "game":
+    if gamename == "game":
         gameconfigmake("sfm")
-    if os.path.basename(gamefolderpath[:-1]) == "half-life 2 deathmatch":
+    if gamename == "half-life 2 deathmatch":
         gameconfigmake("hl2mp")
     #sfm garbage stupid garbage that i hate so much copy paste hl2 garbage but not from half life but instead from team fortress 2 because screw you and into sfm because hammer++ hates having its 
     #stupif shaders outside of vpks in just plain files because it oH SO NEEDS THEM TO BE IN VPKS im so normal im so normal im so normal im so normal
-    if os.path.basename(gamefolderpath[:-1]) == "game":
+    if gamename == "game":
         print("A SINGULAR 'GUH' SO I KNOW WHERE THE THING IS")
         print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
         os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
@@ -833,6 +834,7 @@ def gameconfigmake(game):
     global bintypewindowified
     global gamefolderwindowified
     global gamefolderpath
+    global gamename
     global combi3paths
     global binfolderwindowified
     if game == "tf2c":
@@ -897,6 +899,7 @@ def setuphammer():
     global settinguphammer
     global root
     global gamefolderpath
+    global gamename
     global backupgamefolderpath
     global gameconfig
     backupgamefolderpath = "na"
@@ -955,20 +958,20 @@ def setuphammer():
         #ask user for path to game
         freetocontinue = 0
         subwindow('gamedirectorypicker')
+
+        gamename = os.path.basename(gamefolderpath[:-1]).casefold()
         
         #check if sfm is being used and ask for tf2 install
-        if os.path.basename(gamefolderpath[:-1]) == "SourceFilmmaker":
+        if gamename == "sourcefilmmaker":
             subwindow('tfdirectorypicker')
             print(tffolderpath)
             #swap out gamefolderpath for tffolderpath and switch back later when SFM one is needed
             backupgamefolderpath = gamefolderpath
+            backupgamename = gamename
             gamefolderpath = tffolderpath
-            
-            
-        
-        
-        #check if portal 2 is used, ask for enable proton and sdk
-        if os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+            gamename = os.path.basename(tffolderpath[:-1]).casefold()
+        elif gamename == "portal 2":
+            #check if portal 2 is used, ask for enable proton and sdk
             subwindow('protonenable')
             subwindow('p2sdkenable')
         else:
@@ -978,17 +981,15 @@ def setuphammer():
         subwindow('hammerautomated')
         subwindow('hammerenable')
 
-
         # HL1MP does not have a built in gameinfo. why? no idea.
-        if os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
+        if gamename == "half-life 1 source deathmatch":
             print("COPYING HL1MP TXT")
             print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
             os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
     
-    
         #install plusplus tools, some games dont work for this
-        noplusplus = ['Portal 2', 'Half-Life 2', 'Portal']
-        if os.path.basename(gamefolderpath[:-1]) not in noplusplus:
+        noplusplus = ['portal 2', 'half-life 2', 'portal']
+        if gamename not in noplusplus:
             subwindow("toolsplusplusinstall")
             
             file_Path = configpath + 'tools_plusplus.zip'
@@ -1014,8 +1015,9 @@ def setuphammer():
             time.sleep(10)
         
         # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
-        if os.path.basename(backupgamefolderpath[:-1]) == "SourceFilmmaker":
+        if gamename == "sourcefilmmaker":
             gamefolderpath = backupgamefolderpath
+            gamename = backupgamename
 
 
         print("CHECKING FOR CONFIG DUPLICATES")
@@ -1033,7 +1035,7 @@ def setuphammer():
                 currentgamedef = l_num
             else:
                 currentgamedef = l_num
-            if os.path.basename(gamefolderpath[:-1]) == json.loads(currentgamedef.replace("'", '"'))[0]:
+            if gamename == json.loads(currentgamedef.replace("'", '"'))[0].casefold():
                 # murdering THESE specifically becuase i hate them
                 print("duplicate game detected in config on line " + str(pos))
                 gameline.append(pos)
@@ -1060,21 +1062,20 @@ def setuphammer():
         gameconfig = open(configpath + "games.txt", "a")
         
         #game specific configuring.
-        if os.path.basename(gamefolderpath[:-1]) == "Half-Life 2" or os.path.basename(gamefolderpath[:-1]) == "Portal" or os.path.basename(gamefolderpath[:-1]) == "Portal 2":
+        nobinwin = ['half-life 2', 'portal', 'portal2']
+        if gamename in nobinwin:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        
-        elif os.path.basename(gamefolderpath[:-1]) == "Half-Life 1 Source Deathmatch":
+        elif gamename == "half-life 1 source deathmatch":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        
-        elif os.path.basename(backupgamefolderpath[:-1]) == "SourceFilmmaker":
+        elif gamename == "sourcefilmmaker":
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "game/binwin/" + bintype + "/hammerplusplus.exe']" + "\n"
             gamefolderpath = backupgamefolderpath + "game/"
             hammerconfig("binwin/", True)
@@ -1130,31 +1131,33 @@ GUI function stuffs
 #makes game button
 def creategamebutton(height, title, hammerpath):
     #set icon for game
-    gameicon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
-    if title == "GarrysMod":
+    titlelowered = title.casefold()
+    if titlelowered == "garrysmod":
         gameicon = Image("photo", file="assets/buttonicons/games/garrysmod.png")
-    if title == "Portal 2":
+    elif titlelowered == "portal 2":
         gameicon = Image("photo", file="assets/buttonicons/games/portal2.png")
-    if title == "Portal":
+    elif titlelowered == "portal":
         gameicon = Image("photo", file="assets/buttonicons/games/portal.png")
-    if title == "Counter-Strike Source":
+    elif titlelowered == "counter-strike source":
         gameicon = Image("photo", file="assets/buttonicons/games/cstrike.png")
-    if title == "Counter-Strike Global Offensive":
+    elif titlelowered == "counter-strike global offensive":
         gameicon = Image("photo", file="assets/buttonicons/games/csgo.png")
-    if title == "day of defeat source":
+    elif titlelowered == "day of defeat source":
         gameicon = Image("photo", file="assets/buttonicons/games/dod.png")
-    if title == "Half-Life 2":
+    elif titlelowered == "half-life 2":
         gameicon = Image("photo", file="assets/buttonicons/games/hl2.png")
-    if title == "SourceFilmmaker":
+    elif titlelowered == "sourcefilmmaker":
         gameicon = Image("photo", file="assets/buttonicons/games/sfm.png")
-    if title == "Team Fortress 2":
+    elif titlelowered == "team fortress 2":
         gameicon = Image("photo", file="assets/buttonicons/games/tf2.png")
-    if title == "Team Fortress 2 Classified":
+    elif titlelowered == "team fortress 2 classified":
         gameicon = Image("photo", file="assets/buttonicons/games/tf2classified.png")
-    if title == "Half-Life 1 Source Deathmatch":
+    elif titlelowered == "half-life 1 source deathmatch":
         gameicon = Image("photo", file="assets/buttonicons/games/hl1mp.png")
-    if title == "half-life 2 deathmatch":
+    elif titlelowered == "half-life 2 deathmatch":
         gameicon = Image("photo", file="assets/buttonicons/games/hl2mp.png")
+    else:
+        gameicon = Image("photo", file="assets/buttonicons/sdk_hammer.png")
     gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
