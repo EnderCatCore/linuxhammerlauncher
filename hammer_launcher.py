@@ -23,6 +23,12 @@ import webbrowser
 
 -make reset and delete hammer buttons do something
 
+-stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
+
+-make it so mapsrc isnt created for l4d2 or dods, they still are despite not being used for those games and just adding ors to the if statement disallows any game to have mapsrc created
+
+-why are plusplus tools not configged for l4d2 i will kill
+
 '''
 #--------
 
@@ -872,6 +878,8 @@ any point in using such a jank system still whyd i make it like this")
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
             elif gamename == "day of defeat source":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\dod\\maps"\n'
+            elif gamename == "left 4 dead 2":
+                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\left4dead2\\maps"\n'
             else:
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + "/hammerplusplus/hammerplusplus_gameconfig.txt", 'w') as file:
@@ -916,7 +924,8 @@ any point in using such a jank system still whyd i make it like this")
     #create mapsrc folder for game
     print(os.path.basename(gamefolderpath[:-1]) + "UGH COME ON")
     print(gamefolderpath + "mapsrc/")
-    if gamefolderpath[:-1] == "Portal 2" or "day of defeat source":
+    #this stupid thing doesnt like ors it wont create the folder at all if they are there and i dont feel like setting up an if in list thing rn its 5am
+    if gamefolderpath[:-1] == "Portal 2":
         pass
     else:
         if os.path.exists(gamefolderpath + "mapsrc/") == False:
@@ -1247,6 +1256,8 @@ def creategamebutton(height, title, hammerpath, version):
     titlelowered = title.casefold()
     if titlelowered == "garrysmod":
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/garrysmod.png")
+    if titlelowered == "left 4 dead 2":
+        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/l4d2.png")
     elif titlelowered == "portal 2":
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal2.png")
     elif titlelowered == "portal":
