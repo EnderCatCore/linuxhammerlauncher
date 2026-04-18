@@ -34,8 +34,7 @@ import webbrowser
 
 ''' games to add support to
 half life source (might be easy if we snag the gameinfo? im guessing we can reuse hl1mp stuff but not sure)
-left 4 dead
-left 4 dead 2
+left 4 dead (will this even work at all)
 '''
 
 
