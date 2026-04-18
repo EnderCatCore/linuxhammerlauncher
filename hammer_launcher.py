@@ -211,7 +211,7 @@ def checkproton():
     print("CHECKING FOR PROTON NOW")
     print(gamename)
     #game specific checking, should only need to be used for HL2 and Portal 2 but who knows
-    if gamename == "half-life 2" or gamename == "portal 2":
+    if gamename == "half-life 2" or gamename == "portal 2" or gamename == "left 4 dead" or gamename == "left 4 dead 2":
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
@@ -230,6 +230,14 @@ def checksdk():
         if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
             time.sleep(1)
             subwindow('p2sdkenable')
+    if gamename == "left 4 dead":
+        if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
+            time.sleep(1)
+            subwindow('l4dsdkenable')
+    if gamename == "left 4 dead 2":
+        if os.path.exists(gamefolderpath + "bin/hammer.exe") == False:
+            time.sleep(1)
+            subwindow('l4d2sdkenable')
 #check for hammer install
 bintype = "undetected"
 def checkhammer():
@@ -446,6 +454,22 @@ def subwindow(subwintype):
         #root.geometry('414x100')
         lbl = Label(root, text = "Portal 2 Authoring Tools not detected. \n Go into steam and install Portal 2 Authoring Tools before continuing. \n \n This \
 window should auto-detect Portal 2 Authoring Tools on its own.",
+        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        root.update()
+        checksdk()
+    if subwintype == 'l4dsdkenable':
+        #root.geometry('414x100')
+        lbl = Label(root, text = "Left 4 Dead Authoring Tools not detected. \n Go into steam and install Left 4 Dead Authoring Tools before continuing. \n \n This \
+window should auto-detect Left 4 Dead Authoring Tools on its own.",
+        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl.grid(row=0, column=0)
+        root.update()
+        checksdk()
+    if subwintype == 'l4d2sdkenable':
+        #root.geometry('414x100')
+        lbl = Label(root, text = "Left 4 Dead 2 Authoring Tools not detected. \n Go into steam and install Left 4 Dead 2 Authoring Tools before continuing. \n \n This \
+window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
         bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
@@ -1035,6 +1059,14 @@ def setuphammer():
             #check if portal 2 is used, ask for enable proton and sdk
             subwindow('protonenable')
             subwindow('p2sdkenable')
+        elif gamename == "left 4 dead":
+            #check if l4d is used, ask for enable proton and sdk
+            subwindow('protonenable')
+            subwindow('l4dsdkenable')
+        elif gamename == "left 4 dead 2":
+            #check if l4d2 is used, ask for enable proton and sdk
+            subwindow('protonenable')
+            subwindow('l4d2sdkenable')
         else:
             #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
             subwindow('protonenable')
