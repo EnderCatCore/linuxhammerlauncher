@@ -915,12 +915,12 @@ any point in using such a jank system still whyd i make it like this")
     
     #create mapsrc folder for game
     print(os.path.basename(gamefolderpath[:-1]) + "UGH COME ON")
-    print(if os.path.exists(gamefolderpath + "/mapsrc/"))
-    if gamefolderpath[:-1] == "portal 2" or "day of defeat source":
+    print(gamefolderpath + "mapsrc/")
+    if gamefolderpath[:-1] == "Portal 2" or "day of defeat source":
         pass
     else:
-        if os.path.exists(gamefolderpath + "/mapsrc/") == False:
-            os.mkdir(gamefolderpath + "/mapsrc/")
+        if os.path.exists(gamefolderpath + "mapsrc/") == False:
+            os.mkdir(gamefolderpath + "mapsrc/")
     
 
 #create a gameconfig
