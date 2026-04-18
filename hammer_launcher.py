@@ -637,7 +637,7 @@ def launchhammer(game, title, version):
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
     delcopybins = ['half-life 2']
-    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch']
+    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2']
     
     if titlelowered in delcopybins:
         if os.path.isdir(gamefolderfinder + "/bin/"):
@@ -913,6 +913,15 @@ any point in using such a jank system still whyd i make it like this")
         print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
         os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
     
+    #create mapsrc folder for game
+    print(os.path.basename(gamefolderpath[:-1]) + "UGH COME ON")
+    print(if os.path.exists(gamefolderpath + "/mapsrc/"))
+    if gamefolderpath[:-1] == "portal 2" or "day of defeat source":
+        pass
+    else:
+        if os.path.exists(gamefolderpath + "/mapsrc/") == False:
+            os.mkdir(gamefolderpath + "/mapsrc/")
+    
 
 #create a gameconfig
 def gameconfigmake(game):
@@ -1165,8 +1174,8 @@ def setuphammer():
         if gamename in noupdate:
             print("not autoupdating this hammer++")
             version = "0"
-
-        nobinwin = ['half-life 2', 'portal', 'portal2']
+        
+        nobinwin = ['half-life 2', 'portal', 'portal2', 'left 4 dead 2']
         if gamename in nobinwin:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/hammerplusplus.exe', '"+version+"']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
