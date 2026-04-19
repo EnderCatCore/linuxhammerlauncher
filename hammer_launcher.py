@@ -92,7 +92,7 @@ if launchertheme == "vgui":
     colors_primarytext = "#d8ded3"
     colors_secondarytext = "#c3b550"
     colors_tertiarytext = "#99a48e"
-    colors_headertext = "c4b550"
+    colors_headertext = "#c4b550"
     style_frameborder = "sunken"
     style_showdividers = True
     style_showicons = True
