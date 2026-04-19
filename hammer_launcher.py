@@ -82,6 +82,32 @@ if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
 
 
  
+#temp set theme
+launchertheme = "vgui"
+#colorscheme
+if launchertheme == "vgui":
+    colors_background = "#4c5844"
+    colors_framebackground = "#3e4637"
+    colors_highlight = "#968731"
+    colors_primarytext = "#d8ded3"
+    colors_secondarytext = "#c3b550"
+    colors_tertiarytext = "#99a48e"
+    #add frame border stuff
+    #add icon render settings
+    #add banner alignment setting
+    #padding settings
+    #font settings
+    #blah blah blah
+
+elif launchertheme == "eyesore":
+    colors_background = "yellow"
+    colors_framebackground = "red"
+    colors_highlight = "blue"
+    colors_primarytext = "green"
+    colors_secondarytext = "black"
+    colors_tertiarytext = "black"
+    
+ 
 '''
 window creation
 '''
@@ -106,7 +132,7 @@ def mainwindow():
     #set icon
     root.tk.call('wm','iconphoto',root._w, Image("photo", file=os.path.dirname(__file__)+"/assets/icon.png"))
     # Change the background color using configure
-    root.configure(bg='#4c5844')
+    root.configure(bg=colors_background)
 
     ''' yea idk what im doing. old titlebar code.
     if vguititlebar == 1:
@@ -122,7 +148,7 @@ def mainwindow():
     '''
         
 
-    titlebar= Frame(root,bg='#4c5844',height=5)
+    titlebar= Frame(root,bg=colors_background,height=5)
     titlebar.grid(sticky="w")
     
     root.columnconfigure(0, weight=1)
@@ -372,24 +398,24 @@ def subwindow(subwintype):
     #wine set up window
     if subwintype == 'winesetup':
         #root.geometry('210x100')
-        lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Setting up Wine. Please wait... \n This might take a while.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid()
         root.update()
     #hammer launch
     if subwintype == 'hammerlaunch':
         #root.geometry('210x100')
-        lbl = Label(root, text = "Launching Hammer++...", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Launching Hammer++...", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid()
         root.update()
     #game directory chooser
     elif subwintype == 'gamedirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Please navigate to the folder for the \n game you want to map for.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Please navigate to the folder for the \n game you want to map for.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -399,11 +425,11 @@ def subwindow(subwintype):
     elif subwintype == 'gamedirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find bin... \n Re-select the correct game folder.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Could not find bin... \n Re-select the correct game folder.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -416,11 +442,11 @@ def subwindow(subwintype):
     elif subwintype == 'tfdirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\n Please navigate to your Team Fortress 2 folder.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\n Please navigate to your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -430,12 +456,12 @@ def subwindow(subwintype):
     elif subwintype == 'tfdirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find TF2... \n SFM requires Team Fortress 2 to be installed for setup.\n Please re-select your Team Fortress 2 folder.", bg='#4c5844', \
-        fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Could not find TF2... \n SFM requires Team Fortress 2 to be installed for setup.\n Please re-select your Team Fortress 2 folder.", bg=colors_background, \
+        fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -449,7 +475,7 @@ def subwindow(subwintype):
         #root.geometry('414x100')
         lbl = Label(root, text = "Windows bin folder not detected. \n Go into steam and enable Proton for this game before continuing. \n You can turn off Proton later. \n \n \
         This window should auto-detect Proton on its own.",
-        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checkproton()
@@ -459,7 +485,7 @@ def subwindow(subwintype):
         #root.geometry('414x100')
         lbl = Label(root, text = "Portal 2 Authoring Tools not detected. \n Go into steam and install Portal 2 Authoring Tools before continuing. \n \n This \
 window should auto-detect Portal 2 Authoring Tools on its own.",
-        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checksdk()
@@ -467,7 +493,7 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         #root.geometry('414x100')
         lbl = Label(root, text = "Left 4 Dead Authoring Tools not detected. \n Go into steam and install Left 4 Dead Authoring Tools before continuing. \n \n This \
 window should auto-detect Left 4 Dead Authoring Tools on its own.",
-        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checksdk()
@@ -475,31 +501,31 @@ window should auto-detect Left 4 Dead Authoring Tools on its own.",
         #root.geometry('414x100')
         lbl = Label(root, text = "Left 4 Dead 2 Authoring Tools not detected. \n Go into steam and install Left 4 Dead 2 Authoring Tools before continuing. \n \n This \
 window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
-        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checksdk()
     #hammer++ set up window if it was automated
     if subwintype == 'hammerautomated':
         #root.geometry('600x140')
-        lbl = Label(root, text = "Downloading Hammer++...", bg='#4c5844', \
-        fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Downloading Hammer++...", bg=colors_background, \
+        fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Do not close this window!", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
         autohammer(None,None)
     #hammer++ set up window if it was updated
     if subwintype == 'hammerupdate':
         #root.geometry('600x140')
-        lbl = Label(root, text = "Updating Hammer++...", bg='#4c5844', \
-        fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Updating Hammer++...", bg=colors_background, \
+        fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Do not close this window!", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
     #hammer++ set up window THE CORRECT USED ONE
@@ -507,18 +533,18 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
         #root.geometry('600x140')
         lbl = Label(root, text = "Hammer++ could not be automatically installed. Please download it at \n https://ficool2.github.io/HammerPlusPlus-Website/download.html \nand copy its bin folder into:\
          \n " + gamefolderpath + "bin/",
-        bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
         root.update()
         checkhammer()
     #hammer++ install window
     elif subwintype == 'hammerinstall':
         #root.geometry('430x140')
-        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Please download Hammer++ and select the downloaded archive for it.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
 
         root.update()
@@ -527,11 +553,11 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
     #hammer++ install window if you freaked it up
     elif subwintype == 'hammerinstallinvalid':
         #root.geometry('423x140')
-        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -540,42 +566,42 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
     #installing tools plus plus
     elif subwintype == 'toolsplusplusinstall':
         #root.geometry('260x130')
-        lbl = Label(root, text = "++ compile tools are being installed and set up...\nThese are required for certain games. Please wait.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "++ compile tools are being installed and set up...\nThese are required for certain games. Please wait.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Hammer++ will start and close on its own. This is normal.", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Hammer++ will start and close on its own. This is normal.", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
         time.sleep(7)
     elif subwintype == 'editingconfigs':
         #root.geometry('260x130')
-        lbl = Label(root, text = "Configuring Hammer++...", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Configuring Hammer++...", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Do not close this window!", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Do not close this window!", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
         time.sleep(1)
     elif subwintype == 'waiting':
         #root.geometry('260x130')
-        lbl = Label(root, text = "Setting up...\nPlease wait.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Setting up...\nPlease wait.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Hammer++ may start and close on its own. This is normal.", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Hammer++ may start and close on its own. This is normal.", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
         time.sleep(7)
     #finishing up
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
-        lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg='#4c5844', fg='#d8ded3', font=("Tahoma", 9))
+        lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg=colors_background, fg=colors_primarytext, font=("Tahoma", 9))
         lbl.grid(row=0, column=0)
-        lbl = Label(root, text = "------", bg='#4c5844', fg='#c3b550', font=("Tahoma", 9))
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=("Tahoma", 9))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Thanks for using Linux Hammer Launcher! ^c^", bg='#4c5844', fg='#99a48e', font=("Tahoma", 9))
+        lbl = Label(root, text = "Thanks for using Linux Hammer Launcher! ^c^", bg=colors_background, fg=colors_tertiarytext, font=("Tahoma", 9))
         lbl.grid(row=2, column=0)
         root.update()
         time.sleep(7)
@@ -1280,33 +1306,33 @@ def creategamebutton(height, title, hammerpath, version):
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl1mp.png")
     elif titlelowered == "half-life 2 deathmatch":
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2mp.png")
-    gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
+    gameicn = Label(optionsframe, bg=colors_framebackground, image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
 
     #create functional button
-    btn = Button(optionsframe, text = title , fg = "#d8ded3", command=lambda: launchhammer(hammerpath, title, version), bg='#3e4637',
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version), bg=colors_framebackground,
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
 
 def rendermainwindow():
     global optionsframe
     global root
 
-    padding = Frame(root, bg="#4c5844", relief='flat', bd=0, highlightthickness=0)
+    padding = Frame(root, bg=colors_background, relief='flat', bd=0, highlightthickness=0)
     padding.grid(row=1, column=0,sticky="w")
 
     '''
     Frame creation
     '''
-    optionsframe = Frame(root, bg="#3e4637", relief='sunken', bd=1, highlightthickness=0)
+    optionsframe = Frame(root, bg=colors_framebackground, relief='sunken', bd=1, highlightthickness=0)
     optionsframe.grid(row=1, column=1,sticky="we")
     optionsframe.grid_columnconfigure(0, minsize=23, weight=0)
     optionsframe.grid_columnconfigure(1, minsize=211, weight=1)
     '''
     frame creation ^^
     '''
-    padding = Frame(root, bg="#4c5844", relief='flat', bd=0, highlightthickness=0)
+    padding = Frame(root, bg=colors_background, relief='flat', bd=0, highlightthickness=0)
     padding.grid(row=1, column=2,sticky="e")
 
     linenum = 0
@@ -1317,7 +1343,7 @@ def rendermainwindow():
     specified_lines = [99]
 
     #editors title
-    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2,  highlightthickness=0)
+    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg=colors_framebackground, justify="left",font=("Tahoma", 7), anchor="sw", height=2,  highlightthickness=0)
     setuptext.grid(row=0, column=1, sticky="ew")
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=1, column=0,sticky="ew")
@@ -1350,7 +1376,7 @@ def rendermainwindow():
     '''
 
     #UTILITIES
-    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
+    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg=colors_framebackground, justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
     setuptext.grid(row=linenum+4, column=1, sticky="ew")
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+5, column=0,sticky="ew")
@@ -1358,26 +1384,26 @@ def rendermainwindow():
     divider.grid(row=linenum+5, column=1,sticky="ew")
 
     hammericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
-    setupicn = Label(optionsframe, bg="#3e4637", image=hammericon, anchor="e")
+    setupicn = Label(optionsframe, bg=colors_framebackground, image=hammericon, anchor="e")
     setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
     setupicn.grid(row=linenum+6, column=0, sticky="ew")
     #set up button
-    setupbtn = Button(optionsframe, text = "Set up Hammer", fg = "#d8ded3", command=lambda: setuphammer(), bg='#3e4637', \
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    setupbtn = Button(optionsframe, text = "Set up Hammer", fg=colors_primarytext, command=lambda: setuphammer(), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #reset button
     deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
-    removeicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
+    removeicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
     removeicn.image = deleteicon #see above
     removeicn.grid(row=linenum+7, column=0, sticky="ew")
-    resetbtn = Button(optionsframe, text = "Reset Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    resetbtn = Button(optionsframe, text = "Reset Hammer", fg=colors_primarytext, command=lambda: print("STUB!"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     #delete button
     deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_delete.png")
-    deleteicn = Label(optionsframe, bg="#3e4637", image=deleteicon, anchor="e")
+    deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
     deleteicn.image = deleteicon
     deleteicn.grid(row=linenum+8, column=0, sticky="ew")
-    deletebtn = Button(optionsframe, text = "Delete Hammer", fg = "#d8ded3", command=lambda: print("STUB!"), bg='#3e4637', \
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: print("STUB!"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
 
 
     setupbtn.grid(row=linenum+6, column=1, sticky="ew")
@@ -1386,7 +1412,7 @@ def rendermainwindow():
 
 
     #CREDITS
-    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg='#3e4637', justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
+    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg=colors_framebackground, justify="left",font=("Tahoma", 7), anchor="sw", height=2, highlightthickness=0)
     setuptext.grid(row=linenum+9, column=1, sticky="ew")
     divider = Frame(optionsframe,bg='#282e22',height=2)
     divider.grid(row=linenum+10, column=0,sticky="ew")
@@ -1394,22 +1420,22 @@ def rendermainwindow():
     divider.grid(row=linenum+10, column=1,sticky="ew")
 
     endericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_end.png")
-    crediticn = Label(optionsframe, bg="#3e4637", image=endericon, anchor="e")
+    crediticn = Label(optionsframe, bg=colors_framebackground, image=endericon, anchor="e")
     crediticn.image = endericon #see above
     crediticn.grid(row=linenum+11, column=0, sticky="ew")
-    creditbtn = Button(optionsframe, text = "EnderCatCore", fg = "#d8ded3", command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg='#3e4637', \
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn = Button(optionsframe, text = "EnderCatCore", fg=colors_primarytext, command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
 
     tommyicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam.png")
-    crediticn = Label(optionsframe, bg="#3e4637", image=tommyicon, anchor="e")
+    crediticn = Label(optionsframe, bg=colors_framebackground, image=tommyicon, anchor="e")
     crediticn.image = tommyicon #see above
     crediticn.grid(row=linenum+12, column=0, sticky="ew")
-    creditbtn = Button(optionsframe, text = "Thomasluigi07", fg = "#d8ded3", command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg='#3e4637', \
-    activebackground='#968731', highlightbackground = "#968731",activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn = Button(optionsframe, text = "Thomasluigi07", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=("Tahoma", 9), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
 
-    dummy = Frame(root,bg='#4c5844',height=5)
+    dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
 
 rendermainwindow()
