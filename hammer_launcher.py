@@ -83,7 +83,7 @@ if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
 
  
 #temp set theme
-launchertheme = "vgui"
+launchertheme = "sfm"
 #colorscheme
 if launchertheme == "vgui":
     colors_background = "#4c5844"
@@ -92,6 +92,7 @@ if launchertheme == "vgui":
     colors_primarytext = "#d8ded3"
     colors_secondarytext = "#c3b550"
     colors_tertiarytext = "#99a48e"
+    colors_headertext = "c4b550"
     style_frameborder = "sunken"
     style_showdividers = True
     style_showicons = True
@@ -102,10 +103,8 @@ if launchertheme == "vgui":
     style_headerfontsize = 7
     style_smallfontsize = 7
     style_forceheadercaps = True
-    #add banner alignment setting
-    #font settings
-    #blah blah blah
-
+    style_bannerposition = "bottom"
+    
 elif launchertheme == "eyesore":
     colors_background = "yellow"
     colors_framebackground = "red"
@@ -113,6 +112,7 @@ elif launchertheme == "eyesore":
     colors_primarytext = "green"
     colors_secondarytext = "black"
     colors_tertiarytext = "black"
+    colors_headertext = "lime"
     style_frameborder = "flat"
     style_showdividers = False
     style_showicons = True
@@ -123,6 +123,27 @@ elif launchertheme == "eyesore":
     style_headerfontsize = 15
     style_smallfontsize = 3
     style_forceheadercaps = False
+    style_bannerposition = "top"
+    
+elif launchertheme == "sfm":
+    colors_background = "black"
+    colors_framebackground = "black"
+    colors_highlight = "black"
+    colors_primarytext = "#cfcfcf"
+    colors_secondarytext = "#606060"
+    colors_tertiarytext = "#4d4d4d"
+    colors_headertext = "#5f5f5f"
+    style_frameborder = "flat"
+    style_showdividers = False
+    style_showicons = False
+    style_font = "DejaVu Sans"
+    style_headerfont = "DejaVu Sans"
+    style_headerfontstyle = "bold"
+    style_fontsize = 9
+    style_headerfontsize = 14
+    style_smallfontsize = 7
+    style_forceheadercaps = False
+    style_bannerposition = "bottom"
     
  
 '''
@@ -1361,7 +1382,7 @@ def rendermainwindow():
     specified_lines = [99]
 
     #editors title
-    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg='#c4b550', bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2,  highlightthickness=0)
+    setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg=colors_headertext, bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2,  highlightthickness=0)
     setuptext.grid(row=0, column=1, sticky="ew")
     
     if style_forceheadercaps == False:
@@ -1399,7 +1420,7 @@ def rendermainwindow():
 
     #UTILITIES
     
-    setuptext = Label(optionsframe, text = "UTILITIES", fg='#c4b550', bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2, highlightthickness=0)
+    setuptext = Label(optionsframe, text = "UTILITIES", fg=colors_headertext, bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2, highlightthickness=0)
     setuptext.grid(row=linenum+4, column=1, sticky="ew")
     
     if style_forceheadercaps == False:
@@ -1435,14 +1456,14 @@ def rendermainwindow():
     deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: print("STUB!"), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
-
+    
     setupbtn.grid(row=linenum+6, column=1, sticky="ew")
     resetbtn.grid(row=linenum+7, column=1, sticky="ew")
     deletebtn.grid(row=linenum+8, column=1, sticky="ew")
 
 
     #CREDITS
-    setuptext = Label(optionsframe, text = "CREDITS", fg='#c4b550', bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2, highlightthickness=0)
+    setuptext = Label(optionsframe, text = "CREDITS", fg=colors_headertext, bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2, highlightthickness=0)
     setuptext.grid(row=linenum+9, column=1, sticky="ew")
     
     if style_forceheadercaps == False:
