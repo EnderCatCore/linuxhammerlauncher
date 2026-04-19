@@ -1253,6 +1253,7 @@ GUI function stuffs
 def creategamebutton(height, title, hammerpath, version):
     #set icon for game
     titlelowered = title.casefold()
+    gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_hammer.png")
     if titlelowered == "garrysmod":
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/garrysmod.png")
     if titlelowered == "left 4 dead 2":
@@ -1279,8 +1280,6 @@ def creategamebutton(height, title, hammerpath, version):
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl1mp.png")
     elif titlelowered == "half-life 2 deathmatch":
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2mp.png")
-    else:
-        gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_hammer.png")
     gameicn = Label(optionsframe, bg="#3e4637", image=gameicon, anchor="e")
     gameicn.image = gameicon
     gameicn.grid(row=height, column=0, sticky="ew")
