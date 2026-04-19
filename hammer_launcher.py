@@ -83,7 +83,7 @@ if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
 
  
 #temp set theme
-launchertheme = "sfm"
+launchertheme = "vgui"
 #colorscheme
 if launchertheme == "vgui":
     colors_background = "#4c5844"
