@@ -29,6 +29,8 @@ import webbrowser
 
 -why are plusplus tools not configged for l4d2 i will kill
 
+-logo should have hammer being hit into logo text, either the linux or hammer part, maybe hammer because its bolder, the bricks on the right will fly out, tux is holding the hammer
+
 '''
 #--------
 
