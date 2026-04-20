@@ -42,6 +42,10 @@ left 4 dead (will this even work at all)
 #vguititlebar = 1
 
 
+#temp state settings, remove this when we point to a settings file
+state_htype = True
+state_disableupdates = False
+state_theme = 0
 
 
 
@@ -81,72 +85,105 @@ if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
     os.mkdir(homefolder + "/.config/linuxhammerlauncher/")
 
 
- 
-#temp set theme
-launchertheme = "sfm"
-#colorscheme
-if launchertheme == "vgui":
-    colors_background = "#4c5844"
-    colors_framebackground = "#3e4637"
-    colors_highlight = "#968731"
-    colors_primarytext = "#d8ded3"
-    colors_secondarytext = "#c3b550"
-    colors_tertiarytext = "#99a48e"
-    colors_headertext = "#c4b550"
-    style_frameborder = "sunken"
-    style_showdividers = True
-    style_showicons = True
-    style_font = "Tahoma"
-    style_headerfont = "Ubuntu"
-    style_headerfontstyle = ""
-    style_fontsize = 9
-    style_headerfontsize = 7
-    style_smallfontsize = 7
-    style_forceheadercaps = True
-    style_bannerposition = "bottom"
-    style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
+
+#add theme defs/names here
+themenames = ["VGUI", "SFM"]
+print(themenames[state_theme].lower())
+
+
+def updatetheme():
+    global themenames
+    global state_theme
+    global colors_background
+    global colors_framebackground
+    global colors_highlight
+    global colors_primarytext
+    global colors_secondarytext
+    global colors_tertiarytext
+    global colors_headertext
+    global style_frameborder
+    global style_showdividers
+    global style_showicons
+    global style_font
+    global style_headerfont
+    global style_headerfontstyle
+    global style_fontsize
+    global style_headerfontsize
+    global style_smallfontsize
+    global style_forceheadercaps
+    global style_bannerposition
+    global style_bannerimage
+    global style_graphicspath
     
-elif launchertheme == "eyesore":
-    colors_background = "yellow"
-    colors_framebackground = "red"
-    colors_highlight = "blue"
-    colors_primarytext = "green"
-    colors_secondarytext = "black"
-    colors_tertiarytext = "black"
-    colors_headertext = "lime"
-    style_frameborder = "flat"
-    style_showdividers = False
-    style_showicons = True
-    style_font = "Roboto Condensed"
-    style_headerfont = "DejaVu Sans"
-    style_headerfontstyle = "bold"
-    style_fontsize = 12
-    style_headerfontsize = 15
-    style_smallfontsize = 3
-    style_forceheadercaps = False
-    style_bannerposition = "top"
-    style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
     
-elif launchertheme == "sfm":
-    colors_background = "black"
-    colors_framebackground = "black"
-    colors_highlight = "black"
-    colors_primarytext = "#cfcfcf"
-    colors_secondarytext = "#606060"
-    colors_tertiarytext = "#4d4d4d"
-    colors_headertext = "#5f5f5f"
-    style_frameborder = "flat"
-    style_showdividers = False
-    style_showicons = False
-    style_font = "DejaVu Sans"
-    style_headerfont = "DejaVu Sans"
-    style_headerfontstyle = "bold"
-    style_fontsize = 9
-    style_headerfontsize = 14
-    style_smallfontsize = 7
-    style_forceheadercaps = False
-    style_bannerposition = "top"
-    style_bannerimage = "/assets/banner/hammerlauncher_banner_sfm.png"
+    #add theme configs here
+    
+    print("UPDATING THEME")
+    if themenames[state_theme].lower() == "vgui":
+        colors_background = "#4c5844"
+        colors_framebackground = "#3e4637"
+        colors_highlight = "#968731"
+        colors_primarytext = "#d8ded3"
+        colors_secondarytext = "#c3b550"
+        colors_tertiarytext = "#99a48e"
+        colors_headertext = "#c4b550"
+        style_frameborder = "sunken"
+        style_showdividers = True
+        style_showicons = True
+        style_font = "Tahoma"
+        style_headerfont = "Ubuntu"
+        style_headerfontstyle = ""
+        style_fontsize = 9
+        style_headerfontsize = 7
+        style_smallfontsize = 7
+        style_forceheadercaps = True
+        style_bannerposition = "bottom"
+        style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
+        style_graphicspath = "/assets/graphics/"
+        
+    elif themenames[state_theme].lower() == "eyesore":
+        colors_background = "yellow"
+        colors_framebackground = "red"
+        colors_highlight = "blue"
+        colors_primarytext = "green"
+        colors_secondarytext = "black"
+        colors_tertiarytext = "black"
+        colors_headertext = "lime"
+        style_frameborder = "flat"
+        style_showdividers = False
+        style_showicons = True
+        style_font = "Roboto Condensed"
+        style_headerfont = "DejaVu Sans"
+        style_headerfontstyle = "bold"
+        style_fontsize = 12
+        style_headerfontsize = 15
+        style_smallfontsize = 3
+        style_forceheadercaps = False
+        style_bannerposition = "top"
+        style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
+        
+    elif themenames[state_theme].lower() == "sfm":
+        colors_background = "black"
+        colors_framebackground = "black"
+        colors_highlight = "black"
+        colors_primarytext = "#cfcfcf"
+        colors_secondarytext = "#606060"
+        colors_tertiarytext = "#4d4d4d"
+        colors_headertext = "#5f5f5f"
+        style_frameborder = "flat"
+        style_showdividers = False
+        style_showicons = False
+        style_font = "DejaVu Sans"
+        style_headerfont = "DejaVu Sans"
+        style_headerfontstyle = "bold"
+        style_fontsize = 9
+        style_headerfontsize = 14
+        style_smallfontsize = 7
+        style_forceheadercaps = False
+        style_bannerposition = "top"
+        style_bannerimage = "/assets/banner/hammerlauncher_banner_sfm.png"
+
+updatetheme()
     
  
 '''
@@ -203,6 +240,11 @@ mainwindow()
 '''
 window creation ^^
 '''
+
+#toggle bool
+def toggle_bool(value):
+    return not value
+
 
 #open file picker for game path
 def findgame():
@@ -1283,10 +1325,7 @@ def setuphammer():
         #make button clickable
         settinguphammer = 0
         #go back to main window
-        root.destroy()
-        root = Tk()
-        mainwindow()
-        rendermainwindow()
+        startmainwindow()
         
 #.config/linuxhammerlauncher/
 
@@ -1358,9 +1397,22 @@ def creategamebutton(height, title, hammerpath, version):
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
 
+
+def startmainwindow():
+    global root
+    global optionsframe
+    
+    root.destroy()
+    root = Tk()
+    mainwindow()
+    rendermainwindow()
+
+
 def rendermainwindow():
     global optionsframe
     global root
+    
+    root.configure(bg=colors_background)
 
     padding = Frame(root, bg=colors_background, relief='flat', bd=0, highlightthickness=0)
     padding.grid(row=1, column=0,sticky="w")
@@ -1453,13 +1505,16 @@ def rendermainwindow():
     #set up button
     setupbtn = Button(optionsframe, text = "Set up Hammer", fg=colors_primarytext, command=lambda: setuphammer(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    #reset button
+    #settings button
     if style_showicons == True:
-        deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
-        removeicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
-        removeicn.image = deleteicon #see above
-        removeicn.grid(row=linenum+7, column=0, sticky="ew")
-    resetbtn = Button(optionsframe, text = "Reset Hammer", fg=colors_primarytext, command=lambda: print("STUB!"), bg=colors_framebackground, \
+        settingsicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
+        settingsicn = Label(optionsframe, bg=colors_framebackground, image=settingsicon, anchor="e")
+        settingsicn.image = settingsicon #see above
+        settingsicn.grid(row=linenum+7, column=0, sticky="ew")
+        
+
+
+    settingsbtn = Button(optionsframe, text = "Settings", fg=colors_primarytext, command=lambda: startsettingswindow(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     #delete button
     if style_showicons == True:
@@ -1472,7 +1527,7 @@ def rendermainwindow():
 
     
     setupbtn.grid(row=linenum+6, column=1, sticky="ew")
-    resetbtn.grid(row=linenum+7, column=1, sticky="ew")
+    settingsbtn.grid(row=linenum+7, column=1, sticky="ew")
     deletebtn.grid(row=linenum+8, column=1, sticky="ew")
 
 
@@ -1509,6 +1564,90 @@ def rendermainwindow():
     
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
+
+def startsettingswindow():
+    global root
+    global optionsframe
+    
+    root.destroy()
+    root = Tk()
+    mainwindow()
+    rendersettingswindow()
+
+
+
+
+def rendersettingswindow():
+    global optionsframe
+    global root
+    root.configure(bg=colors_framebackground)
+    
+    
+
+    #use vanilla hammer
+    hammertypeicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_htype).lower()+".png")
+    hammertypeicn = Label(root, bg=colors_framebackground, image=hammertypeicon, anchor="e")
+    hammertypeicn.image = hammertypeicon
+    hammertypebtn = Button(root, text = "Use vanilla Hammer in setup", fg=colors_primarytext, command=lambda: togglesettingstate("htype"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    hammertypebtn.grid(row=1, column=1, sticky="ew")
+    hammertypeicn.grid(row=1, column=0, sticky="ew")
+    
+    #disable updates
+    updatedisableicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_disableupdates).lower()+".png")
+    updatedisableicn = Label(root, bg=colors_framebackground, image=updatedisableicon, anchor="e")
+    updatedisableicn.image = updatedisableicon
+    updatedisablebtn = Button(root, text = "Disable Hammer++ auto updates", fg=colors_primarytext, command=lambda: togglesettingstate("disableupdates"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    updatedisablebtn.grid(row=2, column=1, sticky="ew")
+    updatedisableicn.grid(row=2, column=0, sticky="ew")
+    
+    #theme
+    themenumicon = Image("photo", file=os.path.dirname(__file__)+"/assets/graphics/theme_"+themenames[state_theme].lower()+".png")
+    themenumicn = Label(root, bg=colors_framebackground, image=themenumicon, anchor="e")
+    themenumicn.image = themenumicon
+    themenumbtn = Button(root, text = "Current Theme: " + themenames[state_theme], fg=colors_primarytext, command=lambda: togglesettingstate("themeswitch"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    themenumbtn.grid(row=3, column=1, sticky="ew")
+    themenumicn.grid(row=3, column=0, sticky="ew")
+    
+    
+    
+    #back
+
+    settingsbackbtn = Button(root, text = "Back", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    settingsbackbtn.grid(row=7, column=1, sticky="ew")
+
+    
+
+
+
+#setting tick toggle
+def togglesettingstate(statetomodif):
+    global state_htype
+    global state_disableupdates
+    global state_theme
+    
+    if statetomodif == "htype":
+        state_htype = toggle_bool(state_htype)
+        print(str(state_htype))
+        rendersettingswindow()
+    elif statetomodif == "disableupdates":
+        state_disableupdates = toggle_bool(state_disableupdates)
+        print(str(state_disableupdates))
+        rendersettingswindow()
+    elif statetomodif == "themeswitch":
+        state_theme += 1
+        if state_theme > len(themenames) - 1:
+            state_theme = 0
+        print(str(themenames[state_theme].lower()))
+        updatetheme()
+        startsettingswindow()
+
+
+
+
 
 rendermainwindow()
 
