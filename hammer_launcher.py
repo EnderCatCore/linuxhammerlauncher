@@ -9,6 +9,7 @@ import zipfile
 import json
 import webbrowser
 
+
 ''' TODO and ISSUES
 
 -csgo wont be supported, sdk costs money
@@ -39,14 +40,93 @@ left 4 dead (will this even work at all)
 
 
 
+
+#fallback settings, set these, then apply settings.ini, that way if settings.ini is freaked and doesnt have a value the program doesnt frickigng die
+state_htype = False
+state_disablehppupdates = False
+state_theme = 0
+
+
 #vguititlebar = 1
 
 
-#temp state settings, remove this when we point to a settings file
-state_htype = True
-state_disableupdates = False
-state_theme = 0
+#set config folder
+configpath = os.path.expanduser('~') + "/.config/linuxhammerlauncher/"
 
+
+#CONFIG FILE/FOLDER CREATION
+#CONFIG FILE/FOLDER CREATION
+#CONFIG FILE/FOLDER CREATION
+
+#check for prefix folder, if it doesnt exist, make it, dummy.
+if os.path.exists(configpath + "prefix/") == False:
+    os.mkdir(configpath + "prefix/")
+#check for runner folder, if it doesnt exist, make it, idiot.
+if os.path.exists(configpath + "runner/") == False:
+    os.mkdir(configpath + "runner/")
+#check for games config file, if it doesnt exist, make it, fool.
+if os.path.exists(configpath + "games.txt") == False:
+    gameconfig = open(configpath + "games.txt", 'w')
+    gameconfig.write("")
+    gameconfig.close()
+    print("game config not found, created new one.")
+#check for games config file, if it doesnt exist, make it, fool.
+if os.path.exists(configpath + "settings.ini") == False:
+    settingsini = open(configpath + "settings.ini", 'w')
+    settingsini.write('[LHL Settings]\nstate_htype = False\nstate_disablehppupdates = False\nstate_theme = 0')
+    settingsini.close()
+    print("settings ini not found, created new one.")
+ 
+ 
+ 
+#SETTINGS READING AND WRITING
+#SETTINGS READING AND WRITING
+#SETTINGS READING AND WRITING
+
+#write vars to settingsini function
+def writetosettings():
+    print("PLEASE WRITE")
+    settingsini = open(configpath + "settings.ini", 'w')
+    settingsini.write('[LHL Settings]\n' + \
+    'state_htype = ' + str(state_htype) + '\n'\
+    'state_disablehppupdates = ' + str(state_disablehppupdates) + '\n'\
+    'state_theme = ' + str(state_theme) + '\n')
+    settingsini.close()
+
+#set vars to values in settingsini function
+def loadsettings():
+    global state_htype
+    global state_disablehppupdates
+    global state_theme
+    
+    print("hello? this thing working???")
+    
+    with open(configpath + "settings.ini","r") as inifile:
+        configlines = inifile.read().split("\n")
+    
+    
+    for i,line in enumerate(configlines):
+        if "state_htype = " in line: #find and load htype
+            print("Setting HType is:")
+            print(line[line.find(" = ") + 3:])
+            if line[line.find(" = ") + 3:] == "True":
+                state_htype = True
+            elif line[line.find(" = ") + 3:] == "False":
+                state_htype = False
+        if "state_disablehppupdates = " in line: #find and load H++ update setting
+            print("Setting HPPUpdate is:")
+            print(line[line.find(" = ") + 3:])
+            if line[line.find(" = ") + 3:] == "True":
+                state_disablehppupdates = True
+            elif line[line.find(" = ") + 3:] == "False":
+                state_disablehppupdates = False
+        if "state_theme = " in line: #find and load theme setting
+            print("Setting Theme is:")
+            print(line[line.find(" = ") + 3:])
+            state_theme = int(line[line.find(" = ") + 3:])
+            
+
+loadsettings()
 
 
 
@@ -827,8 +907,7 @@ def clicked():
     
 
 
-#set config folder
-configpath = os.path.expanduser('~') + "/.config/linuxhammerlauncher/"
+
 
 
 #function to find which line numbers have GameExe in them
@@ -1333,18 +1412,8 @@ def setuphammer():
 
 
 
-#check for prefix folder, if it doesnt exist, make it, dummy.
-if os.path.exists(configpath + "prefix/") == False:
-    os.mkdir(configpath + "prefix/")
-#check for runner folder, if it doesnt exist, make it, idiot.
-if os.path.exists(configpath + "runner/") == False:
-    os.mkdir(configpath + "runner/")
-#check for games config file, if it doesnt exist, make it, fool.
-if os.path.exists(configpath + "games.txt") == False:
-    gameconfig = open(configpath + "games.txt", 'w')
-    gameconfig.write("")
-    gameconfig.close()
-    print("game config not found, created new one.")
+
+
 
 '''
 Non GUI functions ^^
@@ -1583,7 +1652,8 @@ def rendersettingswindow():
     global optionsframe
     global root
     root.configure(bg=colors_framebackground)
-    
+    print(str(state_disablehppupdates).lower())
+    print(str(state_disablehppupdates))
     
 
     #use vanilla hammer
@@ -1596,7 +1666,7 @@ def rendersettingswindow():
     hammertypeicn.grid(row=1, column=0, sticky="ew")
     
     #disable updates
-    updatedisableicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_disableupdates).lower()+".png")
+    updatedisableicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_disablehppupdates).lower()+".png")
     updatedisableicn = Label(root, bg=colors_framebackground, image=updatedisableicon, anchor="e")
     updatedisableicn.image = updatedisableicon
     updatedisablebtn = Button(root, text = "Disable Hammer++ auto updates", fg=colors_primarytext, command=lambda: togglesettingstate("disableupdates"), bg=colors_framebackground, \
@@ -1628,7 +1698,7 @@ def rendersettingswindow():
 #setting tick toggle
 def togglesettingstate(statetomodif):
     global state_htype
-    global state_disableupdates
+    global state_disablehppupdates
     global state_theme
     
     if statetomodif == "htype":
@@ -1636,8 +1706,8 @@ def togglesettingstate(statetomodif):
         print(str(state_htype))
         rendersettingswindow()
     elif statetomodif == "disableupdates":
-        state_disableupdates = toggle_bool(state_disableupdates)
-        print(str(state_disableupdates))
+        state_disablehppupdates = toggle_bool(state_disablehppupdates)
+        print(str(state_disablehppupdates))
         rendersettingswindow()
     elif statetomodif == "themeswitch":
         state_theme += 1
@@ -1646,6 +1716,7 @@ def togglesettingstate(statetomodif):
         print(str(themenames[state_theme].lower()))
         updatetheme()
         startsettingswindow()
+    writetosettings()
 
 
 
