@@ -25,9 +25,9 @@ click on set up hammer to do things wowwwwww. then it will add the game. then do
 todo: fill out supported game list
 
 - Half Life: 2
-- Half Life: 2 Episode 1
-- Half Life: 2 Episode 2
-- Half-Life: 2 Deathmatch
+- Half Life 2: Episode 1
+- Half Life 2: Episode 2
+- Half-Life 2: Deathmatch
 - Half-Life: Deathmatch Source
 - Team Fortress 2
 - Team Fortress 2 Classified
@@ -36,9 +36,9 @@ todo: fill out supported game list
 - Source Filmmaker
 - Garry's Mod
 - Day of Defeat: Source
-- Left 4 Dead (with vanilla hammer enabled)
+- Left 4 Dead (with vanilla Hammer enabled)
 - Left 4 Dead 2
 - Counter-Strike: Source
-- Black Mesa (with vanilla hammer enabled)
+- Black Mesa (with vanilla Hammer enabled)
 
 if a game is not listed here you can still try setting up hammer for it, though you will have to install hammer++ for it yourself.  blah blah blah this is A  PLACEHOLDER
