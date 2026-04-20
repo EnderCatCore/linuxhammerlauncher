@@ -24,14 +24,21 @@ click on set up hammer to do things wowwwwww. then it will add the game. then do
 
 todo: fill out supported game list
 
-- Klonoa 2 Lunatea's Veil: Source
-- team fortress 2
-- team fortress 2
-- team fortress 2
-- team fortress 2
-- team fortress 2
-- team fortress 2
-- team fortress 2
-- team fortress 2
+- Half Life: 2
+- Half Life: 2 Episode 1
+- Half Life: 2 Episode 2
+- Half-Life: 2 Deathmatch
+- Half-Life: Deathmatch Source
+- Team Fortress 2
+- Team Fortress 2 Classified
+- Portal
+- Portal 2
+- Source Filmmaker
+- Garry's Mod
+- Day of Defeat: Source
+- Left 4 Dead (with vanilla hammer enabled)
+- Left 4 Dead 2
+- Counter-Strike: Source
+- Black Mesa (with vanilla hammer enabled)
 
 if a game is not listed here you can still try setting up hammer for it, though you will have to install hammer++ for it yourself.  blah blah blah this is A  PLACEHOLDER
