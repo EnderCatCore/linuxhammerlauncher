@@ -161,6 +161,7 @@ def updatetheme():
         style_forceheadercaps = False
         style_bannerposition = "top"
         style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
+        style_graphicspath = "/assets/graphics/"
         
     elif themenames[state_theme].lower() == "sfm":
         colors_background = "black"
@@ -182,6 +183,7 @@ def updatetheme():
         style_forceheadercaps = False
         style_bannerposition = "top"
         style_bannerimage = "/assets/banner/hammerlauncher_banner_sfm.png"
+        style_graphicspath = "/assets/graphics/sfm/"
 
 updatetheme()
     
