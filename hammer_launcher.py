@@ -29,8 +29,6 @@ import webbrowser
 
 -why are plusplus tools not configged for l4d2 i will kill
 
--logo should have hammer being hit into logo text, either the linux or hammer part, maybe hammer because its bolder, the bricks on the right will fly out, tux is holding the hammer
-
 '''
 #--------
 
@@ -106,6 +104,7 @@ if launchertheme == "vgui":
     style_smallfontsize = 7
     style_forceheadercaps = True
     style_bannerposition = "bottom"
+    style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
     
 elif launchertheme == "eyesore":
     colors_background = "yellow"
@@ -126,6 +125,7 @@ elif launchertheme == "eyesore":
     style_smallfontsize = 3
     style_forceheadercaps = False
     style_bannerposition = "top"
+    style_bannerimage = "/assets/banner/hammerlauncher_banner.png"
     
 elif launchertheme == "sfm":
     colors_background = "black"
@@ -145,7 +145,8 @@ elif launchertheme == "sfm":
     style_headerfontsize = 14
     style_smallfontsize = 7
     style_forceheadercaps = False
-    style_bannerposition = "bottom"
+    style_bannerposition = "top"
+    style_bannerimage = "/assets/banner/hammerlauncher_banner_sfm.png"
     
  
 '''
@@ -1310,6 +1311,7 @@ Non GUI functions ^^
 
 
 
+
 '''
 GUI function stuffs
 '''
@@ -1383,6 +1385,16 @@ def rendermainwindow():
     # lines to print (or not to print this list just kinda needs to be here regardless of how little it accomplishes
     specified_lines = [99]
 
+
+    bannerimage = Image("photo", file=os.path.dirname(__file__)+style_bannerimage)
+    bannerimg = Label(root, bg=colors_background, image=bannerimage, anchor="center")
+    bannerimg.image = bannerimage
+    if style_bannerposition == "bottom":
+        bannerimg.grid(row=2, column=1, sticky="ew")
+    elif style_bannerposition == "top":
+        bannerimg.grid(row=0, column=1, sticky="ew")
+    
+    
     #editors title
     setuptext = Label(optionsframe, text = "HAMMER EDITORS", fg=colors_headertext, bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2,  highlightthickness=0)
     setuptext.grid(row=0, column=1, sticky="ew")
@@ -1493,7 +1505,8 @@ def rendermainwindow():
     creditbtn = Button(optionsframe, text = "Thomasluigi07", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
-
+    
+    
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
 
