@@ -975,7 +975,7 @@ def hammerconfig(binfolder, plusplusconfig):
         print("BINWIN ALREADY EXISTS! deleting...")
         os.system("rm -r '" + gamefolderpath + "binwin/'")
 
-    # make the binwin directory early. why? just in case binfolder is binwin. im not thinking at the moment and i'm really stpudiffsoifdsuaoifpifjfajhdskflkhajfds.
+    # make the binwin directory early. why? just in case binfolder is binwin. im not thinking at the moment and i'm really stpudiffsoifdsuaoifpifjfajhdskflkhajfds. this is literally just here for hl1mp
     os.mkdir(gamefolderpath + "binwin/")
 
     # create dummy bat
