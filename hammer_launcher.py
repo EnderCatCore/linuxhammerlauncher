@@ -975,6 +975,9 @@ def hammerconfig(binfolder, plusplusconfig):
         print("BINWIN ALREADY EXISTS! deleting...")
         os.system("rm -r '" + gamefolderpath + "binwin/'")
 
+    # make the binwin directory early. why? just in case binfolder is binwin. im not thinking at the moment and i'm really stpudiffsoifdsuaoifpifjfajhdskflkhajfds.
+    os.mkdir(gamefolderpath + "binwin/")
+
     # create dummy bat
     batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
     batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
@@ -1002,8 +1005,8 @@ def hammerconfig(binfolder, plusplusconfig):
         print("could not find steam. flatpak moment!")
 
     #copy bin folder to binwin
-    print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-    os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    print("cp -r '" + gamefolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
+    os.system("cp -r '" + gamefolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
 
 
 
