@@ -43,8 +43,8 @@ import webbrowser
 half life source (might be easy if we snag the gameinfo? im guessing we can reuse hl1mp stuff but not sure)
 left 4 dead (will this even work at all)
 '''
-
-
+# freak
+print("if youre opening this in the terminal because something went wrong, im sorry.")
 
 
 #fallback settings, set these, then apply settings.ini, that way if settings.ini is freaked and doesnt have a value the program doesnt frickigng die
@@ -55,18 +55,17 @@ state_theme = 0
 
 #vguititlebar = 1
 
-
 #set config folder
-configpath = os.path.expanduser('~') + "/.config/linuxhammerlauncher/"
-
+homefolder = os.path.expanduser("~")
+configpath = homefolder + "/.config/linuxhammerlauncher/"
 
 #CONFIG FILE/FOLDER CREATION
 #CONFIG FILE/FOLDER CREATION
 #CONFIG FILE/FOLDER CREATION
 
 #check for .config, if it doesn't exists. Make it. MAKE IT. WHY DOESN'T IT EXIST.
-if os.path.exists(os.path.expanduser('~') + "/.config/") == False:
-    os.mkdir(os.path.expanduser('~') + "/.config/")
+if os.path.exists(homefolder + "/.config/") == False:
+    os.mkdir(homefolder + "/.config/")
 # look!!!!!!!!!!! hamer launcher :3
 if os.path.exists(configpath) == False:
     os.mkdir(configpath)
@@ -166,16 +165,7 @@ except getopt.error as err:
     print("Invalid argument!")
     sys.exit()
 
-print("if youre opening this in the terminal because something went wrong, im sorry.")
-
 settinguphammer = 0
-
-homefolder = os.path.expanduser("~")
-print(homefolder)
-#check for config folder, if it doesnt exist, then make it dummy.
-if os.path.exists(homefolder + "/.config/linuxhammerlauncher/") == False:
-    os.mkdir(homefolder + "/.config/linuxhammerlauncher/")
-
 
 
 #add theme defs/names here
