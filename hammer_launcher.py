@@ -64,6 +64,12 @@ configpath = os.path.expanduser('~') + "/.config/linuxhammerlauncher/"
 #CONFIG FILE/FOLDER CREATION
 #CONFIG FILE/FOLDER CREATION
 
+#check for .config, if it doesn't exists. Make it. MAKE IT. WHY DOESN'T IT EXIST.
+if os.path.exists(os.path.expanduser('~') + "/.config/") == False:
+    os.mkdir(os.path.expanduser('~') + "/.config/")
+# look!!!!!!!!!!! hamer launcher :3
+if os.path.exists(configpath) == False:
+    os.mkdir(configpath)
 #check for prefix folder, if it doesnt exist, make it, dummy.
 if os.path.exists(configpath + "prefix/") == False:
     os.mkdir(configpath + "prefix/")
