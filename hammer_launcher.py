@@ -1078,7 +1078,7 @@ def hammerconfig(binfolder, plusplusconfig):
 
                 #create TRUE run game bat
                 print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-                batfile = open(gamefolderpath + "binwin/linuxhammerlauncher_rungame.bat", 'w')
+                batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
                 batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
                 batfile.close()
             else:
