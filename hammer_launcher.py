@@ -624,11 +624,11 @@ def subwindow(subwintype):
     elif subwintype == 'tfdirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\n Please navigate to your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\nPlease navigate to your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example:\nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
         root.update()
@@ -638,7 +638,7 @@ def subwindow(subwintype):
     elif subwintype == 'tfdirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find TF2... \n SFM requires Team Fortress 2 to be installed for setup.\n Please re-select your Team Fortress 2 folder.", bg=colors_background, \
+        lbl = Label(root, text = "Could not find TF2...\nSFM requires Team Fortress 2 to be installed for setup.\nPlease re-select your Team Fortress 2 folder.", bg=colors_background, \
         fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
@@ -655,7 +655,7 @@ def subwindow(subwintype):
     #proton set up window
     if subwintype == 'protonenable':
         #root.geometry('414x100')
-        lbl = Label(root, text = "Windows bin folder not detected. \n Go into steam and enable Proton for this game before continuing. \n You can turn off Proton later. \n \n \
+        lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam and enable Proton for this game before continuing.\nYou can turn off Proton later.\n\n \
         This window should auto-detect Proton on its own.",
         bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
@@ -665,7 +665,7 @@ def subwindow(subwintype):
     #P2SDK set up window for portal 2
     if subwintype == 'p2sdkenable':
         #root.geometry('414x100')
-        lbl = Label(root, text = "Portal 2 Authoring Tools not detected. \n Go into steam and install Portal 2 Authoring Tools before continuing. \n \n This \
+        lbl = Label(root, text = "Portal 2 Authoring Tools not detected.\nOpen Steam and install Portal 2 Authoring Tools before continuing.\n\nThis \
 window should auto-detect Portal 2 Authoring Tools on its own.",
         bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
@@ -673,7 +673,7 @@ window should auto-detect Portal 2 Authoring Tools on its own.",
         checksdk()
     if subwintype == 'l4dsdkenable':
         #root.geometry('414x100')
-        lbl = Label(root, text = "Left 4 Dead Authoring Tools not detected. \n Go into steam and install Left 4 Dead Authoring Tools before continuing. \n \n This \
+        lbl = Label(root, text = "Left 4 Dead Authoring Tools not detected.\nOpen Steam and install Left 4 Dead Authoring Tools before continuing.\n\nThis \
 window should auto-detect Left 4 Dead Authoring Tools on its own.",
         bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
@@ -681,7 +681,7 @@ window should auto-detect Left 4 Dead Authoring Tools on its own.",
         checksdk()
     if subwintype == 'l4d2sdkenable':
         #root.geometry('414x100')
-        lbl = Label(root, text = "Left 4 Dead 2 Authoring Tools not detected. \n Go into steam and install Left 4 Dead 2 Authoring Tools before continuing. \n \n This \
+        lbl = Label(root, text = "Left 4 Dead 2 Authoring Tools not detected.\nOpen Steam and install Left 4 Dead 2 Authoring Tools before continuing.\n\nThis \
 window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
         bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
@@ -713,8 +713,9 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
     #hammer++ set up window THE CORRECT USED ONE
     if subwintype == 'hammerenable':
         #root.geometry('600x140')
-        lbl = Label(root, text = "Hammer++ could not be automatically installed. Please download it at \n https://ficool2.github.io/HammerPlusPlus-Website/download.html \nand copy its bin folder into:\
-         \n " + gamefolderpath + "bin/",
+        #Put button here to open browser
+        lbl = Label(root, text = "Hammer++ could not be automatically installed. Please download it at\nhttps://ficool2.github.io/HammerPlusPlus-Website/download.html\nand copy its bin folder into:\
+        \n" + gamefolderpath + "bin/",
         bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         root.update()
@@ -726,7 +727,8 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        # Button here
+        lbl = Label(root, text = "You can install Hammer++ here:\nhttps://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
 
         root.update()
@@ -735,13 +737,13 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
     #hammer++ install window if you freaked it up
     elif subwintype == 'hammerinstallinvalid':
         #root.geometry('423x140')
-        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct \narchive?", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Hammer++ executable not found. Did you select the correct\narchive?", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "You can install Hammer++ here: \n https://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        # Button here
+        lbl = Label(root, text = "You can install Hammer++ here:\nhttps://ficool2.github.io/HammerPlusPlus-Website/download.html", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
-        
         root.update()
         time.sleep(1)
         installhammer()
@@ -780,9 +782,9 @@ window should auto-detect Left 4 Dead 2 Authoring Tools on its own.",
     elif subwintype == 'finishingup':
         #root.geometry('260x130')
         if state_htype == False:
-            lbl = Label(root, text = "Hammer++ for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+            lbl = Label(root, text = "Hammer++ for your game has been\nset up. You can turn Proton off\nfor this game now.\nThe main window will open again now.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         elif state_htype == True:
-            lbl = Label(root, text = "Hammer for your game has \nset up. You can turn Proton off \nfor this game now. \nThe main window will open again now.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+            lbl = Label(root, text = "Hammer for your game has been\nset up. You can turn Proton off\nfor this game now.\nThe main window will open again now.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
@@ -834,11 +836,11 @@ def launchhammer(game, title, version):
     version = int(version)
 
     if version == 0:
-        print("skipping update check")
+        print("skipping update check because hammer++ updates are disabled for this game")
     elif state_disablehppupdates == True:
-        print("skipping update check")
+        print("skipping update check because updates are disabled for all games")
     elif "hammer.exe" in game:
-        print("skipping update check")
+        print("skipping update check because this is not hammer++")
     else:
         print("checking for updates...")
         latestversion = "0"
@@ -849,6 +851,8 @@ def launchhammer(game, title, version):
             latestversion = int(latestversion)
             if latestversion > version:
                 # UPDATE PROMPT GOES HERE. SET THE JSON THINGIE TO 0 IF USER DOES NOT WANT TO UPDATE
+                # Options:
+                # Yes, No, No AND DONT UPDATE AGAIN
                 print("update detected! new version: "+str(latestversion)+" installed version: "+str(version))
                 subwindow('hammerupdate')
                 autohammer(gamefolderfinder,titlelowered)
