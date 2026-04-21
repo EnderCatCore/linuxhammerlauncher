@@ -964,17 +964,23 @@ def hammerconfig(binfolder, plusplusconfig):
     global bintypewindowified
     global combi3paths
     global hammer_gameconfiglocation
+
+    print("game folder path is " + gamefolderpath)
+
     print("using binfolder "  + binfolder)
     combi3paths = gamefolderpath + binfolder + bintype
-    
+
+    # auto delete binwin if it already exists (though this might mess up user data. open dialog to ask user?)
+    if os.path.exists(gamefolderpath + "binwin") == True:
+        print("BINWIN ALREADY EXISTS! deleting...")
+        os.system("rm -r '" + gamefolderpath + "binwin/'")
+
     if state_htype == True:
         hammer_gameconfiglocation = "/GameConfig.txt"
         hammer_exelocation = "/hammer.exe"
     elif state_htype == False:
         hammer_exelocation = "/hammerplusplus.exe"
         hammer_gameconfiglocation = "/hammerplusplus/hammerplusplus_gameconfig.txt"
-    
-    
  
     #gameconfig & settings generation
     timeout_time = 10
@@ -1147,24 +1153,9 @@ def hammerconfig(binfolder, plusplusconfig):
         if os.path.exists(gamefolderpath + "mapsrc/") == False:
             os.mkdir(gamefolderpath + "mapsrc/")
             
-    #copy bin folder as binwin in same directory if it does not exist. auto delete if it already exists (though this might mess up user data. open dialog to ask user?)
-    #sfm specific garbage
-    if gamename == "game":
-        if os.path.exists(gamefolderpath + "binwin") == True:
-            print("BINWIN ALREADY EXISTS! deleting...")
-            os.system("rm -r '" + gamefolderpath + "binwin/'")
-        print("game folder path is " + gamefolderpath)
-        if os.path.exists(gamefolderpath + "binwin") == False:
-            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-            os.system("cp -r '" + tffolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-    else:
-        if os.path.exists(gamefolderpath + "binwin") == True:
-            print("BINWIN ALREADY EXISTS! deleting...")
-            os.system("rm -r '" + gamefolderpath + "binwin/'")
-        print("game folder path is " + gamefolderpath)
-        if os.path.exists(gamefolderpath + "binwin") == False:
-            print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-            os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    #copy bin folder to binwin
+    print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
     
 
 #create a gameconfig
