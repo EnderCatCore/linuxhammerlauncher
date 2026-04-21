@@ -975,6 +975,33 @@ def hammerconfig(binfolder, plusplusconfig):
         print("BINWIN ALREADY EXISTS! deleting...")
         os.system("rm -r '" + gamefolderpath + "binwin/'")
 
+    #check for steam. if find steam make bat!! if not. too bad. fool
+    steampath = os.popen("which steam").read()
+    if os.path.exists(steampath[:-1]) == True:
+        print("found steam!")
+        #detect appid
+        if os.path.exists(gamefolderpath + "steam_appid.txt") == True:
+            with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
+                print(gamefolderpath + "steam_appid.txt")
+                game_appid = str(appidfile.read())[:-2]
+                print("appid is " + game_appid)
+
+            #create TRUE run game bat
+            print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
+            batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+            batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+            batfile.close()
+        else:
+            print("steam_appid missing from game directory!")
+    else:
+        print("could not find steam. flatpak moment!")
+
+    #copy bin folder to binwin
+    print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+    os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
+
+
+
     if state_htype == True:
         hammer_gameconfiglocation = "/GameConfig.txt"
         hammer_exelocation = "/hammer.exe"
@@ -1054,27 +1081,6 @@ def hammerconfig(binfolder, plusplusconfig):
         batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
         batfile.close()
 
-        #check for steam. if find steam make bat!! if not. too bad. fool
-        steampath = os.popen("which steam").read()
-        if os.path.exists(steampath[:-1]) == True:
-            print("found steam!")
-            #detect appid
-            if os.path.exists(gamefolderpath + "steam_appid.txt") == True:
-                with open(gamefolderpath + "steam_appid.txt", 'r') as appidfile:
-                    print(gamefolderpath + "steam_appid.txt")
-                    game_appid = str(appidfile.read())[:-2]
-                    print("appid is " + game_appid)
-
-                #create TRUE run game bat
-                print(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat")
-                batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
-                batfile.write('@echo off\nstart /unix ' + steampath[:-1] +' steam://rungameid/' + str(game_appid) + '//"%3 %4"\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-                batfile.close()
-            else:
-                print("steam_appid missing from game directory!")
-        else:
-            print("could not find steam. flatpak moment!")
-
         #create win version of gamefolderpath
         gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
         binfolderwindowified = binfolder.replace("/","\\")
@@ -1152,11 +1158,6 @@ def hammerconfig(binfolder, plusplusconfig):
     else:
         if os.path.exists(gamefolderpath + "mapsrc/") == False:
             os.mkdir(gamefolderpath + "mapsrc/")
-            
-    #copy bin folder to binwin
-    print("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-    os.system("cp -r '" + gamefolderpath + "bin/' '" + gamefolderpath + "binwin/'")
-    
 
 #create a gameconfig
 def gameconfigmake(game):
