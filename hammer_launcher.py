@@ -1435,7 +1435,7 @@ def setuphammer():
             hammerexe = "hammer.exe"
             version = "1"
         
-        nobinwin = ['half-life 2', 'portal', 'portal2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
+        nobinwin = ['half-life 2', 'portal', 'portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
         if gamename in nobinwin:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
