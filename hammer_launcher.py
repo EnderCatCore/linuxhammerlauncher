@@ -975,7 +975,12 @@ def hammerconfig(binfolder, plusplusconfig):
         print("BINWIN ALREADY EXISTS! deleting...")
         os.system("rm -r '" + gamefolderpath + "binwin/'")
 
-    #check for steam. if find steam make bat!! if not. too bad. fool
+    # create dummy bat
+    batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
+    batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
+    batfile.close()
+
+    #check for steam. if find steam make bat for game launching!! if not. too bad. fool
     steampath = os.popen("which steam").read()
     if os.path.exists(steampath[:-1]) == True:
         print("found steam!")
@@ -1075,11 +1080,6 @@ def hammerconfig(binfolder, plusplusconfig):
                     data = data.replace("\\bin\\", "\\binwin\\")
                 with open(combi3paths + "/hammerplusplus/hammerplusplus_settings.ini", 'w') as file:
                     file.write(data)
-
-        # dummy version
-        batfile = open(gamefolderpath + binfolder + "linuxhammerlauncher_rungame.bat", 'w')
-        batfile.write('@echo off\n\necho:\necho "Thanks for using Linux Hammer Launcher! ^c^"')
-        batfile.close()
 
         #create win version of gamefolderpath
         gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
