@@ -1,4 +1,4 @@
-![Linux Hammer Launcher](./assetssrc/hammerlauncher_logo_fullres.png)
+![Linux Hammer Launcher](./assetssrc/hammerlauncher_logo_darkmode.png)
 
 A launcher and installer for Hammer++ on Linux, for many different source engine games.
 
