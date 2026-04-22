@@ -12,17 +12,9 @@ import webbrowser
 
 ''' TODO and ISSUES
 
--csgo wont be supported, sdk costs money
-
--allow setup hammer to update hammer++ automatically?
-
--portal 2 should be tested on non debian/ubuntu based distros. it only wants to compile if the maps are opened from the full debian-installation path rather than steam path.
-
 -add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
--i dont imagine itll make a difference but testing on x11 should be done probably 
-
--make reset and delete hammer buttons do something
+-make delete hammer button do something
 
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
@@ -51,6 +43,7 @@ print("if youre opening this in the terminal because something went wrong, im so
 state_htype = False
 state_disablehppupdates = False
 state_theme = 0
+state_usemapsrc = True
 
 
 #vguititlebar = 1
@@ -84,7 +77,7 @@ if os.path.exists(configpath + "games.txt") == False:
 #check for games config file, if it doesnt exist, make it, fool.
 if os.path.exists(configpath + "settings.ini") == False:
     settingsini = open(configpath + "settings.ini", 'w')
-    settingsini.write('[LHL Settings]\nstate_htype = False\nstate_disablehppupdates = False\nstate_theme = 0')
+    settingsini.write('[LHL Settings]\nstate_htype = False\nstate_disablehppupdates = False\nstate_theme = 0\nstate_usemapsrc = True')
     settingsini.close()
     print("settings ini not found, created new one.")
  
@@ -101,7 +94,9 @@ def writetosettings():
     settingsini.write('[LHL Settings]\n' + \
     'state_htype = ' + str(state_htype) + '\n'\
     'state_disablehppupdates = ' + str(state_disablehppupdates) + '\n'\
-    'state_theme = ' + str(state_theme) + '\n')
+    'state_theme = ' + str(state_theme) + '\n'\
+    'state_usemapsrc = ' + str(state_usemapsrc) + '\n'\
+    )
     settingsini.close()
 
 #set vars to values in settingsini function
@@ -135,6 +130,13 @@ def loadsettings():
             print("Setting Theme is:")
             print(line[line.find(" = ") + 3:])
             state_theme = int(line[line.find(" = ") + 3:])
+        if "state_usemapsrc = " in line: #find and load map folder setting
+            print("Setting MapSrc is:")
+            print(line[line.find(" = ") + 3:])
+            if line[line.find(" = ") + 3:] == "True":
+                state_usemapsrc = True
+            elif line[line.find(" = ") + 3:] == "False":
+                state_usemapsrc = False
             
 
 loadsettings()
@@ -1495,8 +1497,12 @@ def creategamebutton(height, title, hammerpath, version):
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_hammer.png")
         if titlelowered == "garrysmod":
             gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/garrysmod.png")
-        if titlelowered == "left 4 dead 2":
+        elif titlelowered == "left 4 dead 2":
             gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/l4d2.png")
+        elif titlelowered == "left 4 dead":
+            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/l4d.png")
+        elif titlelowered == "black mesa":
+            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/bms.png")
         elif titlelowered == "portal 2":
             gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal2.png")
         elif titlelowered == "portal":
@@ -1734,6 +1740,17 @@ def rendersettingswindow():
     updatedisablebtn.grid(row=2, column=1, sticky="ew")
     updatedisableicn.grid(row=2, column=0, sticky="ew")
     
+    ''' i forgot that we dont have an easy way to detect the games primary maps folder ignore all of this
+    #use mapsrc folder
+    mapsrcuseicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_usemapsrc).lower()+".png")
+    mapsrcuseicn = Label(root, bg=colors_framebackground, image=mapsrcuseicon, anchor="e")
+    mapsrcuseicn.image = mapsrcuseicon
+    mapsrcusebtn = Button(root, text = "Use 'mapsrc' folder instead of 'maps' folder", fg=colors_primarytext, command=lambda: togglesettingstate("mapsrcfolderuse"), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    mapsrcusebtn.grid(row=3, column=1, sticky="ew")
+    mapsrcuseicn.grid(row=3, column=0, sticky="ew")
+    '''
+    
     #theme
     themenumicon = Image("photo", file=os.path.dirname(__file__)+"/assets/graphics/theme_"+themenames[state_theme].lower()+".png")
     themenumicn = Label(root, bg=colors_framebackground, image=themenumicon, anchor="e")
@@ -1748,8 +1765,8 @@ def rendersettingswindow():
     #back
 
     settingsbackbtn = Button(root, text = "Back", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    settingsbackbtn.grid(row=7, column=1, sticky="ew")
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+    settingsbackbtn.grid(row=9, column=1, sticky="w")
 
     
 
@@ -1760,6 +1777,7 @@ def togglesettingstate(statetomodif):
     global state_htype
     global state_disablehppupdates
     global state_theme
+    global state_usemapsrc
     
     if statetomodif == "htype":
         state_htype = toggle_bool(state_htype)
@@ -1776,6 +1794,10 @@ def togglesettingstate(statetomodif):
         print(str(themenames[state_theme].lower()))
         updatetheme()
         startsettingswindow()
+    elif statetomodif == "mapsrcfolderuse":
+        state_usemapsrc = toggle_bool(state_usemapsrc)
+        print(str(state_usemapsrc))
+        rendersettingswindow()
     writetosettings()
 
 
