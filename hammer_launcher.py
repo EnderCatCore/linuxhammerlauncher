@@ -409,7 +409,8 @@ def checkproton():
     print("CHECKING FOR PROTON NOW")
     print(gamename)
     #game specific checking, should only need to be used for HL2 and Portal 2 but who knows
-    if gamename == "half-life 2" or gamename == "portal 2" or gamename == "left 4 dead" or gamename == "left 4 dead 2":
+    tier0 = ['half-life 2','portal 2','half-life 1 source deathmatch','left 4 dead','left 4 dead 2']
+    if gamename in tier0:
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
             subwindow('protonenable')
@@ -1432,7 +1433,7 @@ def setuphammer():
             hammerexe = "hammer.exe"
             version = "1"
         
-        nobinwin = ['half-life 2', 'portal', 'portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
+        nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
         if gamename in nobinwin:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
             if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
