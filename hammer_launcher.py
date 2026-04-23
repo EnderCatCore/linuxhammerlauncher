@@ -52,6 +52,13 @@ state_usemapsrc = True
 homefolder = os.path.expanduser("~")
 configpath = homefolder + "/.config/linuxhammerlauncher/"
 
+# this is a function so temp is still recreated after deletion. and no code reusing idk
+def cleantemp():
+    if os.path.exists(configpath + "temp/") == True:
+        print("cleaning temp folder...")
+        os.system("cd " + configpath + " && rm -r temp/")
+    os.mkdir(configpath + "temp/")
+
 #CONFIG FILE/FOLDER CREATION
 #CONFIG FILE/FOLDER CREATION
 #CONFIG FILE/FOLDER CREATION
@@ -68,21 +75,21 @@ if os.path.exists(configpath + "prefix/") == False:
 #check for runner folder, if it doesnt exist, make it, idiot.
 if os.path.exists(configpath + "runner/") == False:
     os.mkdir(configpath + "runner/")
-#check for games config file, if it doesnt exist, make it, fool.
+#check for tmp folder. if it exists. KILL IT. then make it (again), nincompoop.
+cleantemp()
+#check for games config file, if it doesnt exist, make it, buffoon.
 if os.path.exists(configpath + "games.txt") == False:
     gameconfig = open(configpath + "games.txt", 'w')
     gameconfig.write("")
     gameconfig.close()
     print("game config not found, created new one.")
-#check for games config file, if it doesnt exist, make it, fool.
+#check for games config file, if it doesnt exist, make it, imbecile.
 if os.path.exists(configpath + "settings.ini") == False:
     settingsini = open(configpath + "settings.ini", 'w')
     settingsini.write('[LHL Settings]\nstate_htype = False\nstate_disablehppupdates = False\nstate_theme = 0\nstate_usemapsrc = True')
     settingsini.close()
     print("settings ini not found, created new one.")
- 
- 
- 
+
 #SETTINGS READING AND WRITING
 #SETTINGS READING AND WRITING
 #SETTINGS READING AND WRITING
@@ -106,7 +113,8 @@ def loadsettings():
     global state_theme
     
     print("hello? this thing working???")
-    
+    #no it isnt sory :(
+
     with open(configpath + "settings.ini","r") as inifile:
         configlines = inifile.read().split("\n")
     
@@ -536,13 +544,15 @@ def autohammer(updatefolder,updatename):
             print("failed to get the latest hammer++ version!")
             return
 
+    cleantemp()
+
     print("using hammer++ version "+version)
 
     hammerpluspluszip = "hammerplusplus_"+hammerplusplustype+"_build"+version
 
     hammerplusplusurl = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download/"+version+"/"+hammerpluspluszip+".zip"
 
-    file_Path = configpath + hammerpluspluszip+".zip"
+    file_Path = configpath + "temp/" + hammerpluspluszip+".zip"
     print("Downloading "+hammerpluspluszip)
     response = requests.get(hammerplusplusurl)
     if response.status_code == 200:
@@ -551,15 +561,16 @@ def autohammer(updatefolder,updatename):
         print("downloaded hammer++ for "+hammerplusplustype)
         version = response.text
         print("copying hammerplusplus files to bin")
-        print("cd " + configpath + " && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
-        os.system("cd " + configpath + " && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
+        print("cd " + configpath + "temp/ && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
+        os.system("cd " + configpath + "temp/ && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
         print("removing temp hammer++ files...")
         os.remove(file_Path)
-        print("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
-        os.system("cd " + configpath + " && rm -rv "+hammerpluspluszip+"/")
+        print("cd " + configpath + "temp/ && rm -rv "+hammerpluspluszip+"/")
+        os.system("cd " + configpath + "temp/ && rm -rv "+hammerpluspluszip+"/")
     else:
         print("hammer++ zip FAILED to download. Too bad!")
-        return
+
+    cleantemp()
 
 '''subwindow creation'''
 def subwindow(subwintype):
@@ -852,7 +863,7 @@ def launchhammer(game, title, version):
                 # UPDATE PROMPT GOES HERE. SET THE JSON THINGIE TO 0 IF USER DOES NOT WANT TO UPDATE
                 # Options:
                 # Yes, No, No AND DONT UPDATE AGAIN
-                print("update detected! new version: "+str(latestversion)+" installed version: "+str(version))
+                print("update detected!\nnew version: "+str(latestversion)+"\ninstalled version: "+str(version))
                 subwindow('hammerupdate')
                 autohammer(gamefolderfinder,titlelowered)
             else:
@@ -926,7 +937,9 @@ def launchhammer(game, title, version):
             file.write(data)
 
     closelauncher()
-    
+
+    cleantemp()
+
     #launch wine9 with hammer using correct prefix
     print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
     os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
@@ -1027,25 +1040,27 @@ def hammerconfig(binfolder, plusplusconfig):
     #i do not know why sfm is trying to use a bash file to run. i dont need to know why as long as this works. sfm has its gameconfig made from scratch there is zero reason for it to launch
     #hammer
     
+    cleantemp()
+
     print(gamefolderpath + "IS IT SFM????")
     if gamename == "game":
         print("please for the love of god stop using the sh file you dont need it sfm. why are we even generating them like this anymore anyways we have a thing to make them from scratch now is there\
     any point in using such a jank system still whyd i make it like this")
         print("idk :3")
     else:
-        bashfile = open(configpath + "temprunhammerbash.sh", "w")
+        bashfile = open(configpath + "/temp/temprunhammerbash.sh", "w")
         print("'WINEPREFIX="' + configpath + prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + hammer_exelocation + '"')
         bashfile.write('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine "' + combi3paths + hammer_exelocation + '"')
         bashfile.close()
-        os.system("chmod +x " + configpath + "temprunhammerbash.sh")
+        os.system("chmod +x " + configpath + "/temp/temprunhammerbash.sh")
         #keep starting hammer for increasing amounts of time until gameconfig is generated
         #this whole system should probably be changed to just be a fallback option for when a game is run that we havent defined in the gameconfigmaker
         #while os.path.isfile(combi3paths + hammer_gameconfiglocation) == False:
-        print("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
-        os.system("timeout " + str(timeout_time) + " " + configpath + "temprunhammerbash.sh")
+        print("timeout " + str(timeout_time) + " " + configpath + "/temp/temprunhammerbash.sh")
+        os.system("timeout " + str(timeout_time) + " " + configpath + "/temp/temprunhammerbash.sh")
         timeout_time += 5
         root.update()
-        os.remove(configpath + "temprunhammerbash.sh")
+        cleantemp()
     #all this should only frickig do when the file exists god
     if os.path.isfile(combi3paths + hammer_gameconfiglocation) == True:
         subwindow("editingconfigs")
@@ -1460,7 +1475,7 @@ def setuphammer():
         print(gamedefinition)
         gameconfig.close() 
         
-        
+        cleantemp()
         
         #show finishing up window
         subwindow('finishingup')
