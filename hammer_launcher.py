@@ -1359,7 +1359,7 @@ def setuphammer():
         #only install ++ tools if hammer++ isnt disabled
         if state_htype == False:
             #install plusplus tools, some games dont work for this
-            noplusplus = ['portal 2', 'half-life 2', 'portal']
+            noplusplus = ['portal 2', 'half-life 2', 'portal', 'garrysmod']
             if gamename not in noplusplus:
                 subwindow("toolsplusplusinstall")
                 
