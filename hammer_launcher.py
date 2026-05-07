@@ -34,12 +34,15 @@ import webbrowser
 
 -update prompt needs to be yes/no. a dont ask again checkbox maybe?
 
+-make it so hammer updating actually works
+
+-make it so dods uses mapsrc again apparently the bsps going into mapsrc isnt a bug(????)
+
 '''
 #--------
 
 ''' games to add support to
 half life source (might be easy if we snag the gameinfo? im guessing we can reuse hl1mp stuff but not sure)
-left 4 dead (will this even work at all)
 '''
 # freak
 print("if youre opening this in the terminal because something went wrong, im sorry.")
@@ -1020,8 +1023,14 @@ def hammerconfig(binfolder, plusplusconfig):
         print("could not find steam. flatpak moment!")
 
     #copy bin folder to binwin
+    print("copying binwin")
+    print(gamename)
     print("cp -r '" + gamefolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
-    os.system("cp -r '" + gamefolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
+    if gamename == "game":
+        print("doing sfm copy")
+        os.system("cp -r '" + tffolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
+    else:
+        os.system("cp -r '" + gamefolderpath + "bin/.' '" + gamefolderpath + "binwin/'")
 
 
 
@@ -1147,12 +1156,17 @@ def hammerconfig(binfolder, plusplusconfig):
         batfile.close()
     
     #TF2C and HL1MP (and and SFM) needs its gameconfig made from scratch
+    print("GUhX2")
+    print(gamename)
     if state_htype == False:
         if gamename == "team fortress 2 classified":
             gameconfigmake("tf2c")
         if gamename == "half-life 1 source deathmatch":
             gameconfigmake("hl1mp")
         if gamename == "game":
+            print("A SINGULAR 'GUH' SO I KNOW WHERE THIS IS")
+            os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
+            print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
             gameconfigmake("sfm")
         if gamename == "half-life 2 deathmatch":
             gameconfigmake("hl2mp")
@@ -1161,13 +1175,7 @@ def hammerconfig(binfolder, plusplusconfig):
         if gamename == "left 4 dead":
             gameconfigmake("l4d")
             os.system("cp -r '" + gamefolderpath + "bin/GameConfig.txt' '" + gamefolderpath + "binwin/'")
-            
-        #sfm garbage stupid garbage that i hate so much copy paste hl2 garbage but not from half life but instead from team fortress 2 because screw you and into sfm because hammer++ hates having its 
-        #stupif shaders outside of vpks in just plain files because it oH SO NEEDS THEM TO BE IN VPKS im so normal im so normal im so normal im so normal
-        if gamename == "game":
-            print("A SINGULAR 'GUH' SO I KNOW WHERE THE THING IS")
-            print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
-            os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
+        
             
     
     #create mapsrc folder for game
@@ -1315,10 +1323,16 @@ def setuphammer():
         #ask user for path to game
         freetocontinue = 0
         subwindow('gamedirectorypicker')
-
+        
+        os.system("echo this is echoed with os plugin")
         gamename = os.path.basename(gamefolderpath[:-1]).casefold()
-        backupgamefolderpath = gamefolderpath
-        backupgamename = gamename
+        print("gamefolderpath namified is " + os.path.basename(gamefolderpath[:-1]).casefold())
+        print("gamename is " + gamename)
+        
+        if gamename == "game":
+            print("SFM IS USED")
+            backupgamefolderpath = gamefolderpath
+            backupgamename = gamename
 
         # IMPORTANT REMINDER: "game" is SFM!!!!!!!!!!!!!!
 
@@ -1452,6 +1466,13 @@ def setuphammer():
             hammerexe = "hammer.exe"
             version = "1"
         
+        
+        
+
+        print("backupgamefolderpath is")
+        print(backupgamefolderpath)
+        
+        
         nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
         if gamename in nobinwin:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
@@ -1465,10 +1486,15 @@ def setuphammer():
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+        elif gamename == "game":
+            gamedefinition = "['SourceFilmmaker', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+            hammerconfig("binwin/", True)
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
             hammerconfig("binwin/", True)
         
+        
+            
         gameconfig.write(gamedefinition)
         print(gamedefinition)
         gameconfig.close() 
