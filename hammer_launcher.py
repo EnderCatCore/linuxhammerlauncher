@@ -360,7 +360,8 @@ def findgame():
             gamefolderpath = gamefolderpath + "/"
         if gamefolderpath == "/":
             subwindow('gamedirectorypickerinvalid')
-        elif os.path.exists(gamefolderpath + "bin/") == False:
+
+        if os.path.exists(gamefolderpath + "bin/") == False:
             if os.path.exists(gamefolderpath + "game/bin/") == False:
                 subwindow('gamedirectorypickerinvalid')
             elif os.path.exists(gamefolderpath + "game/bin/") == True:
