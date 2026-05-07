@@ -28,6 +28,12 @@ import webbrowser
 
 -add a vanilla hammer indicator
 
+-make urls in setup clickable/buttons.
+
+-crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
+
+-update prompt needs to be yes/no. a dont ask again checkbox maybe?
+
 '''
 #--------
 
@@ -345,30 +351,26 @@ def findgame():
     global subwinpressable
     global freetocontinue
     global gamefolderpath
-    
+
     if subwinpressable == 1:
         subwinpressable = 0
         gamefolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(gamefolderpath)
-        if os.path.basename(gamefolderpath[:-1]).casefold() == "sourcefilmmaker":
-            print("YEA ITS SFM")
-            if not gamefolderpath.endswith("/"):
-                gamefolderpath = gamefolderpath + "/"
-            if gamefolderpath == "/":
-                subwindow('gamedirectorypickerinvalid')
-            elif os.path.exists(gamefolderpath + "game/bin/") == False:
+        if not gamefolderpath.endswith("/"):
+            gamefolderpath = gamefolderpath + "/"
+        if gamefolderpath == "/":
+            subwindow('gamedirectorypickerinvalid')
+        elif os.path.exists(gamefolderpath + "bin/") == False:
+            if os.path.exists(gamefolderpath + "game/bin/") == False:
                 subwindow('gamedirectorypickerinvalid')
             elif os.path.exists(gamefolderpath + "game/bin/") == True:
+                print("eeeyup its sfm")
+                gamefolderpath = gamefolderpath + "game/"
                 freetocontinue = 1
-        else:
-            if not gamefolderpath.endswith("/"):
-                gamefolderpath = gamefolderpath + "/"
-            if gamefolderpath == "/":
+            else:
                 subwindow('gamedirectorypickerinvalid')
-            elif os.path.exists(gamefolderpath + "bin/") == False:
-                subwindow('gamedirectorypickerinvalid')
-            elif os.path.exists(gamefolderpath + "bin/") == True:
-                freetocontinue = 1
+        elif os.path.exists(gamefolderpath + "bin/") == True:
+            freetocontinue = 1
 #open file picker for tf path
 def findtf():
     global subwinpressable
@@ -478,28 +480,26 @@ def autohammer(updatefolder,updatename):
     global gamefolderpath
     global gamename
 
+    print("AUTOHAMMER")
+    print(gamename)
+    print(gamefolderpath)
+
     if updatefolder and updatename:
         gamefolderpath = updatefolder+"/"
         gamename = updatename
 
     directory = "bin/"
 
-    if gamename == 'sourcefilmmaker':
-        directory = "game/bin/"
-
     #update specific stuff
     if updatefolder and updatename:
         print(gamefolderpath)
         if os.path.exists(gamefolderpath + "/binwin/") == True:
             directory = "binwin/"
-        if gamename == 'sourcefilmmaker':
-            if os.path.exists(gamefolderpath + "/game/binwin/") == True:
-                directory = "game/binwin/"
 
     print("using " + directory + " for automated install")
 
     #auto set up hammer++. wow
-    tf2branch = ['team fortress 2','counter-strike source','half-life 1 source deathmatch','half-life 2 deathmatch','day of defeat source','sourcefilmmaker','team fortress 2 classified']
+    tf2branch = ['team fortress 2','counter-strike source','half-life 1 source deathmatch','half-life 2 deathmatch','day of defeat source','game','sourcefilmmaker','team fortress 2 classified']
     sp2013branch = ['half-life 2','portal','source sdk base 2013 singleplayer','source sdk base 2007','source sdk base 2006']
     mp2013branch = ['klonoa 2 lunateas veil']
     gmodbranch = ['garrysmod','black mesa','alien swarm']
@@ -561,12 +561,8 @@ def autohammer(updatefolder,updatename):
         print("downloaded hammer++ for "+hammerplusplustype)
         version = response.text
         print("copying hammerplusplus files to bin")
-        print("cd " + configpath + "temp/ && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
-        os.system("cd " + configpath + "temp/ && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
-        print("removing temp hammer++ files...")
-        os.remove(file_Path)
-        print("cd " + configpath + "temp/ && rm -rv "+hammerpluspluszip+"/")
-        os.system("cd " + configpath + "temp/ && rm -rv "+hammerpluspluszip+"/")
+        print("cd " + configpath + "temp/ && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
+        os.system("cd " + configpath + "temp/ && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
     else:
         print("hammer++ zip FAILED to download. Too bad!")
 
@@ -576,6 +572,8 @@ def autohammer(updatefolder,updatename):
 def subwindow(subwintype):
     global gamefolderpath
     global gamename
+    global backupgamefolderpath
+    global backupgamename
     global subwinpressable
     global bintype
     subwinpressable = 1
@@ -1168,6 +1166,7 @@ def hammerconfig(binfolder, plusplusconfig):
         if gamename == "game":
             print("A SINGULAR 'GUH' SO I KNOW WHERE THE THING IS")
             print("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
+            os.system("cp -rv --update=none '" + tffolderpath + "hl2/' '" + gamefolderpath + "'")
             
     
     #create mapsrc folder for game
@@ -1257,6 +1256,7 @@ def setuphammer():
     global gamefolderpath
     global gamename
     global backupgamefolderpath
+    global backupgamename
     global gameconfig
     backupgamefolderpath = "na"
     
@@ -1316,14 +1316,15 @@ def setuphammer():
         subwindow('gamedirectorypicker')
 
         gamename = os.path.basename(gamefolderpath[:-1]).casefold()
-        
+        backupgamefolderpath = gamefolderpath
+        backupgamename = gamename
+
+        # IMPORTANT REMINDER: "game" is SFM!!!!!!!!!!!!!!
+
         #check if sfm is being used and ask for tf2 install
-        if gamename == "sourcefilmmaker":
+        if gamename == "game":
             subwindow('tfdirectorypicker')
             print(tffolderpath)
-            #swap out gamefolderpath for tffolderpath and switch back later when SFM one is needed
-            backupgamefolderpath = gamefolderpath
-            backupgamename = gamename
             gamefolderpath = tffolderpath
             gamename = os.path.basename(tffolderpath[:-1]).casefold()
         elif gamename == "portal 2":
@@ -1341,7 +1342,7 @@ def setuphammer():
         else:
             #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
             subwindow('protonenable')
-            
+
         #only install ++ hammer if hammer++ isnt disabled
         if state_htype == False:
             #check for hammerplusplus
@@ -1363,7 +1364,7 @@ def setuphammer():
             if gamename not in noplusplus:
                 subwindow("toolsplusplusinstall")
                 
-                file_Path = configpath + 'tools_plusplus.zip'
+                file_Path = configpath + 'temp/tools_plusplus.zip'
                 tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
                 
                 print("Downloading Tools ++")
@@ -1375,22 +1376,22 @@ def setuphammer():
                 else:
                     stateandprint("Failed to download Tools++. \n Check your internet connection?")
                 print("copying tools files to bin")
-                print("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-                os.system("cd " + configpath + " && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-                print("removing temp tools++ files...")
-                os.remove(file_Path)
-                print("cd " + configpath + " && rm -rv tools_plusplus/")
-                os.system("cd " + configpath + " && rm -rv tools_plusplus/")
+                print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
             else:
                 subwindow("waiting")
                 time.sleep(10)
-        
-        # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
-        if gamename == "sourcefilmmaker":
+
+        cleantemp()
+
+        if backupgamename == "game":
+            print("switching back to sfm paths")
+            print(backupgamefolderpath)
+            print(backupgamename)
             gamefolderpath = backupgamefolderpath
             gamename = backupgamename
 
-
+        # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
         print("CHECKING FOR CONFIG DUPLICATES")
 
         gameline = []
@@ -1463,10 +1464,6 @@ def setuphammer():
                 os.remove(gamefolderpath + "bin/GameConfig.txt")
             hammerconfig("bin/", True)
             os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        elif gamename == "sourcefilmmaker":
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "game/binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-            gamefolderpath = backupgamefolderpath + "game/"
-            hammerconfig("binwin/", True)
         else:
             gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
             hammerconfig("binwin/", True)
