@@ -1139,12 +1139,15 @@ def hammerconfig(binfolder, plusplusconfig):
                     print("MapSRC disabled. Using vanilla path!")
                     with open(file=os.path.dirname(__file__)+"/assets/gamemappaths.txt") as mappathfile:
                         maplines = mappathfile.readlines()
+                    correctmapline = "na"
                     for itwothesequel in range(len(maplines)):
                         if gamename + " : " in maplines[itwothesequel]:
+                            print(maplines)
                             correctmapline = maplines[itwothesequel]
-                        else:
-                            correctmapline = "na"
+                            
                     if correctmapline == "na":
+                        print(maplines)
+                        print(gamename)
                         print("GAME MAPS FOLDER NOT CONFIGGED!! using MapSRC!")
                         lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
                     else:
