@@ -8,6 +8,7 @@ import time
 import zipfile
 import json
 import webbrowser
+import random
 
 
 ''' TODO and ISSUES
@@ -50,6 +51,10 @@ state_disablehppupdates = False
 state_theme = 0
 state_usemapsrc = True
 
+# random number for tamas icon.
+# why? i cant decide on a single variant to use!!! too BAD
+tamarand = str(random.randint(0, 3))
+print(tamarand)
 
 #vguititlebar = 1
 
@@ -1124,7 +1129,7 @@ def hammerconfig(binfolder, plusplusconfig):
             elif gamename == "left 4 dead 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\left4dead2\\maps"\n'
             else:
-                if setting
+                # FIXME if setting
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                 file.writelines(lines)
@@ -1731,7 +1736,7 @@ def rendermainwindow():
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
     
     if style_showicons == True:
-        tamasicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam.png")
+        tamasicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam"+tamarand+".png")
         crediticn = Label(optionsframe, bg=colors_framebackground, image=tamasicon, anchor="e")
         crediticn.image = tamasicon #see above
         crediticn.grid(row=linenum+12, column=0, sticky="ew")
