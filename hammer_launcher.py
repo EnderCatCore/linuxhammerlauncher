@@ -12,29 +12,27 @@ import webbrowser
 
 ''' TODO and ISSUES
 
--add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
+-(important for release) add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
--make delete hammer button do something
+-(important for release) make delete hammer button do something
 
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
--make it so mapsrc isnt created for l4d2 or dods, they still are despite not being used for those games and just adding ors to the if statement disallows any game to have mapsrc created
-
 -why are plusplus tools not configged for l4d2 i will kill
 
--HL2 wont auto update????
+-(important for release) HL2 wont auto update???? 
 
--dxvk cache keeps showing up in root source folder thing??
-
--add a vanilla hammer indicator
+-dxvk cache keeps showing up in root source folder thing?? 
 
 -make urls in setup clickable/buttons.
 
 -crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
 
--update prompt needs to be yes/no. a dont ask again checkbox maybe?
+-update prompt needs to be yes/no. a dont ask again checkbox maybe? 
 
--make it so hammer updating actually works
+-(important for release) make it so hammer updating actually works
+
+-(important for release) fix maps folder being incorrectly configged to whateverthefrickitwasthatwasbreakingit 
 
 '''
 #--------
@@ -118,6 +116,7 @@ def loadsettings():
     global state_htype
     global state_disablehppupdates
     global state_theme
+    global state_usemapsrc
     
     print("hello? this thing working???")
     #no it isnt sory :(
@@ -1125,6 +1124,7 @@ def hammerconfig(binfolder, plusplusconfig):
             elif gamename == "left 4 dead 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\left4dead2\\maps"\n'
             else:
+                if setting
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                 file.writelines(lines)
@@ -1767,7 +1767,7 @@ def rendersettingswindow():
     hammertypeicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_htype).lower()+".png")
     hammertypeicn = Label(root, bg=colors_framebackground, image=hammertypeicon, anchor="e")
     hammertypeicn.image = hammertypeicon
-    hammertypebtn = Button(root, text = "Use vanilla Hammer in setup", fg=colors_primarytext, command=lambda: togglesettingstate("htype"), bg=colors_framebackground, \
+    hammertypebtn = Button(root, text = "Use vanilla Hammer in setup*", fg=colors_primarytext, command=lambda: togglesettingstate("htype"), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     hammertypebtn.grid(row=1, column=1, sticky="ew")
     hammertypeicn.grid(row=1, column=0, sticky="ew")
@@ -1781,16 +1781,16 @@ def rendersettingswindow():
     updatedisablebtn.grid(row=2, column=1, sticky="ew")
     updatedisableicn.grid(row=2, column=0, sticky="ew")
     
-    ''' i forgot that we dont have an easy way to detect the games primary maps folder ignore all of this
+    
     #use mapsrc folder
     mapsrcuseicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_usemapsrc).lower()+".png")
     mapsrcuseicn = Label(root, bg=colors_framebackground, image=mapsrcuseicon, anchor="e")
     mapsrcuseicn.image = mapsrcuseicon
-    mapsrcusebtn = Button(root, text = "Use 'mapsrc' folder instead of 'maps' folder", fg=colors_primarytext, command=lambda: togglesettingstate("mapsrcfolderuse"), bg=colors_framebackground, \
+    mapsrcusebtn = Button(root, text = "Use 'mapsrc' folder instead of 'maps' folder*", fg=colors_primarytext, command=lambda: togglesettingstate("mapsrcfolderuse"), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     mapsrcusebtn.grid(row=3, column=1, sticky="ew")
     mapsrcuseicn.grid(row=3, column=0, sticky="ew")
-    '''
+    
     
     #theme
     themenumicon = Image("photo", file=os.path.dirname(__file__)+"/assets/graphics/theme_"+themenames[state_theme].lower()+".png")
@@ -1798,16 +1798,23 @@ def rendersettingswindow():
     themenumicn.image = themenumicon
     themenumbtn = Button(root, text = "Current Theme: " + themenames[state_theme], fg=colors_primarytext, command=lambda: togglesettingstate("themeswitch"), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    themenumbtn.grid(row=3, column=1, sticky="ew")
-    themenumicn.grid(row=3, column=0, sticky="ew")
+    themenumbtn.grid(row=4, column=1, sticky="ew")
+    themenumicn.grid(row=4, column=0, sticky="ew")
     
+    
+    #alert
+    lbl = Label(root, text = "Options followed by a '*' only apply during Hammer setup.", bg=colors_framebackground, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+    lbl.grid(row=10, column=1, sticky="w", pady=(7, 10))
     
     
     #back
 
     settingsbackbtn = Button(root, text = "Back", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
-    settingsbackbtn.grid(row=9, column=1, sticky="w")
+    settingsbackbtn.grid(row=11, column=1, sticky="w")
+    
+    
+    
 
     
 
