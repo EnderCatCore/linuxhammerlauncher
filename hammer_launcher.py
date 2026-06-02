@@ -1118,28 +1118,54 @@ def hammerconfig(binfolder, plusplusconfig):
         bintypewindowified = bintype.replace("/","\\")
         print(os.path.realpath(gamefolderwindowified))
         print(binfolderwindowified)
+        
+        
+        
         #set map vmf directory in config. check for picky map locations per hammer and config (like portal 2)
         print("THE LINE NUMS TO REPLACE ARE:")
         linestoconfig = (find_gameexe_line_numbers(combi3paths + hammer_gameconfiglocation, '"MapDir"'))
         for i in range(len(linestoconfig)):
-            with open(combi3paths + hammer_gameconfiglocation, 'r', encoding='utf-8') as file:
-                lines = file.readlines()
+            with open(combi3paths + hammer_gameconfiglocation, 'r', encoding='utf-8') as gameconffile:
+                lines = gameconffile.readlines()
             if gamename == "portal 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
             elif gamename == "left 4 dead 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\left4dead2\\maps"\n'
             else:
-                # FIXME if setting
-                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
-            with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
-                file.writelines(lines)
+                if state_usemapsrc == True:
+                    lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
+                
+                elif state_usemapsrc == False:
+                    print("MapSRC disabled. Using vanilla path!")
+                    with open(file=os.path.dirname(__file__)+"/assets/gamemappaths.txt") as mappathfile:
+                        maplines = mappathfile.readlines()
+                    for itwothesequel in range(len(maplines)):
+                        if gamename + " : " in maplines[itwothesequel]:
+                            correctmapline = maplines[itwothesequel]
+                        else:
+                            correctmapline = "na"
+                    if correctmapline == "na":
+                        print("GAME MAPS FOLDER NOT CONFIGGED!! using MapSRC!")
+                        lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
+                    else:
+                        print('				"MapDir"		"' + gamefolderwindowified + correctmapline[len(gamename) + 3:] + '"')
+                        print(linestoconfig)
+                        lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + correctmapline[len(gamename) + 3:]
+                            
+                    
+                    
+            with open(combi3paths + hammer_gameconfiglocation, 'w') as gameconffile:
+                gameconffile.writelines(lines)
+                
+                
+        
         #set gameExe to .bat
         linestoconfig = (find_gameexe_line_numbers(combi3paths + hammer_gameconfiglocation, '"GameExe"'))
         for i in range(len(linestoconfig)):
             with open(combi3paths + hammer_gameconfiglocation, 'r', encoding='utf-8') as file:
                 lines = file.readlines()
             lines[linestoconfig[i] - 1] = '				"GameExe"		"' + gamefolderwindowified + "\\" + binfolderwindowified + 'linuxhammerlauncher_rungame.bat"\n'
-            with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
+            with open(combi3paths + hammer_gameconfiglocation, 'w') as file:  
                 file.writelines(lines)
     else:
         #create win version of gamefolderpath. still need these.
@@ -1332,6 +1358,8 @@ def setuphammer():
             print("SFM IS USED")
             backupgamefolderpath = gamefolderpath
             backupgamename = gamename
+        else:
+            backupgamename = "na"
 
         # IMPORTANT REMINDER: "game" is SFM!!!!!!!!!!!!!!
 
@@ -1567,17 +1595,20 @@ def creategamebutton(height, title, hammerpath, version):
         gameicn.image = gameicon
         gameicn.grid(row=height, column=0, sticky="ew")
 
-    #create functional button
-    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version), bg=colors_framebackground,
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    btn.grid(row=height, column=1,sticky="ew")
-    
     if "hammer.exe" in hammerpath:
         print("VANILLA HAMMER DETECTED")
         htypeindicatoricon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"hammertype_vanilla.png")
         htypeicn = Label(optionsframe, bg=colors_framebackground, image=htypeindicatoricon, anchor="e")
         htypeicn.image = htypeindicatoricon
-        htypeicn.grid(row=height, column=2, sticky="ew")
+        htypeicn.grid(row=height, column=0, sticky="ew")
+
+
+    #create functional button
+    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version), bg=colors_framebackground,
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    btn.grid(row=height, column=1,sticky="ew")
+    
+    
         
 
 
