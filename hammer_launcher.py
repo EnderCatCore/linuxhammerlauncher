@@ -36,8 +36,6 @@ import webbrowser
 
 -make it so hammer updating actually works
 
--make it so dods uses mapsrc again apparently the bsps going into mapsrc isnt a bug(????)
-
 '''
 #--------
 
@@ -1124,12 +1122,8 @@ def hammerconfig(binfolder, plusplusconfig):
                 lines = file.readlines()
             if gamename == "portal 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\sdk_content\\maps"\n'
-            elif gamename == "day of defeat source":
-                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\dod\\maps"\n'
             elif gamename == "left 4 dead 2":
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\left4dead2\\maps"\n'
-            elif gamename == "black mesa":
-                lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\bms\\maps"\n'
             else:
                 lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
@@ -1572,6 +1566,14 @@ def creategamebutton(height, title, hammerpath, version):
     btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version), bg=colors_framebackground,
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
+    
+    if "hammer.exe" in hammerpath:
+        print("VANILLA HAMMER DETECTED")
+        htypeindicatoricon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"hammertype_vanilla.png")
+        htypeicn = Label(optionsframe, bg=colors_framebackground, image=htypeindicatoricon, anchor="e")
+        htypeicn.image = htypeindicatoricon
+        htypeicn.grid(row=height, column=2, sticky="ew")
+        
 
 
 def startmainwindow():
@@ -1729,9 +1731,9 @@ def rendermainwindow():
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
     
     if style_showicons == True:
-        tommyicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam.png")
-        crediticn = Label(optionsframe, bg=colors_framebackground, image=tommyicon, anchor="e")
-        crediticn.image = tommyicon #see above
+        tamasicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam.png")
+        crediticn = Label(optionsframe, bg=colors_framebackground, image=tamasicon, anchor="e")
+        crediticn.image = tamasicon #see above
         crediticn.grid(row=linenum+12, column=0, sticky="ew")
     creditbtn = Button(optionsframe, text = "Thomasluigi07", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
