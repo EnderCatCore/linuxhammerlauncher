@@ -29,11 +29,9 @@ import random
 
 -crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
 
--update prompt needs to be yes/no. a dont ask again checkbox maybe? 
+-(important for release) make it so hammer updating actually works and updates games.txt
 
--(important for release) make it so hammer updating actually works
-
--(important for release) fix maps folder being incorrectly configged to whateverthefrickitwasthatwasbreakingit 
+-is the sourcesdk_content bug still there?? please god no.
 
 '''
 #--------
