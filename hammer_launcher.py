@@ -489,8 +489,12 @@ def autohammer(updatefolder,updatename):
     global gamename
 
     print("AUTOHAMMER")
-    print(gamename)
-    print(gamefolderpath)
+
+    try:
+        print(gamename)
+        print(gamefolderpath)
+    except:
+        print("gamename/gamefolderpath does not exist yet")
 
     if updatefolder and updatename:
         gamefolderpath = updatefolder+"/"
@@ -866,9 +870,10 @@ def launchhammer(game, title, version):
             latestversion = response.text
             latestversion = int(latestversion)
             if latestversion > version:
-                print("update detected!\nnew version: "+str(latestversion)+"\ninstalled version: "+str(version))
-                subwindow('hammerupdate')
-                autohammer(gamefolderfinder,titlelowered)
+                openpopup("Update Detected","An update is available for Hammer++! Would you like to install it?\nInstalled version:"+str(version)+" Latest Version:"+str(latestversion),"Yes",True,"No",False)
+                if btnresult == True:
+                    subwindow('hammerupdate')
+                    autohammer(gamefolderfinder,titlelowered)
             else:
                 print("no new version of hammer++ found. skipping'")
         else:
@@ -1693,7 +1698,7 @@ def rendermainwindow():
         linenum += 1
     gameconfig.close()
 
-    
+
         
     '''
     GUI Stuffs
@@ -1737,7 +1742,7 @@ def rendermainwindow():
         deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
         deleteicn.image = deleteicon
         deleteicn.grid(row=linenum+8, column=0, sticky="ew")
-    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently implemented at the moment.","OK","","",""), bg=colors_framebackground, \
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently implemented at the moment.","OK",None,"",None), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
     
@@ -1775,8 +1780,7 @@ def rendermainwindow():
     creditbtn = Button(optionsframe, text = "Thomasluigi07", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
-    
-    
+
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
 
@@ -1841,17 +1845,10 @@ def rendersettingswindow():
     
     
     #back
-
     settingsbackbtn = Button(root, text = "Back", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
     settingsbackbtn.grid(row=11, column=1, sticky="w")
     
-    
-    
-
-    
-
-
 
 #setting tick toggle
 def togglesettingstate(statetomodif):
@@ -1881,7 +1878,12 @@ def togglesettingstate(statetomodif):
         rendersettingswindow()
     writetosettings()
 
-def openpopup(dtitle,dtext,db1text,db1act,db2text,db2act):
+btnresult = None
+
+def openpopup(dtitle,dtext,db1text,db1action,db2text,db2action):
+    global btnresult
+    global dialog
+    btnresult = None
     print("DIALOG OPENED")
     dialog = Toplevel()
     dialog.focus()
@@ -1892,18 +1894,29 @@ def openpopup(dtitle,dtext,db1text,db1act,db2text,db2act):
     dialog.configure(bg=colors_framebackground)
     dialog.tk.call('wm','iconphoto',dialog._w, Image("photo", file=os.path.dirname(__file__)+"/assets/icon.png"))
 
+    dialog.bell()
+
     lbl = Label(dialog,text=dtext, bg=colors_framebackground, fg=colors_primarytext, font=(style_font, style_fontsize))
     lbl.grid(row=0, column=0, sticky="ew")
     print(dtext)
 
     if not db1text == "":
-        btn1 = Button(dialog,text=db1text, fg=colors_primarytext, command=dialog.destroy, bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+        btn1 = Button(dialog,text=db1text, fg=colors_primarytext, command=lambda: popupbtnhandler(db1action), bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
         btn1.grid(row=1, column=0)
         print("added button 1")
     if not db2text == "":
-        btn2 = Button(dialog,text=db2text, fg=colors_primarytext, command=dialog.destroy, bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+        btn2 = Button(dialog,text=db2text, fg=colors_primarytext, command=lambda: popupbtnhandler(db2action), bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
         btn2.grid(row=1, column=1)
         print("added button 2")
+
+    dialog.wait_window()
+
+def popupbtnhandler(res):
+    global btnresult
+    global dialog
+    btnresult=res
+    dialog.destroy()
+    root.update()
 
 rendermainwindow()
 
