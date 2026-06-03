@@ -25,6 +25,8 @@ import random
 
 -dxvk cache keeps showing up in root source folder thing?? 
 
+-delete everything option. removes hammer++ from all games and removes the bat that launches games. delete wineprefix too (BUT FOR THE LOVE OF GOD CLEAR OUT SYMLINKS FIRST SEPERATELY OR HELL WILL BREAK LOOSE)
+
 -progress bar for downloads/setting up wine. if we cant track progress for things just do the thing like in windows where theres a progress bar but it just moves constnatly instead of being an actual percentage thingie (use images for it??)
 
 -make urls in setup clickable/buttons.
@@ -864,9 +866,6 @@ def launchhammer(game, title, version):
             latestversion = response.text
             latestversion = int(latestversion)
             if latestversion > version:
-                # UPDATE PROMPT GOES HERE. SET THE JSON THINGIE TO 0 IF USER DOES NOT WANT TO UPDATE
-                # Options:
-                # Yes, No, No AND DONT UPDATE AGAIN
                 print("update detected!\nnew version: "+str(latestversion)+"\ninstalled version: "+str(version))
                 subwindow('hammerupdate')
                 autohammer(gamefolderfinder,titlelowered)
@@ -1738,7 +1737,7 @@ def rendermainwindow():
         deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
         deleteicn.image = deleteicon
         deleteicn.grid(row=linenum+8, column=0, sticky="ew")
-    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: print("STUB!"), bg=colors_framebackground, \
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently implemented at the moment.","OK","","",""), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
     
@@ -1789,7 +1788,6 @@ def startsettingswindow():
     root = Tk()
     mainwindow()
     rendersettingswindow()
-
 
 
 
@@ -1883,9 +1881,29 @@ def togglesettingstate(statetomodif):
         rendersettingswindow()
     writetosettings()
 
+def openpopup(dtitle,dtext,db1text,db1act,db2text,db2act):
+    print("DIALOG OPENED")
+    dialog = Toplevel()
+    dialog.focus()
+    dialog.grab_set()
+    dialog.title(dtitle)
+    dialog.minsize(350,200)
+    dialog.resizable(False, False)
+    dialog.configure(bg=colors_framebackground)
+    dialog.tk.call('wm','iconphoto',dialog._w, Image("photo", file=os.path.dirname(__file__)+"/assets/icon.png"))
 
+    lbl = Label(dialog,text=dtext, bg=colors_framebackground, fg=colors_primarytext, font=(style_font, style_fontsize))
+    lbl.grid(row=0, column=0, sticky="ew")
+    print(dtext)
 
-
+    if not db1text == "":
+        btn1 = Button(dialog,text=db1text, fg=colors_primarytext, command=dialog.destroy, bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+        btn1.grid(row=1, column=0)
+        print("added button 1")
+    if not db2text == "":
+        btn2 = Button(dialog,text=db2text, fg=colors_primarytext, command=dialog.destroy, bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+        btn2.grid(row=1, column=1)
+        print("added button 2")
 
 rendermainwindow()
 
