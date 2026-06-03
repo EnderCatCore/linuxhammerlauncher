@@ -25,6 +25,8 @@ import random
 
 -dxvk cache keeps showing up in root source folder thing?? 
 
+-progress bar for downloads/setting up wine. if we cant track progress for things just do the thing like in windows where theres a progress bar but it just moves constnatly instead of being an actual percentage thingie (use images for it??)
+
 -make urls in setup clickable/buttons.
 
 -crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
@@ -1132,7 +1134,6 @@ def hammerconfig(binfolder, plusplusconfig):
             else:
                 if state_usemapsrc == True:
                     lines[linestoconfig[i] - 1] = '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n'
-                
                 elif state_usemapsrc == False:
                     print("MapSRC disabled. Using vanilla path!")
                     with open(file=os.path.dirname(__file__)+"/assets/gamemappaths.txt") as mappathfile:
@@ -1796,16 +1797,13 @@ def rendersettingswindow():
     global optionsframe
     global root
     root.configure(bg=colors_framebackground)
-    print(str(state_disablehppupdates).lower())
-    print(str(state_disablehppupdates))
-    
 
     #use vanilla hammer
     hammertypeicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_htype).lower()+".png")
     hammertypeicn = Label(root, bg=colors_framebackground, image=hammertypeicon, anchor="e")
     hammertypeicn.image = hammertypeicon
     hammertypebtn = Button(root, text = "Use vanilla Hammer in setup*", fg=colors_primarytext, command=lambda: togglesettingstate("htype"), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     hammertypebtn.grid(row=1, column=1, sticky="ew")
     hammertypeicn.grid(row=1, column=0, sticky="ew")
     
@@ -1814,7 +1812,7 @@ def rendersettingswindow():
     updatedisableicn = Label(root, bg=colors_framebackground, image=updatedisableicon, anchor="e")
     updatedisableicn.image = updatedisableicon
     updatedisablebtn = Button(root, text = "Disable Hammer++ auto updates", fg=colors_primarytext, command=lambda: togglesettingstate("disableupdates"), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     updatedisablebtn.grid(row=2, column=1, sticky="ew")
     updatedisableicn.grid(row=2, column=0, sticky="ew")
     
@@ -1824,7 +1822,7 @@ def rendersettingswindow():
     mapsrcuseicn = Label(root, bg=colors_framebackground, image=mapsrcuseicon, anchor="e")
     mapsrcuseicn.image = mapsrcuseicon
     mapsrcusebtn = Button(root, text = "Use 'mapsrc' folder instead of 'maps' folder*", fg=colors_primarytext, command=lambda: togglesettingstate("mapsrcfolderuse"), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     mapsrcusebtn.grid(row=3, column=1, sticky="ew")
     mapsrcuseicn.grid(row=3, column=0, sticky="ew")
     
@@ -1834,7 +1832,7 @@ def rendersettingswindow():
     themenumicn = Label(root, bg=colors_framebackground, image=themenumicon, anchor="e")
     themenumicn.image = themenumicon
     themenumbtn = Button(root, text = "Current Theme: " + themenames[state_theme], fg=colors_primarytext, command=lambda: togglesettingstate("themeswitch"), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     themenumbtn.grid(row=4, column=1, sticky="ew")
     themenumicn.grid(row=4, column=0, sticky="ew")
     
@@ -1866,22 +1864,22 @@ def togglesettingstate(statetomodif):
     
     if statetomodif == "htype":
         state_htype = toggle_bool(state_htype)
-        print(str(state_htype))
+        print("HTYPE CHANGED: "+str(state_htype))
         rendersettingswindow()
     elif statetomodif == "disableupdates":
         state_disablehppupdates = toggle_bool(state_disablehppupdates)
-        print(str(state_disablehppupdates))
+        print("DISABLEUPDATES CHANGED: "+str(state_disablehppupdates))
         rendersettingswindow()
     elif statetomodif == "themeswitch":
         state_theme += 1
         if state_theme > len(themenames) - 1:
             state_theme = 0
-        print(str(themenames[state_theme].lower()))
+        print("THEME CHANGED: "+str(themenames[state_theme].lower()))
         updatetheme()
         startsettingswindow()
     elif statetomodif == "mapsrcfolderuse":
         state_usemapsrc = toggle_bool(state_usemapsrc)
-        print(str(state_usemapsrc))
+        print("USEMAPSRC CHANGED: "+str(state_usemapsrc))
         rendersettingswindow()
     writetosettings()
 
