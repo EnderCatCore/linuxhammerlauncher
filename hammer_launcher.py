@@ -870,7 +870,7 @@ def launchhammer(game, title, version):
             latestversion = response.text
             latestversion = int(latestversion)
             if latestversion > version:
-                openpopup("Update Detected","An update is available for Hammer++! Would you like to install it?\nInstalled version:"+str(version)+" Latest Version:"+str(latestversion),"Yes",True,"No",False)
+                openpopup("Update Detected","An update is available for Hammer++! Would you like to install it?\nInstalled Version: "+str(version)+" Latest Version: "+str(latestversion),"Yes",True,"No",False)
                 if btnresult == True:
                     subwindow('hammerupdate')
                     autohammer(gamefolderfinder,titlelowered)
