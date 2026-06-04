@@ -1786,7 +1786,7 @@ def rendermainwindow():
         crediticn = Label(optionsframe, bg=colors_framebackground, image=tamasicon, anchor="e")
         crediticn.image = tamasicon #see above
         crediticn.grid(row=linenum+12, column=0, sticky="ew")
-    creditbtn = Button(optionsframe, text = "Thomasluigi07", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
+    creditbtn = Button(optionsframe, text = "Tamasina", fg=colors_primarytext, command=lambda: webbrowser.open("https://thomasluigi07.com",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
 
