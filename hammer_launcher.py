@@ -21,7 +21,7 @@ import random
 
 -why are plusplus tools not configged for l4d2 i will kill
 
--(important for release) HL2 wont auto update???? 
+-"use maps instead of mapsrc" doesnt work for every game? so far the games to not work with it are tf2classified and half life 1 source deathmatch, for some reason??? theres no correlation?
 
 -dxvk cache keeps showing up in root source folder thing?? 
 
@@ -32,8 +32,6 @@ import random
 -make urls in setup clickable/buttons.
 
 -crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
-
--(important for release) make it so hammer updating actually works and updates games.txt
 
 -is the sourcesdk_content bug still there?? please god no.
 
@@ -834,7 +832,7 @@ def closelauncher():
 
 # start correct game
 game = "gmod";
-def launchhammer(game, title, version):
+def launchhammer(game, title, version, lineupdate):
     gamefolderfinder = game
     titlelowered = title.casefold()
     subwindow('hammerlaunch')
@@ -874,6 +872,16 @@ def launchhammer(game, title, version):
                 if btnresult == True:
                     subwindow('hammerupdate')
                     autohammer(gamefolderfinder,titlelowered)
+                    with open(configpath + "games.txt", 'r') as file:
+                        lines = file.readlines()
+                        
+                    lines[lineupdate] = "['" + title + "', '" + game + "', '" + str(latestversion) + "']\n"
+                    print("new games.txt entry should be:")
+                    print("['" + title + "', '" + game + "', '" + str(latestversion) + "']\n")
+                    
+                    with open(configpath + "games.txt", 'w') as file:
+                        file.writelines(lines)
+                    
             else:
                 print("no new version of hammer++ found. skipping'")
         else:
@@ -1608,9 +1616,10 @@ def creategamebutton(height, title, hammerpath, version):
         htypeicn.image = htypeindicatoricon
         htypeicn.grid(row=height, column=0, sticky="ew")
 
-
+    
     #create functional button
-    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version), bg=colors_framebackground,
+    gamesline = height - 3
+    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version, gamesline), bg=colors_framebackground,
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     btn.grid(row=height, column=1,sticky="ew")
     
