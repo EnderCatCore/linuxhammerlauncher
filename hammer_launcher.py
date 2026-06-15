@@ -15,7 +15,9 @@ import random
 
 -(important for release) add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
--(important for release) make delete hammer button do something
+-((semi)important for release) clear the previous text of a subwindow so it doesnt awkwardly overlap
+
+-((semi)important for release) make the popup window not take up empty space
 
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
@@ -543,40 +545,44 @@ def autohammer(updatefolder,updatename):
         print("unknown game branch!")
         return
 
+    try:
+    
+        if not frozenbuild:
+            print("getting the latest hammer plus plsu verison WOWWWWWWWWWWWWWWWWWWW")
+            hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+            response = requests.get(hammerplusplusversiontxt)
+            if response.status_code == 200:
+                version = response.text
+            else:
+                print("failed to get the latest hammer++ version!")
+                return
 
-    if not frozenbuild:
-        print("getting the latest hammer plus plsu verison WOWWWWWWWWWWWWWWWWWWW")
-        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-        response = requests.get(hammerplusplusversiontxt)
+        cleantemp()
+
+        print("using hammer++ version "+version)
+
+        hammerpluspluszip = "hammerplusplus_"+hammerplusplustype+"_build"+version
+
+        hammerplusplusurl = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download/"+version+"/"+hammerpluspluszip+".zip"
+
+        file_Path = configpath + "temp/" + hammerpluspluszip+".zip"
+        print("Downloading "+hammerpluspluszip)
+        response = requests.get(hammerplusplusurl)
         if response.status_code == 200:
+            with open(file_Path, 'wb') as file:
+                file.write(response.content)
+            print("downloaded hammer++ for "+hammerplusplustype)
             version = response.text
+            print("copying hammerplusplus files to bin")
+            print("cd " + configpath + "temp/ && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
+            os.system("cd " + configpath + "temp/ && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
         else:
-            print("failed to get the latest hammer++ version!")
-            return
-
+            print("hammer++ zip FAILED to download. Too bad!")
+    except:
+        pass
+    
     cleantemp()
 
-    print("using hammer++ version "+version)
-
-    hammerpluspluszip = "hammerplusplus_"+hammerplusplustype+"_build"+version
-
-    hammerplusplusurl = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download/"+version+"/"+hammerpluspluszip+".zip"
-
-    file_Path = configpath + "temp/" + hammerpluspluszip+".zip"
-    print("Downloading "+hammerpluspluszip)
-    response = requests.get(hammerplusplusurl)
-    if response.status_code == 200:
-        with open(file_Path, 'wb') as file:
-            file.write(response.content)
-        print("downloaded hammer++ for "+hammerplusplustype)
-        version = response.text
-        print("copying hammerplusplus files to bin")
-        print("cd " + configpath + "temp/ && unzip " + hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
-        os.system("cd " + configpath + "temp/ && unzip "+ hammerpluspluszip + ".zip && " + "cp -rv --update=older '" + configpath + "temp/" + hammerpluspluszip + "/bin/'* '" + gamefolderpath + directory +"'")
-    else:
-        print("hammer++ zip FAILED to download. Too bad!")
-
-    cleantemp()
 
 '''subwindow creation'''
 def subwindow(subwintype):
@@ -862,30 +868,33 @@ def launchhammer(game, title, version, lineupdate):
     else:
         print("checking for updates...")
         latestversion = "0"
-        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-        response = requests.get(hammerplusplusversiontxt)
-        if response.status_code == 200:
-            latestversion = response.text
-            latestversion = int(latestversion)
-            if latestversion > version:
-                openpopup("Update Detected","An update is available for Hammer++! Would you like to install it?\nInstalled Version: "+str(version)+" Latest Version: "+str(latestversion),"Yes",True,"No",False)
-                if btnresult == True:
-                    subwindow('hammerupdate')
-                    autohammer(gamefolderfinder,titlelowered)
-                    with open(configpath + "games.txt", 'r') as file:
-                        lines = file.readlines()
+        try:
+            hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+            response = requests.get(hammerplusplusversiontxt)
+            if response.status_code == 200:
+                latestversion = response.text
+                latestversion = int(latestversion)
+                if latestversion > version:
+                    openpopup("Update Detected","An update is available for Hammer++! Would you like to install it?\nInstalled Version: "+str(version)+" Latest Version: "+str(latestversion),"Yes",True,"No",False)
+                    if btnresult == True:
+                        subwindow('hammerupdate')
+                        autohammer(gamefolderfinder,titlelowered)
+                        with open(configpath + "games.txt", 'r') as file:
+                            lines = file.readlines()
+                            
+                        lines[lineupdate] = "['" + title + "', '" + game + "', '" + str(latestversion) + "']\n"
+                        print("new games.txt entry should be:")
+                        print("['" + title + "', '" + game + "', '" + str(latestversion) + "']\n")
                         
-                    lines[lineupdate] = "['" + title + "', '" + game + "', '" + str(latestversion) + "']\n"
-                    print("new games.txt entry should be:")
-                    print("['" + title + "', '" + game + "', '" + str(latestversion) + "']\n")
-                    
-                    with open(configpath + "games.txt", 'w') as file:
-                        file.writelines(lines)
-                    
+                        with open(configpath + "games.txt", 'w') as file:
+                            file.writelines(lines)
+                        
+                else:
+                    print("no new version of hammer++ found. skipping'")
             else:
-                print("no new version of hammer++ found. skipping'")
-        else:
-            print("couldn't check for hammer++ updates!")
+                print("couldn't check for hammer++ updates!")
+        except:
+            pass
 
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
@@ -1310,14 +1319,16 @@ def downloadwine():
                 stateandprint("Downloaded Wine 9.0.1!")
             else:
                 stateandprint("Failed to download Wine 9. \n Check your internet connection?")
-                openpopup("Failed to download Wine 9.","Try checking your internet connection.","Retry download",True,"Exit to menu",False)
+                openpopup("Failed to download Wine 9.","Failed to download Wine 9.\nTry checking your internet connection?",\
+			"Retry download",True,"Exit to menu",False)
                 if btnresult == True:
                     downloadwine()
                 else:
                     startmainwindow()
         except:
             stateandprint("Failed to download Wine 9. +2 \n Check your internet connection?")
-            openpopup("Failed to download Wine 9.","Try checking your internet connection.","Retry download",True,"Exit to menu",False)
+            openpopup("Failed to download Wine 9.","Failed to download Wine 9.\nTry checking your internet connection?",\
+			"Retry download",True,"Exit to menu",False)
             if btnresult == True:
                 downloadwine()
             else:
@@ -1330,7 +1341,8 @@ def downloadwine():
         stateandprint("Naming wine folder... \n Deleting downloaded archive...")
         os.system("mv " + configpath + "runner/usr/" + " " + configpath + "runner/wine-9.0.1/")
         #remove archive
-        os.remove(configpath + "runner/wine-9.0.1.tar.zst")
+        if os.path.exists(configpath + "runner/wine-9.0.1.tar.zst") == True:
+            os.remove(configpath + "runner/wine-9.0.1.tar.zst")
     elif os.path.exists(configpath + "runner/wine-9.0.1/") == True:
         stateandprint("Wine 9 Exists! Continuing...")
     #check for prefix folder, if it doesnt exist, make it, dummy.
@@ -1439,22 +1451,36 @@ def setuphammer():
             #install plusplus tools, some games dont work for this
             noplusplus = ['portal 2', 'half-life 2', 'portal', 'garrysmod']
             if gamename not in noplusplus:
-                subwindow("toolsplusplusinstall")
+                try:
+                    subwindow("toolsplusplusinstall")
+                    
+                    file_Path = configpath + 'temp/tools_plusplus.zip'
+                    tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
+                    
+                    print("Downloading Tools ++")
+                    response = requests.get(tools_plusplusurl)
+                    if response.status_code == 200:
+                        with open(file_Path, 'wb') as file:
+                            file.write(response.content)
+                        stateandprint("Downloaded Tools++!")
+                    else:
+                        stateandprint("Failed to download Tools++. \n Check your internet connection?")
+                        openpopup(\
+                        "Could Not Install Tools++","Tools++ could not be installed. \nThese are required for certain games like Team Fortress 2 to compile.\
+\nMake sure to manually install them later if your game requires it.","Continue",True,"",False)
+                    if btnresult == True:
+                        pass
+                except:
+                    openpopup(\
+                    "Could Not Install Tools++","Tools++ could not be installed. \nThese are required for certain games like Team Fortress 2 to compile.\
+\nMake sure to manually install them later if your game requires it.","Continue",True,"",False)
+                    if btnresult == True:
+                        pass
                 
-                file_Path = configpath + 'temp/tools_plusplus.zip'
-                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
-                
-                print("Downloading Tools ++")
-                response = requests.get(tools_plusplusurl)
-                if response.status_code == 200:
-                    with open(file_Path, 'wb') as file:
-                        file.write(response.content)
-                    stateandprint("Downloaded Tools++!")
-                else:
-                    stateandprint("Failed to download Tools++. \n Check your internet connection?")
-                print("copying tools files to bin")
-                print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-                os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                if btnresult != True:
+                    print("copying tools files to bin")
+                    print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                    os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
             else:
                 subwindow("waiting")
                 time.sleep(10)
@@ -1510,11 +1536,15 @@ def setuphammer():
         #write new game definition to config file. check if file exists
         gameconfig = open(configpath + "games.txt", "a")
         
-        version = "1"
-        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-        response = requests.get(hammerplusplusversiontxt)
-        if response.status_code == 200:
-            version = response.text
+        try:
+            version = "1"
+            hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+            response = requests.get(hammerplusplusversiontxt)
+            if response.status_code == 200:
+                version = response.text
+        except:
+            version = "8871"
+            print("couldnt get version number from online")
 
         #game specific configuring.
         noupdate = ['csgo legacy','counter-strike global offensive']
