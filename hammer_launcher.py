@@ -1292,10 +1292,70 @@ def gameconfigmake(game):
 
 
 
+def downloadwine():
+    file_Path = configpath + 'runner/wine-9.0.1.tar.zst'
+    wine9url = "https://archive.archlinux.org/packages/w/wine/wine-9.0-1-x86_64.pkg.tar.zst"
+    #check if wine9 exists in runner folder, if it does not them download from arch repo (will work on any distro i think??????)
+    stateandprint("Checking if Wine 9 exists.")
+    print(os.path.exists(configpath + "runner/wine-9.0.1/"))
+    if os.path.exists(configpath + "runner/wine-9.0.1/") == False:
+        #download wine9
+        stateandprint("Downloading Wine 9.0.1")
+        
+        try:
+            response = requests.get(wine9url)
+            if response.status_code == 200:
+                with open(file_Path, 'wb') as file:
+                    file.write(response.content)
+                stateandprint("Downloaded Wine 9.0.1!")
+            else:
+                stateandprint("Failed to download Wine 9. \n Check your internet connection?")
+                openpopup("Failed to download Wine 9.","Try checking your internet connection.","Retry download",True,"Exit to menu",False)
+                if btnresult == True:
+                    downloadwine()
+                else:
+                    startmainwindow()
+        except:
+            stateandprint("Failed to download Wine 9. +2 \n Check your internet connection?")
+            openpopup("Failed to download Wine 9.","Try checking your internet connection.","Retry download",True,"Exit to menu",False)
+            if btnresult == True:
+                downloadwine()
+            else:
+                startmainwindow()
+                
+    #extract wine9 targz
+        stateandprint("Downloaded Wine 9.0.1! \nExtracting Wine...")
+        os.system("cd " + configpath + "runner/" + " && tar --use-compress-program=unzstd -xvf " + configpath + "runner/wine-9.0.1.tar.zst")
+        #rename extracted wine files from usr to wine-9.0.1
+        stateandprint("Naming wine folder... \n Deleting downloaded archive...")
+        os.system("mv " + configpath + "runner/usr/" + " " + configpath + "runner/wine-9.0.1/")
+        #remove archive
+        os.remove(configpath + "runner/wine-9.0.1.tar.zst")
+    elif os.path.exists(configpath + "runner/wine-9.0.1/") == True:
+        stateandprint("Wine 9 Exists! Continuing...")
+    #check for prefix folder, if it doesnt exist, make it, dummy.
+    if os.path.exists(configpath + "prefix/") == False:
+        os.mkdir(configpath + "prefix/")
+    #check for drive c in prefix folder, if its not there generate a wineprefix
+    if os.path.exists(configpath + "prefix/drive_c/") == False:
+        stateandprint("Generating Wine Prefix...")
+        os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + 'wineboot')
+        #replace systheme=1 in registry to 0 for lag improvement
+        while os.path.exists(configpath + "prefix/user.reg") == False:
+            pass
+        stateandprint("Set Wine Theme to None")
+        with open(configpath + 'prefix/user.reg', 'r') as file:
+            data = file.read()
+            data = data.replace('"ThemeActive"="1"', '"ThemeActive"="0"')
+        with open(configpath + 'prefix/user.reg', 'w') as file:
+            file.write(data)
+                    
+
 
 '''
 set up hammer wineprefix, set statuses along the way
 '''
+
 
 def setuphammer():
     global tffolderpath
@@ -1308,51 +1368,12 @@ def setuphammer():
     global gameconfig
     backupgamefolderpath = "na"
     
+    subwindow('winesetup')
+    downloadwine()
+    
     if settinguphammer == 0:
         settinguphammer = 1
-        subwindow('winesetup')
         
-        file_Path = configpath + 'runner/wine-9.0.1.tar.zst'
-        wine9url = "https://archive.archlinux.org/packages/w/wine/wine-9.0-1-x86_64.pkg.tar.zst"
-        #check if wine9 exists in runner folder, if it does not them download from arch repo (will work on any distro i think??????)
-        stateandprint("Checking if Wine 9 exists.")
-        print(os.path.exists(configpath + "runner/wine-9.0.1/"))
-        if os.path.exists(configpath + "runner/wine-9.0.1/") == False:
-            #download wine9
-            stateandprint("Downloading Wine 9.0.1")
-            response = requests.get(wine9url)
-            if response.status_code == 200:
-                with open(file_Path, 'wb') as file:
-                    file.write(response.content)
-                stateandprint("Downloaded Wine 9.0.1!")
-            else:
-                stateandprint("Failed to download Wine 9. \n Check your internet connection?")
-            #extract wine9 targz
-            stateandprint("Downloaded Wine 9.0.1! \nExtracting Wine...")
-            os.system("cd " + configpath + "runner/" + " && tar --use-compress-program=unzstd -xvf " + configpath + "runner/wine-9.0.1.tar.zst")
-            #rename extracted wine files from usr to wine-9.0.1
-            stateandprint("Naming wine folder... \n Deleting downloaded archive...")
-            os.system("mv " + configpath + "runner/usr/" + " " + configpath + "runner/wine-9.0.1/")
-            #remove archive
-            os.remove(configpath + "runner/wine-9.0.1.tar.zst")
-        elif os.path.exists(configpath + "runner/wine-9.0.1/") == True:
-            stateandprint("Wine 9 Exists! Continuing...")
-        #check for prefix folder, if it doesnt exist, make it, dummy.
-        if os.path.exists(configpath + "prefix/") == False:
-            os.mkdir(configpath + "prefix/")
-        #check for drive c in prefix folder, if its not there generate a wineprefix
-        if os.path.exists(configpath + "prefix/drive_c/") == False:
-            stateandprint("Generating Wine Prefix...")
-            os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + 'wineboot')
-            #replace systheme=1 in registry to 0 for lag improvement
-            while os.path.exists(configpath + "prefix/user.reg") == False:
-                pass
-            stateandprint("Set Wine Theme to None")
-            with open(configpath + 'prefix/user.reg', 'r') as file:
-                data = file.read()
-                data = data.replace('"ThemeActive"="1"', '"ThemeActive"="0"')
-            with open(configpath + 'prefix/user.reg', 'w') as file:
-                file.write(data)
             
         #install DXVK
         stateandprint("Installing DXVK")
