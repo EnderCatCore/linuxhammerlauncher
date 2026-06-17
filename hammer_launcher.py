@@ -15,6 +15,8 @@ import random
 
 -(important for release) add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
 
+-(important for release) DO NOT LINK TO USERS HOME DIRECTORY in WINECFG
+
 -((semi)important for release) clear the previous text of a subwindow so it doesnt awkwardly overlap
 
 -((semi)important for release) make the popup window not take up empty space
