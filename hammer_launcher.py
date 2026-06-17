@@ -844,7 +844,7 @@ def launchhammer(game, title, version, lineupdate):
     subwindow('hammerlaunch')
     print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
     print("directory up one is " + gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])])
-    #set favorites in wineprefix to game folder
+    # find game folder
     if "hammerplusplus.exe" in game:
         gamefolderfinder = gamefolderfinder[:-19]
     if "hammer.exe" in game:
@@ -910,12 +910,6 @@ def launchhammer(game, title, version, lineupdate):
         print("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
         os.system("cp -r '" + gamefolderfinder + "/binwin/'* '" + gamefolderfinder + "/bin/'" )
     
-    #add game folder for game to favorites
-    print(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps")
-    if os.path.exists(configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/" + title + " maps") == False:
-        print("ln -s '" + gamefolderfinder + "/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-        os.system("ln -s '" + gamefolderfinder + "/' '" + configpath + "prefix/drive_c/users/" + os.getlogin() + "/Favorites/'")
-
     #game specific stuff
     #game specific stuff will go here, like launching portal 2 hammer after copying binwin to default bin
 
