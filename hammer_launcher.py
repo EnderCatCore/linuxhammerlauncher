@@ -19,8 +19,6 @@ import random
 
 -((semi)important for release) clear the previous text of a subwindow so it doesnt awkwardly overlap
 
--((semi)important for release) make the popup window not take up empty space
-
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
 -why are plusplus tools not configged for l4d2 i will kill
@@ -602,6 +600,8 @@ def subwindow(subwintype):
     # i cant figure this out for the life of me
     #if vguititlebar == 1:
     #    root.wm_attributes('-type', 'dialog')
+
+    root.update()
 
     #wine set up window
     if subwintype == 'winesetup':
@@ -1798,7 +1798,7 @@ def rendermainwindow():
         deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
         deleteicn.image = deleteicon
         deleteicn.grid(row=linenum+8, column=0, sticky="ew")
-    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently implemented at the moment.","OK",None,"",None), bg=colors_framebackground, \
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently\nimplemented at the moment.","OK",None,"",None), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
     
@@ -1945,25 +1945,34 @@ def openpopup(dtitle,dtext,db1text,db1action,db2text,db2action):
     dialog.focus()
     dialog.grab_set()
     dialog.title(dtitle)
-    dialog.minsize(350,200)
+    dialog.minsize(250,50)
     dialog.resizable(False, False)
     dialog.configure(bg=colors_framebackground)
     dialog.tk.call('wm','iconphoto',dialog._w, Image("photo", file=os.path.dirname(__file__)+"/assets/icon.png"))
 
     dialog.bell()
 
-    lbl = Label(dialog,text=dtext, bg=colors_framebackground, fg=colors_primarytext, font=(style_font, style_fontsize))
-    lbl.grid(row=0, column=0, sticky="ew")
+    padding = Frame(dialog,bg=colors_framebackground,height=10)
+    padding.grid(row=0, column=0, sticky="ew")
+
+    lbl = Label(dialog,text=dtext, bg=colors_framebackground, fg=colors_primarytext, justify="center", font=(style_font, style_fontsize))
+    lbl.grid(row=1, column=0, sticky="ew")
     print(dtext)
+
+    padding = Frame(dialog,bg=colors_framebackground,height=10)
+    padding.grid(row=2, column=0, sticky="ew")
 
     if not db1text == "":
         btn1 = Button(dialog,text=db1text, fg=colors_primarytext, command=lambda: popupbtnhandler(db1action), bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
-        btn1.grid(row=1, column=0)
+        btn1.grid(row=3, column=0)
         print("added button 1")
     if not db2text == "":
         btn2 = Button(dialog,text=db2text, fg=colors_primarytext, command=lambda: popupbtnhandler(db2action), bg=colors_framebackground, activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
-        btn2.grid(row=1, column=1)
+        btn2.grid(row=3, column=1)
         print("added button 2")
+
+    padding = Frame(dialog,bg=colors_framebackground,height=10)
+    padding.grid(row=4, column=0, sticky="ew")
 
     dialog.wait_window()
 
@@ -1971,6 +1980,7 @@ def popupbtnhandler(res):
     global btnresult
     global dialog
     btnresult=res
+    print("DIALOG CLOSED")
     dialog.destroy()
     root.update()
 
