@@ -13,7 +13,7 @@ import random
 
 ''' TODO and ISSUES
 
--(important for release) add subwindows to cancel installation if there is no internet connection and things like wine 9 cant be installed
+-(important for release) add delete hammer (only needs to clear out hammerpluplus/binwin/rungamebat from a game folder for now, like h++'s readme outlines)
 
 -(important for release) DO NOT LINK TO USERS HOME DIRECTORY in WINECFG
 
