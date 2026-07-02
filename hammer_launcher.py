@@ -62,7 +62,9 @@ print(tamarand)
 
 #set config folder
 homefolder = os.path.expanduser("~")
+print("user is " + os.getlogin())
 configpath = homefolder + "/.config/linuxhammerlauncher/"
+
 
 # this is a function so temp is still recreated after deletion. and no code reusing idk
 def cleantemp():
@@ -1357,7 +1359,7 @@ def downloadwine():
             data = data.replace('"ThemeActive"="1"', '"ThemeActive"="0"')
         with open(configpath + 'prefix/user.reg', 'w') as file:
             file.write(data)
-                    
+        
 
 
 '''
@@ -1378,6 +1380,24 @@ def setuphammer():
     
     subwindow('winesetup')
     downloadwine()
+    #remove links to homedir.. we should still hold off on having a delete prefix button because these are just what links winecfg listed, im not sure if more lie around 
+    #the prefix still
+    print('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos"')
+    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos')
+    print("unlinked default symlinks in wineprefix user folder!")
     
     if settinguphammer == 0:
         settinguphammer = 1
@@ -1386,7 +1406,7 @@ def setuphammer():
         #install DXVK
         stateandprint("Installing DXVK")
         os.system('WINEPREFIX="' + configpath + 'prefix/" winetricks dxvk2030')
-        stateandprint("Installed DXVK!")
+        stateandprint("Installed DXVK! unless it didnt")
         
         #ask user for path to game
         freetocontinue = 0
