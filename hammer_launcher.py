@@ -15,6 +15,8 @@ import random
 
 -(important for release) add delete hammer (only needs to clear out hammerpluplus/binwin/rungamebat from a game folder for now, like h++'s readme outlines)
 
+-fix sfm support. something, andi genuinely do not know WHAT. broke support for it. even going to earlier commits doesnt fix it when it did work then.
+
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
 -why are plusplus tools not configged for l4d2 i will kill
@@ -771,7 +773,7 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'tfdirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\nPlease navigate to your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\nPlease navigate to your Team Fortress 2 folder.\nNote SFM IS NOT SUPPORTED RIGHT NOW!! this probably wont work.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)

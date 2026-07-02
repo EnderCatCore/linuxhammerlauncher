@@ -32,7 +32,7 @@ todo: fill out supported game list
 - Team Fortress 2 Classified
 - Portal
 - Portal 2
-- Source Filmmaker
+##- Source Filmmaker
 - Garry's Mod
 - Day of Defeat: Source
 - Left 4 Dead (with vanilla Hammer enabled)
