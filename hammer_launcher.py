@@ -29,8 +29,6 @@ import random
 
 -make urls in setup clickable/buttons.
 
--crossfiledialog picker open with browse button. textbox to paste/type path in with ok in setup
-
 -is the sourcesdk_content bug still there?? please god no.
 
 '''
@@ -365,13 +363,29 @@ def findgame():
     global subwinpressable
     global freetocontinue
     global gamefolderpath
-
+    global pathentrydir
+    
     if subwinpressable == 1:
         subwinpressable = 0
         gamefolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(gamefolderpath)
-        if not gamefolderpath.endswith("/"):
-            gamefolderpath = gamefolderpath + "/"
+    pathentrydir=StringVar(value=gamefolderpath)
+    subwindow("gamedirectorypicker")
+
+def checkgamepath():
+    global subwinpressable
+    global freetocontinue
+    global gamefolderpath
+    global pathentrydir
+    global backupgamefolderpath
+    global backupgamename
+    gamefolderpath = os.path.realpath(pathentrydir.get())
+    print(gamefolderpath)
+    backupgamename = "na"
+    
+    
+    if not gamefolderpath.endswith("/"):
+        gamefolderpath = gamefolderpath + "/"
         if gamefolderpath == "/":
             subwindow('gamedirectorypickerinvalid')
 
@@ -381,29 +395,62 @@ def findgame():
             elif os.path.exists(gamefolderpath + "game/bin/") == True:
                 print("eeeyup its sfm")
                 gamefolderpath = gamefolderpath + "game/"
+                
+                gamename = os.path.basename(gamefolderpath[:-1]).casefold()
+                backupgamefolderpath = gamefolderpath
+                backupgamename = gamename
+                
+                subwindow('tfdirectorypicker')
+                
                 freetocontinue = 1
+                
+                
+                
             else:
                 subwindow('gamedirectorypickerinvalid')
         elif os.path.exists(gamefolderpath + "bin/") == True:
             freetocontinue = 1
+            setuphammer_part2()
+            
 #open file picker for tf path
 def findtf():
     global subwinpressable
     global freetocontinue
     global tffolderpath
+    global pathentrydir
+    global gamename 
+    
+    
     
     if subwinpressable == 1:
         subwinpressable = 0
         tffolderpath = os.path.realpath(crossfiledialog.choose_folder()) + "/"
         print(tffolderpath)
-        if not tffolderpath.endswith("/"):
-            tffolderpath = tffolderpath + "/"
-        if tffolderpath == "/":
-            subwindow('tfdirectorypickerinvalid')
-        elif os.path.exists(tffolderpath + "tf/") == False:
-            subwindow('tfdirectorypickerinvalid')
-        elif os.path.exists(tffolderpath + "tf/") == True:
-            freetocontinue = 1
+    pathentrydir=StringVar(value=tffolderpath)
+    subwindow("tfdirectorypicker")
+        
+
+def checktfpath():
+    global subwinpressable
+    global freetocontinue
+    global tffolderpath
+    global pathentrydir
+    global backupgamefolderpath
+    global backupgamename
+    tffolderpath = os.path.realpath(pathentrydir.get())
+    
+    
+    print(tffolderpath)
+    if not tffolderpath.endswith("/"):
+        tffolderpath = tffolderpath + "/"
+    if tffolderpath == "/":
+        subwindow('tfdirectorypickerinvalid')
+    elif os.path.exists(tffolderpath + "tf/") == False:
+        subwindow('tfdirectorypickerinvalid')
+    elif os.path.exists(tffolderpath + "tf/") == True:
+        freetocontinue = 1
+        setuphammer_part2()
+    
             
 #open file picker for hammer++ archive, if valid, extract to game winbin
 def installhammer():
@@ -594,12 +641,15 @@ def autohammer(updatefolder,updatename):
 '''subwindow creation'''
 def subwindow(subwintype):
     global gamefolderpath
+    global tffolderpath
     global gamename
     global backupgamefolderpath
     global backupgamename
     global subwinpressable
     global bintype
+    global pathentrydir
     subwinpressable = 1
+    
 
 
     for child in root.winfo_children(): 
@@ -665,9 +715,26 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
         lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
+        pathentrydir=StringVar(value=gamefolderpath)
+        print("Okay.")
+        print(gamefolderpath)
+        
+        pathentry = Entry(root,textvariable=pathentrydir,font=(style_font, style_fontsize),width=1)
+        pathentry.grid(row=3, column=0, sticky="ew")
+        
+        
+        browsebtn = Button(root, text = "Browse", fg=colors_primarytext, command=lambda: findgame(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=4, column=0)
+        
+        lbl = Label(root, text = "", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=5, column=0)
+        
+        browsebtn = Button(root, text = "Continue", fg=colors_primarytext, command=lambda: [checkgamepath()], bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=6, column=0)
+        
         root.update()
-        time.sleep(1)
-        findgame()
     #game directory chooser if you frick it up
     elif subwintype == 'gamedirectorypickerinvalid':
         subwinpressable == 1
@@ -679,10 +746,25 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
         lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
-        root.update()
-        time.sleep(1)
+        pathentrydir=StringVar(value=gamefolderpath)
+        print("Okay.")
+        print(gamefolderpath)
         
-        findgame()
+        pathentry = Entry(root,textvariable=pathentrydir,font=(style_font, style_fontsize),width=1)
+        pathentry.grid(row=3, column=0, sticky="ew")
+        
+        
+        browsebtn = Button(root, text = "Browse", fg=colors_primarytext, command=lambda: findgame(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=4, column=0)
+        
+        lbl = Label(root, text = "", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=5, column=0)
+        
+        browsebtn = Button(root, text = "Continue", fg=colors_primarytext, command=lambda: [checkgamepath()], bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=6, column=0)
+        
         root.update()
         
     #tf2 directory chooser
@@ -696,25 +778,56 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
         lbl = Label(root, text = "Example:\nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
+        pathentrydir=StringVar(value=tffolderpath)
+        print("Okay.")
+        print(tffolderpath)
+        
+        pathentry = Entry(root,textvariable=pathentrydir,font=(style_font, style_fontsize),width=1)
+        pathentry.grid(row=3, column=0, sticky="ew")
+        
+        
+        browsebtn = Button(root, text = "Browse", fg=colors_primarytext, command=lambda: findtf(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=4, column=0)
+        
+        lbl = Label(root, text = "", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=5, column=0)
+        
+        browsebtn = Button(root, text = "Continue", fg=colors_primarytext, command=lambda: [checktfpath()], bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=6, column=0)
+        
         root.update()
-        time.sleep(3)
-        findtf()
     #tf directory chooser if you frick it up   
     elif subwintype == 'tfdirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find TF2...\nSFM requires Team Fortress 2 to be installed for setup.\nPlease re-select your Team Fortress 2 folder.", bg=colors_background, \
-        fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Could not find TF2...\nSFM requires Team Fortress 2 to be installed for setup.\nPlease re-select your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example:\nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
-        root.update()
-        time.sleep(1)
+        pathentrydir=StringVar(value=tffolderpath)
+        print("Okay.")
+        print(tffolderpath)
         
-        findtf()
+        pathentry = Entry(root,textvariable=pathentrydir,font=(style_font, style_fontsize),width=1)
+        pathentry.grid(row=3, column=0, sticky="ew")
+        
+        
+        browsebtn = Button(root, text = "Browse", fg=colors_primarytext, command=lambda: findtf(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=4, column=0)
+        
+        lbl = Label(root, text = "", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=5, column=0)
+        
+        browsebtn = Button(root, text = "Continue", fg=colors_primarytext, command=lambda: [checktfpath()], bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        browsebtn.grid(row=6, column=0)
+        
         root.update()
         
     #proton set up window
@@ -1415,6 +1528,8 @@ def setuphammer():
     global backupgamename
     global gameconfig
     backupgamefolderpath = "na"
+    gamefolderpath = ""
+    tffolderpath = ""
     
     subwindow('winesetup')
     downloadwine()
@@ -1452,215 +1567,239 @@ def setuphammer():
         stateandprint("Installing DXVK")
         os.system('WINEPREFIX="' + configpath + 'prefix/" winetricks dxvk2030')
         stateandprint("Installed DXVK! unless it didnt")
+    setuphammer_askgame()
         
-        #ask user for path to game
-        freetocontinue = 0
-        subwindow('gamedirectorypicker')
         
-        os.system("echo this is echoed with os plugin")
-        gamename = os.path.basename(gamefolderpath[:-1]).casefold()
-        print("gamefolderpath namified is " + os.path.basename(gamefolderpath[:-1]).casefold())
-        print("gamename is " + gamename)
         
-        if gamename == "game":
-            print("SFM IS USED")
-            backupgamefolderpath = gamefolderpath
-            backupgamename = gamename
-        else:
-            backupgamename = "na"
+def setuphammer_askgame():
+    global tffolderpath
+    global settinguphammer
+    global root
+    global gamefolderpath
+    global gamename
+    global backupgamefolderpath
+    global backupgamename
+    global gameconfig
+    backupgamefolderpath = "na"
 
-        # IMPORTANT REMINDER: "game" is SFM!!!!!!!!!!!!!!
+    #ask user for path to game
+    freetocontinue = 0
+    subwindow('gamedirectorypicker')
+    
+    
+    
+def setuphammer_part2():
+    global tffolderpath
+    global settinguphammer
+    global root
+    global gamefolderpath
+    global gamename
+    global backupgamefolderpath
+    global backupgamename
+    global gameconfig
+    backupgamefolderpath = "na"
 
-        #check if sfm is being used and ask for tf2 install
-        if gamename == "game":
-            subwindow('tfdirectorypicker')
-            print(tffolderpath)
-            gamefolderpath = tffolderpath
-            gamename = os.path.basename(tffolderpath[:-1]).casefold()
-        elif gamename == "portal 2":
-            #check if portal 2 is used, ask for enable proton and sdk
-            subwindow('protonenable')
-            subwindow('p2sdkenable')
-        elif gamename == "left 4 dead":
-            #check if l4d is used, ask for enable proton and sdk
-            subwindow('protonenable')
-            subwindow('l4dsdkenable')
-        elif gamename == "left 4 dead 2":
-            #check if l4d2 is used, ask for enable proton and sdk
-            subwindow('protonenable')
-            subwindow('l4d2sdkenable')
-        else:
-            #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
-            subwindow('protonenable')
+    os.system("echo this is echoed with os plugin")
+    gamename = os.path.basename(gamefolderpath[:-1]).casefold()
+    print("gamefolderpath namified is " + os.path.basename(gamefolderpath[:-1]).casefold())
+    print("gamename is " + gamename)
+    
+    if gamename == "game":
+        print("SFM IS USED")
+        backupgamefolderpath = gamefolderpath
+        backupgamename = gamename
+    else:
+        backupgamename = "na"
 
-        #only install ++ hammer if hammer++ isnt disabled
-        if state_htype == False:
-            #check for hammerplusplus
-            subwindow('hammerautomated')
-        subwindow('hammerenable')
-        subwindow('waiting')
-        print("checking for hammer")
+    # IMPORTANT REMINDER: "game" is SFM!!!!!!!!!!!!!!
 
-        # HL1MP does not have a built in gameinfo. why? no idea.
-        if gamename == "half-life 1 source deathmatch":
-            print("COPYING HL1MP TXT")
-            print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
-            os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
-        
-        #only install ++ tools if hammer++ isnt disabled
-        if state_htype == False:
-            #install plusplus tools, some games dont work for this
-            noplusplus = ['portal 2', 'half-life 2', 'portal', 'garrysmod']
-            if gamename not in noplusplus:
-                try:
-                    subwindow("toolsplusplusinstall")
-                    
-                    file_Path = configpath + 'temp/tools_plusplus.zip'
-                    tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
-                    
-                    print("Downloading Tools ++")
-                    response = requests.get(tools_plusplusurl)
-                    if response.status_code == 200:
-                        with open(file_Path, 'wb') as file:
-                            file.write(response.content)
-                        stateandprint("Downloaded Tools++!")
-                    else:
-                        stateandprint("Failed to download Tools++. \n Check your internet connection?")
-                        openpopup(\
-                        "Could Not Install Tools++","Tools++ could not be installed. \nThese are required for certain games like Team Fortress 2 to compile.\
-\nMake sure to manually install them later if your game requires it.","Continue",True,"",False)
-                    if btnresult == True:
-                        pass
-                except:
+    #check if sfm is being used and ask for tf2 install
+    if gamename == "game":
+        print(tffolderpath)
+    elif gamename == "portal 2":
+        #check if portal 2 is used, ask for enable proton and sdk
+        subwindow('protonenable')
+        subwindow('p2sdkenable')
+    elif gamename == "left 4 dead":
+        #check if l4d is used, ask for enable proton and sdk
+        subwindow('protonenable')
+        subwindow('l4dsdkenable')
+    elif gamename == "left 4 dead 2":
+        #check if l4d2 is used, ask for enable proton and sdk
+        subwindow('protonenable')
+        subwindow('l4d2sdkenable')
+    else:
+        #check if proton is enabled, if not, prompt user to enable proton before continuing. check hammer usually, but some game specific checks (like hl2 and tier0.dll) are needed
+        subwindow('protonenable')
+
+    #only install ++ hammer if hammer++ isnt disabled
+    if state_htype == False:
+        #check for hammerplusplus
+        subwindow('hammerautomated')
+    subwindow('hammerenable')
+    subwindow('waiting')
+    print("checking for hammer")
+
+    # HL1MP does not have a built in gameinfo. why? no idea.
+    if gamename == "half-life 1 source deathmatch":
+        print("COPYING HL1MP TXT")
+        print("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
+        os.system("cp '" + os.path.dirname(__file__) + "/assets/gameinfo/hl1mp.txt' '" + gamefolderpath + "hl2/gameinfo.txt'")
+    
+    #only install ++ tools if hammer++ isnt disabled
+    if state_htype == False:
+        #install plusplus tools, some games dont work for this
+        noplusplus = ['portal 2', 'half-life 2', 'portal', 'garrysmod']
+        if gamename not in noplusplus:
+            try:
+                subwindow("toolsplusplusinstall")
+                
+                file_Path = configpath + 'temp/tools_plusplus.zip'
+                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
+                
+                print("Downloading Tools ++")
+                response = requests.get(tools_plusplusurl)
+                if response.status_code == 200:
+                    with open(file_Path, 'wb') as file:
+                        file.write(response.content)
+                    stateandprint("Downloaded Tools++!")
+                else:
+                    stateandprint("Failed to download Tools++. \n Check your internet connection?")
                     openpopup(\
                     "Could Not Install Tools++","Tools++ could not be installed. \nThese are required for certain games like Team Fortress 2 to compile.\
 \nMake sure to manually install them later if your game requires it.","Continue",True,"",False)
-                    if btnresult == True:
-                        pass
-                
-                if btnresult != True:
-                    print("copying tools files to bin")
-                    print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-                    os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-            else:
-                subwindow("waiting")
-                time.sleep(10)
-
-        cleantemp()
-
-        if backupgamename == "game":
-            print("switching back to sfm paths")
-            print(backupgamefolderpath)
-            print(backupgamename)
-            gamefolderpath = backupgamefolderpath
-            gamename = backupgamename
-
-        # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
-        print("CHECKING FOR CONFIG DUPLICATES")
-
-        gameline = []
-
-        lines = []
-
-        gameconfig = open(configpath + "games.txt", 'r')
-
-        specified_lines = [99]
-
-        for pos, l_num in enumerate(gameconfig):
-            if pos in specified_lines:
-                currentgamedef = l_num
-            else:
-                currentgamedef = l_num
-            if gamename == json.loads(currentgamedef.replace("'", '"'))[0].casefold():
-                # murdering THESE specifically becuase i hate them
-                print("duplicate game detected in config on line " + str(pos))
-                gameline.append(pos)
-
-        print(gameline)
-
-        gameconfig.close()
-
-        # there's probably a cleaner way of doing this but What Ever
-        with open(configpath + "games.txt", 'r') as gr:
-            lines = gr.readlines()
-
-        print("CLEANING CONFIG")
-
-        # cleanup all duplicates. should probably only do when there are actually duplicates but Who Cares
-        with open(configpath + "games.txt", 'w') as gc:
-            for duplicate, line in enumerate(lines):
-                if duplicate not in gameline:
-                    print("not removing line "+ str(duplicate))
-                    gc.write(line)
-
-        print("SETTING UP NEW CONFIG")
-        #write new game definition to config file. check if file exists
-        gameconfig = open(configpath + "games.txt", "a")
-        
-        try:
-            version = "1"
-            hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
-            response = requests.get(hammerplusplusversiontxt)
-            if response.status_code == 200:
-                version = response.text
-        except:
-            version = "8871"
-            print("couldnt get version number from online")
-
-        #game specific configuring.
-        noupdate = ['csgo legacy','counter-strike global offensive']
-        if gamename in noupdate:
-            print("not autoupdating this hammer++")
-            version = "0"
+                if btnresult == True:
+                    pass
+            except:
+                openpopup(\
+                "Could Not Install Tools++","Tools++ could not be installed. \nThese are required for certain games like Team Fortress 2 to compile.\
+\nMake sure to manually install them later if your game requires it.","Continue",True,"",False)
+                if btnresult == True:
+                    pass
             
-        if state_htype == False:
-            hammerexe = "hammerplusplus.exe"
-        elif state_htype == True:
-            hammerexe = "hammer.exe"
-            version = "1"
-        
-        
-        
-
-        print("backupgamefolderpath is")
-        print(backupgamefolderpath)
-        
-        
-        nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
-        if gamename in nobinwin:
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-            if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
-                os.remove(gamefolderpath + "bin/GameConfig.txt")
-            hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
-            os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        elif gamename == "half-life 1 source deathmatch":
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-            if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
-                os.remove(gamefolderpath + "bin/GameConfig.txt")
-            hammerconfig("bin/", True)
-            os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
-        elif gamename == "game":
-            gamedefinition = "['SourceFilmmaker', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-            hammerconfig("binwin/", True)
+            if btnresult != True:
+                print("copying tools files to bin")
+                print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
         else:
-            gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-            hammerconfig("binwin/", True)
+            subwindow("waiting")
+            time.sleep(10)
+
+    cleantemp()
+
+    if backupgamename == "game":
+        print("switching back to sfm paths")
+        print(backupgamefolderpath)
+        print(backupgamename)
+        gamefolderpath = backupgamefolderpath
+        gamename = backupgamename
+
+    # it's probably better to do this when the launcher starts to check for duplicates for all games. But Whatever................ this works! kinda.
+    print("CHECKING FOR CONFIG DUPLICATES")
+
+    gameline = []
+
+    lines = []
+
+    gameconfig = open(configpath + "games.txt", 'r')
+
+    specified_lines = [99]
+
+    for pos, l_num in enumerate(gameconfig):
+        if pos in specified_lines:
+            currentgamedef = l_num
+        else:
+            currentgamedef = l_num
+        if gamename == json.loads(currentgamedef.replace("'", '"'))[0].casefold():
+            # murdering THESE specifically becuase i hate them
+            print("duplicate game detected in config on line " + str(pos))
+            gameline.append(pos)
+
+    print(gameline)
+
+    gameconfig.close()
+
+    # there's probably a cleaner way of doing this but What Ever
+    with open(configpath + "games.txt", 'r') as gr:
+        lines = gr.readlines()
+
+    print("CLEANING CONFIG")
+
+    # cleanup all duplicates. should probably only do when there are actually duplicates but Who Cares
+    with open(configpath + "games.txt", 'w') as gc:
+        for duplicate, line in enumerate(lines):
+            if duplicate not in gameline:
+                print("not removing line "+ str(duplicate))
+                gc.write(line)
+
+    print("SETTING UP NEW CONFIG")
+    #write new game definition to config file. check if file exists
+    gameconfig = open(configpath + "games.txt", "a")
+    
+    try:
+        version = "1"
+        hammerplusplusversiontxt = "https://raw.githubusercontent.com/ficool2/HammerPlusPlus-Website/refs/heads/main/version.txt"
+        response = requests.get(hammerplusplusversiontxt)
+        if response.status_code == 200:
+            version = response.text
+    except:
+        version = "8871"
+        print("couldnt get version number from online")
+
+    #game specific configuring.
+    noupdate = ['csgo legacy','counter-strike global offensive']
+    if gamename in noupdate:
+        print("not autoupdating this hammer++")
+        version = "0"
         
+    if state_htype == False:
+        hammerexe = "hammerplusplus.exe"
+    elif state_htype == True:
+        hammerexe = "hammer.exe"
+        version = "1"
+    
+    
+    
+
+    print("backupgamefolderpath is")
+    print(backupgamefolderpath)
+    
+    
+    nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
+    if gamename in nobinwin:
+        gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
+            os.remove(gamefolderpath + "bin/GameConfig.txt")
+        hammerconfig("bin/", False) #second value is for whether or not to config ++ tools
+        os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+    elif gamename == "half-life 1 source deathmatch":
+        gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
+            os.remove(gamefolderpath + "bin/GameConfig.txt")
+        hammerconfig("bin/", True)
+        os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
+    elif gamename == "game":
+        gamedefinition = "['SourceFilmmaker', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        hammerconfig("binwin/", True)
+    else:
+        gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        hammerconfig("binwin/", True)
+    
+    
         
-            
-        gameconfig.write(gamedefinition)
-        print(gamedefinition)
-        gameconfig.close() 
-        
-        cleantemp()
-        
-        #show finishing up window
-        subwindow('finishingup')
-        
-        #make button clickable
-        settinguphammer = 0
-        #go back to main window
-        startmainwindow()
+    gameconfig.write(gamedefinition)
+    print(gamedefinition)
+    gameconfig.close() 
+    
+    cleantemp()
+    
+    #show finishing up window
+    subwindow('finishingup')
+    
+    #make button clickable
+    settinguphammer = 0
+    #go back to main window
+    startmainwindow()
         
 #.config/linuxhammerlauncher/
 
