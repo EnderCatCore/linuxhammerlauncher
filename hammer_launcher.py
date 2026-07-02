@@ -713,10 +713,10 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     #hammer delete finished
     if subwintype == 'finishdelete':
         #root.geometry('260x130')
-        lbl = Label(root, text = "This Hammer has been deleted!\nYou will return to the main window soon.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Successfully deleted Hammer for this instance.\nReturning to the main window...", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid()
         root.update()
-        time.sleep(5)
+        time.sleep(3)
     #game directory chooser
     elif subwintype == 'gamedirectorypicker':
         subwinpressable == 1
@@ -752,7 +752,7 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'gamedirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find bin... \n Re-select the correct game folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Could not find the bin folder... \n Please use a valid game folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
