@@ -15,10 +15,6 @@ import random
 
 -(important for release) add delete hammer (only needs to clear out hammerpluplus/binwin/rungamebat from a game folder for now, like h++'s readme outlines)
 
--(important for release) DO NOT LINK TO USERS HOME DIRECTORY in WINECFG
-
--((semi)important for release) clear the previous text of a subwindow so it doesnt awkwardly overlap
-
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
 
 -why are plusplus tools not configged for l4d2 i will kill
@@ -596,9 +592,9 @@ def subwindow(subwintype):
     global bintype
     subwinpressable = 1
 
+
     for child in root.winfo_children(): 
-        if not str(child) == '.!label2':
-            child.destroy()
+        child.destroy()
     # i cant figure this out for the life of me
     #if vguititlebar == 1:
     #    root.wm_attributes('-type', 'dialog')
@@ -1135,6 +1131,7 @@ def hammerconfig(binfolder, plusplusconfig):
         gamefolderwindowified = "Z:" + os.path.realpath(gamefolderpath).replace("/", "\\")
         binfolderwindowified = binfolder.replace("/","\\")
         bintypewindowified = bintype.replace("/","\\")
+        print("printing game folder windowified as real path")
         print(os.path.realpath(gamefolderwindowified))
         print(binfolderwindowified)
         
@@ -1384,19 +1381,26 @@ def setuphammer():
     #the prefix still
     print('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures')
     os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos"')
-    os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos')
     print("unlinked default symlinks in wineprefix user folder!")
     
     if settinguphammer == 0:
