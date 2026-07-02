@@ -2370,6 +2370,8 @@ def deletehammer(game, title, version, lineupdate):
         
         #remove hammer++
         os.system('rm "' + gamefolderfinder + '/bin/' + bintype + '/hammerplusplus.exe"')
+        #remove rungame
+        os.system('rm "' + gamefolderfinder + '/bin/' + 'linuxhammerlauncher_rungame.bat"')
         #remove hammer++ folder
         os.system('rm -r "' + gamefolderfinder + '/bin/' + bintype + '/hammerplusplus/"')
         
