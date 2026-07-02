@@ -993,6 +993,13 @@ def closelauncher():
 # start correct game
 game = "gmod";
 def launchhammer(game, title, version, lineupdate):
+    stateandprint("Set Wine Theme to None")
+    with open(configpath + 'prefix/user.reg', 'r') as file:
+        data = file.read()
+        data = data.replace('"ThemeActive"="1"', '"ThemeActive"="0"')
+    with open(configpath + 'prefix/user.reg', 'w') as file:
+        file.write(data)
+    
     gamefolderfinder = game
     titlelowered = title.casefold()
     subwindow('hammerlaunch')
