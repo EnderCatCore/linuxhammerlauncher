@@ -43,6 +43,14 @@ half life source (might be easy if we snag the gameinfo? im guessing we can reus
 print("if youre opening this in the terminal because something went wrong, im sorry.")
 
 
+#check deps
+def checkdependencies():
+    #check if winetricks is installed
+    print(os.popen("whereis winetricks").read())
+    if os.popen("whereis winetricks").read() == "winetricks:\n":
+        print("WINETRICKSNOTFOUND")
+        subwindow("winetricksnotfound")
+
 #fallback settings, set these, then apply settings.ini, that way if settings.ini is freaked and doesnt have a value the program doesnt frickigng die
 state_htype = False
 state_disablehppupdates = False
@@ -341,6 +349,7 @@ def mainwindow():
 
 
 
+
 mainwindow()
 '''
 window creation ^^
@@ -601,6 +610,38 @@ def subwindow(subwintype):
 
     root.update()
 
+#
+    #winetrickscheck
+    if subwintype == 'winetricksnotfound':
+        lbl = Label(root, text = "WARNING: Winetricks is not installed!!\nPlease install winetricks for the launcher to function properly. \nOnce you have \
+installed winetricks, restart the program.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Debian/Ubuntu winetricks install command: 'sudo apt install winetricks'\n\
+Fedora winetricks install command: 'sudo dnf install winetricks'\n\
+Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
+        bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=2, column=0)
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=3, column=0)
+        lbl = Label(root, text = "If you believe this is a mistake and would wish to continue, you can\nclick 'Continue anyways'.", \
+        bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=4, column=0)
+        
+        
+        ''' idk how to aliggn this stealing from openpopup isnt working
+        quitbutton = Button(root, text = "Quit", fg=colors_primarytext, command=lambda: environment.exit(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        quitbutton.grid(row=3, column=1, pady=30)
+        '''
+        
+        continuebtn = Button(root, text = "Continue anyways", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
+        continuebtn.grid(row=5, column=0, pady=30)
+        
+        
+        root.update()
     #wine set up window
     if subwintype == 'winesetup':
         #root.geometry('210x100')
@@ -1706,11 +1747,18 @@ def startmainwindow():
     root = Tk()
     mainwindow()
     rendermainwindow()
+    
+    
+
+launched = 0
 
 
 def rendermainwindow():
     global optionsframe
     global root
+    global launched
+    
+    launched += 1
     
     root.configure(bg=colors_background)
 
@@ -1777,6 +1825,8 @@ def rendermainwindow():
         creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1],version)
         linenum += 1
     gameconfig.close()
+    
+    
 
 
         
@@ -1863,6 +1913,9 @@ def rendermainwindow():
 
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
+    
+    if launched == 1:
+        checkdependencies()
 
 def startsettingswindow():
     global root
