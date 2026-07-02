@@ -13,8 +13,6 @@ import random
 
 ''' TODO and ISSUES
 
--(important for release) add delete hammer (only needs to clear out hammerpluplus/binwin/rungamebat from a game folder for now, like h++'s readme outlines)
-
 -fix sfm support. something, andi genuinely do not know WHAT. broke support for it. even going to earlier commits doesnt fix it when it did work then.
 
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
@@ -706,6 +704,19 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
         lbl = Label(root, text = "Launching Hammer++...", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid()
         root.update()
+    #hammer delete in progress
+    if subwintype == 'deletinghammer':
+        #root.geometry('210x100')
+        lbl = Label(root, text = "Deleting this Hammer instance...", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl.grid()
+        root.update()
+    #hammer delete finished
+    if subwintype == 'finishdelete':
+        #root.geometry('260x130')
+        lbl = Label(root, text = "This Hammer has been deleted!\nYou will return to the main window soon.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl.grid()
+        root.update()
+        time.sleep(5)
     #game directory chooser
     elif subwintype == 'gamedirectorypicker':
         subwinpressable == 1
@@ -1830,7 +1841,7 @@ GUI function stuffs
 
 
 #makes game button
-def creategamebutton(height, title, hammerpath, version):
+def creategamebutton(height, title, hammerpath, version, mode):
     #set icon for game
     titlelowered = title.casefold()
     if style_showicons == True:
@@ -1879,9 +1890,14 @@ def creategamebutton(height, title, hammerpath, version):
     
     #create functional button
     gamesline = height - 3
-    btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version, gamesline), bg=colors_framebackground,
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    btn.grid(row=height, column=1,sticky="ew")
+    if mode == "run":
+        btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: launchhammer(hammerpath, title, version, gamesline), bg=colors_framebackground,
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+        btn.grid(row=height, column=1,sticky="ew")
+    elif mode == "del":
+        btn = Button(optionsframe, text = title , fg=colors_primarytext, command=lambda: deletehammer(hammerpath, title, version, gamesline), bg=colors_framebackground,
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+        btn.grid(row=height, column=1,sticky="ew")
     
     
         
@@ -1970,7 +1986,7 @@ def rendermainwindow():
             version = json.loads(currentgamedef.replace("'", '"'))[2]
         except:
             print("DANGER! "+json.loads(currentgamedef.replace("'", '"'))[0]+" IS MISSING A VERSION NUMBER FOR HAMMER++! UPDATES HAVE BEEN DISABLED FOR THAT GAME.")
-        creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1],version)
+        creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1],version,"run")
         linenum += 1
     gameconfig.close()
     
@@ -2020,7 +2036,7 @@ def rendermainwindow():
         deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
         deleteicn.image = deleteicon
         deleteicn.grid(row=linenum+8, column=0, sticky="ew")
-    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: openpopup("STUB","Deleting Hammer is not currently\nimplemented at the moment.","OK",None,"",None), bg=colors_framebackground, \
+    deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: opendeletemodeconfirm(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
     
@@ -2064,6 +2080,107 @@ def rendermainwindow():
     
     if launched == 1:
         checkdependencies()
+
+def opendeletemodeconfirm():
+    openpopup("Delete Hammer","You are about to enter delete mode!!\nAre you sure you wish to continue?","Continue",True,"Cancel",False)
+    if btnresult == True:
+        startdeletewindow()
+    else:
+        pass
+
+
+def startdeletewindow():
+    global root
+    global optionsframe
+    
+    root.destroy()
+    root = Tk()
+    mainwindow()
+    renderdelwindow()
+
+
+def renderdelwindow():
+    global optionsframe
+    global root
+
+    
+    root.configure(bg=colors_background)
+
+    padding = Frame(root, bg=colors_background, relief='flat', bd=0, highlightthickness=0)
+    padding.grid(row=1, column=0,sticky="w")
+
+    '''
+    Frame creation
+    '''
+    optionsframe = Frame(root, bg=colors_framebackground, relief=style_frameborder, bd=1, highlightthickness=0)
+    optionsframe.grid(row=1, column=1,sticky="we")
+    optionsframe.grid_columnconfigure(0, minsize=23, weight=0)
+    optionsframe.grid_columnconfigure(1, minsize=211, weight=1)
+    '''
+    frame creation ^^
+    '''
+    padding = Frame(root, bg=colors_background, relief='flat', bd=0, highlightthickness=0)
+    padding.grid(row=1, column=2,sticky="e")
+
+    linenum = 0
+    #create game buttons based on game defs
+    gameconfig = open(configpath + "games.txt", 'r')
+    
+    # lines to print (or not to print this list just kinda needs to be here regardless of how little it accomplishes
+    specified_lines = [99]
+
+
+
+    lbl = Label(root, text = "YOU ARE IN DELETE MODE!!!!!", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+    lbl.grid(row=2, column=1)
+    settingsbackbtn = Button(root, text = "Exit Delete Mode", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="w", highlightthickness=0)
+    settingsbackbtn.grid(row=3, column=1, pady=10)
+    
+
+    
+    #editors title
+    setuptext = Label(optionsframe, text = "CHOOSE A HAMMER EDITOR TO DELETE", fg=colors_headertext, bg=colors_framebackground, justify="left",font=(style_headerfont, style_headerfontsize, style_headerfontstyle), anchor="sw", height=2,  highlightthickness=0)
+    setuptext.grid(row=0, column=1, sticky="ew")
+    
+    if style_forceheadercaps == False:
+        setuptext = setuptext.config(text = setuptext.cget("text").title())
+    if style_showdividers == True:
+        divider = Frame(optionsframe,bg='#282e22',height=2)
+        divider.grid(row=1, column=0,sticky="ew")
+        divider = Frame(optionsframe,bg='#282e22',height=2)
+        divider.grid(row=1, column=1,sticky="ew")
+
+    # loop over lines in a file
+    for pos, l_num in enumerate(gameconfig):
+        # check if the line number is specified in the lines to read array. or not. IDK THERES AN ELSE TOO TO MAKE IT SO IT DOESNT MATTER I HATE THIS GAHH
+        if pos in specified_lines:
+            # this is a stupid way to do this but i copy pasted it from online and cant morph it into working any other way and it works i doutb anyones computer will ag from this if you dislike how 
+            #messy it is im sorry
+            currentgamedef = l_num
+        else:
+            currentgamedef = l_num
+        print(json.loads(currentgamedef.replace("'", '"'))[0])
+        version = "0"
+        try:
+            version = json.loads(currentgamedef.replace("'", '"'))[2]
+        except:
+            print("DANGER! "+json.loads(currentgamedef.replace("'", '"'))[0]+" IS MISSING A VERSION NUMBER FOR HAMMER++! UPDATES HAVE BEEN DISABLED FOR THAT GAME.")
+        creategamebutton(linenum + 3, json.loads(currentgamedef.replace("'", '"'))[0], json.loads(currentgamedef.replace("'", '"'))[1],version,"del")
+        linenum += 1
+    gameconfig.close()
+    
+    
+
+
+        
+    '''
+    GUI Stuffs
+    '''
+
+
+
+
 
 def startsettingswindow():
     global root
@@ -2208,6 +2325,71 @@ def popupbtnhandler(res):
     print("DIALOG CLOSED")
     dialog.destroy()
     root.update()
+
+
+
+def deletehammer(game, title, version, lineupdate):
+    global gamefolderfinder
+    bintype = ""
+    gamefolderfinder = game
+
+
+    openpopup("Delete Hammer", "Are you sure you wish to delete this hammer instance?\nWARNING: this will delete Hammer++, everything in the\
+    \n'binwin' folder, as well as all Hammer++ settings. Continue?", "Continue", True, "Cancel", False)
+    
+    
+    
+    if btnresult == True:
+        subwindow("deletinghammer")
+        print(game)
+        print("length of directory is " + str(len(os.path.basename(gamefolderfinder[:-1]))))
+        print("directory up one is " + gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])])
+        # find game folder
+        if "hammerplusplus.exe" in game:
+            gamefolderfinder = gamefolderfinder[:-19]
+        if "hammer.exe" in game:
+            gamefolderfinder = gamefolderfinder[:-11]
+        print(gamefolderfinder + " HAMMER TEXT REMOVED!")
+        while os.path.basename(gamefolderfinder) != title:
+            print(os.path.basename(gamefolderfinder) == title)
+            gamefolderfinder = gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])][:-1]
+            print(gamefolderfinder + " found!")
+        print(gamefolderfinder + " found!")
+        
+        #remove binwin
+        os.system('rm -r "' + gamefolderfinder + '/binwin/"')
+        #get bintype
+        print(gamefolderfinder + "/bin/win64/hammer.exe")
+        if os.path.exists(gamefolderfinder + "/bin/win64/hammer.exe") == True:
+            bintype = "win64"
+        elif os.path.exists(gamefolderfinder + "/bin/x64/hammer.exe") == True:
+            bintype = "x64"
+        elif os.path.exists(gamefolderfinder + "/bin/hammer.exe") == True:
+            bintype = "."
+        print("bintype is " + bintype)
+        
+        #remove hammer++
+        os.system('rm "' + gamefolderfinder + '/bin/' + bintype + '/hammerplusplus.exe"')
+        #remove hammer++ folder
+        os.system('rm -r "' + gamefolderfinder + '/bin/' + bintype + '/hammerplusplus/"')
+        
+        #remove entry from games.txt
+        with open(configpath + "games.txt", 'r') as file:
+            lines = file.readlines()
+        
+        lines.pop(lineupdate)
+        
+        with open(configpath + "games.txt", 'w') as file:
+            file.writelines(lines)
+        
+        #return to main window
+        subwindow("finishdelete")
+        startmainwindow()
+    else:
+        pass
+
+
+
 
 rendermainwindow()
 
