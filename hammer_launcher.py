@@ -9,6 +9,7 @@ import zipfile
 import json
 import webbrowser
 import random
+import getpass
 
 
 ''' TODO and ISSUES
@@ -64,7 +65,7 @@ print(tamarand)
 
 #set config folder
 homefolder = os.path.expanduser("~")
-print("user is " + os.getlogin())
+print("user is " + getpass.getuser())
 configpath = homefolder + "/.config/linuxhammerlauncher/"
 
 
@@ -1029,7 +1030,7 @@ def launchhammer(game, title, version, lineupdate):
         gamefolderfinder = gamefolderfinder[:int(str(len(os.path.basename(gamefolderfinder)) / -1)[:-2])][:-1]
         print(gamefolderfinder + " found!")
     print(gamefolderfinder + " found!")
-    print(os.getlogin())
+    print(getpass.getuser())
 
     version = int(version)
 
@@ -1555,28 +1556,28 @@ def setuphammer():
     downloadwine()
     #remove links to homedir.. we should still hold off on having a delete prefix button because these are just what links winecfg listed, im not sure if more lie around 
     #the prefix still
-    print('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/AppData/Roaming/Microsoft/Windows/Templates')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Music')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Desktop')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Documents')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Downloads')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Pictures')
-    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos"')
-    if os.path.exists(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos') == False:
-        os.mkdir(configpath + 'prefix/drive_c/users/' + os.getlogin() + '/Videos')
+    print('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Music"')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/AppData/Roaming/Microsoft/Windows/Templates"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/AppData/Roaming/Microsoft/Windows/Templates') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/AppData/Roaming/Microsoft/Windows/Templates')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Music"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Music') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Music')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Desktop"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Desktop') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Desktop')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Documents"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Documents') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Documents')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Downloads"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Downloads') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Downloads')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Pictures"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Pictures') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Pictures')
+    os.system('unlink "' + configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Videos"')
+    if os.path.exists(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Videos') == False:
+        os.mkdir(configpath + 'prefix/drive_c/users/' + getpass.getuser() + '/Videos')
     print("unlinked default symlinks in wineprefix user folder!")
     
     if settinguphammer == 0:
