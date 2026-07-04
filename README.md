@@ -32,7 +32,7 @@ todo: fill out supported game list
 - Team Fortress 2 Classified
 - Portal
 - Portal 2
-- Garry's Mod
+- Garry's Mod (x86-64 branch only)
 - Day of Defeat: Source
 - Left 4 Dead (with vanilla Hammer enabled)
 - Left 4 Dead 2
