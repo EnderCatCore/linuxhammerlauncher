@@ -1261,6 +1261,9 @@ def hammerconfig(binfolder, plusplusconfig):
         timeout_time += 5
         root.update()
         cleantemp()
+    #adding this sleep.wait here because if we dont then the gameconfig is not generated fast enough by hammer++ to be configured by our code here god this sucks oh mygod
+    #just let the program launch already
+    time.sleep(5)
     #all this should only frickig do when the file exists god
     if os.path.isfile(combi3paths + hammer_gameconfiglocation) == True:
         subwindow("editingconfigs")
