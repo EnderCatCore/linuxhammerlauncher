@@ -30,8 +30,6 @@ import getpass
 
 -make urls in setup clickable/buttons.
 
--is the sourcesdk_content bug still there?? please god no.
-
 '''
 #--------
 
@@ -485,9 +483,15 @@ def checkproton():
     print(gamename)
     #game specific checking, should only need to be used for HL2 and Portal 2 but who knows
     tier0 = ['half-life 2','portal 2','half-life 1 source deathmatch','left 4 dead','left 4 dead 2']
+    x64branch = ['garrysmod']
     if gamename in tier0:
         if os.path.exists(gamefolderpath + "bin/tier0.dll") == False:
             time.sleep(1)
+            subwindow('protonenable')
+    elif gamename in x64branch:
+        if os.path.exists(gamefolderpath + "bin/win64/d3dcompiler_43.dll") == False:
+            time.sleep(1)
+            print("CHECKING FOR X64 BRANCH NOW")
             subwindow('protonenable')
     elif gamename == "team fortress 2 classified":
         if os.path.exists(gamefolderpath + "bin/x64/tier0.dll") == False:
@@ -847,12 +851,18 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     #proton set up window
     if subwintype == 'protonenable':
         #root.geometry('414x100')
-        lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam and enable Proton for this game before continuing.\nYou can turn off Proton later.\n\n \
-        This window should auto-detect Proton on its own.",
-        bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
-        lbl.grid(row=0, column=0)
-        root.update()
-        checkproton()
+        if gamename == "garrysmod":
+            lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam, then enable Proton AND!! enable the x86_64 branch for\nGarrys Mod before continuing!! You can turn off Proton later.\n\n \
+            This window should auto-detect Proton on its own.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+            lbl.grid(row=0, column=0)
+            root.update()
+            checkproton()
+        else:
+            lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam and enable Proton for this game before continuing.\nYou can turn off Proton later.\n\n \
+            This window should auto-detect Proton on its own.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+            lbl.grid(row=0, column=0)
+            root.update()
+            checkproton()
         
     #P2SDK set up window for portal 2
     if subwintype == 'p2sdkenable':
