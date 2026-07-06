@@ -3,26 +3,18 @@
 A launcher and installer for Hammer++ on Linux, for many different source engine games.
 
 
-## Running or something this is a guide how you launch the  launcher. 
+## How to start the launcher
+- Go to releases and download the latest version, and extract the zip to anywhere you like.
 
-to run the launcher, clone this repository
+- Give the Linux Hammer Launcher executable permissions to run, then open the file to start the launcher.
+
+You can give Linux Hammer Launchers executable permissions to run in the terminal using this command, if you can't through your file manager:
 
 ```
-git clone https://github.com/EnderCatCore/linuxhammerlauncher.git
+chmod +x ./Linux\ Hammer\ Launcher
 ```
-then do this
-```
-python3 ./hammer_launcher.py
-```
-wow!!!!!! you launched the launcher. well done
 
-## usage
-click on set up hammer to do things wowwwwww. then it will add the game. then do this and that and whatever this is a placeholder
-
-## game support
-
-todo: fill out supported game list
-
+## Supported Games
 - Half Life: 2
 - Half Life 2: Episode 1
 - Half Life 2: Episode 2
@@ -39,4 +31,29 @@ todo: fill out supported game list
 - Counter-Strike: Source
 - Black Mesa (with vanilla Hammer enabled)
 
-if a game is not listed here you can still try setting up hammer for it, though you will have to install hammer++ for it yourself.  blah blah blah this is A  PLACEHOLDER
+if a game is not listed here you can still try setting up Hammer for it, however it's not guaraunteed to work well and or easily.
+
+
+## Running from source. 
+
+To run the launcher from the source code, clone this repository
+
+```
+git clone https://github.com/EnderCatCore/linuxhammerlauncher.git
+```
+Install the dependencies
+
+<sub>The commands below are for Debian/Ubuntus package manager.</sub>
+```
+sudo apt install python3-tk python3-requests
+pip install crossfiledialog
+```
+And then run the program
+
+```
+python3 ./hammer_launcher.py
+```
+
+## usage
+click on set up hammer to do things wowwwwww. then it will add the game. then do this and that and whatever this is a placeholder
+
