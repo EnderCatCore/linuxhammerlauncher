@@ -14,6 +14,8 @@ import getpass
 
 ''' TODO and ISSUES
 
+-tf2c.fgd and tf.fgd detection, add authoring tools detect for tf2c
+
 -fix sfm support. something, andi genuinely do not know WHAT. broke support for it. even going to earlier commits doesnt fix it when it did work then.
 
 -stop binwin from being made or kept around when it doesnt need to be for games like hl2 (maybe snag the dlls from toolsplusplus if theyre compatible??)
