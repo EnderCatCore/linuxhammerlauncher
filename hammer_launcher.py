@@ -58,7 +58,7 @@ state_usemapsrc = True
 
 # random number for tamas icon.
 # why? i cant decide on a single variant to use!!! too BAD
-tamarand = str(random.randint(0, 4))
+tamarand = str(random.randint(0, 5))
 print(tamarand)
 
 #vguititlebar = 1
