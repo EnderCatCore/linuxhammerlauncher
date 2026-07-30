@@ -1083,8 +1083,8 @@ def launchhammer(game, title, version, lineupdate):
 
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
-    delcopybins = ['half-life 2', 'left 4 dead']
-    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa']
+    delcopybins = ['left 4 dead']
+    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa', 'half-life 2']
     
     if titlelowered in delcopybins:
         if os.path.isdir(gamefolderfinder + "/bin/"):
