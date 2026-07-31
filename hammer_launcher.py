@@ -14,6 +14,10 @@ import getpass
 
 ''' TODO and ISSUES
 
+-for games like portal 2 maybe copy the users hpp_gameconfig from bin to binwin on startup so any config changes arent lost?
+
+-config prefabdir
+
 -tf2c.fgd and tf.fgd detection, add authoring tools detect for tf2c
 
 -fix sfm support. something, andi genuinely do not know WHAT. broke support for it. even going to earlier commits doesnt fix it when it did work then.
