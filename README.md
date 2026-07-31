@@ -21,7 +21,6 @@ chmod +x ./Linux\ Hammer\ Launcher
 - Half-Life 2: Deathmatch
 - Half-Life: Deathmatch Source
 - Team Fortress 2
-- Team Fortress 2 Classified
 - Portal
 - Portal 2
 - Garry's Mod (x86-64 branch only)
