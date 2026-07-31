@@ -1821,6 +1821,9 @@ def setuphammer_part2():
     elif gamename == "game":
         gamedefinition = "['SourceFilmmaker', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         hammerconfig("binwin/", True)
+    elif gamename == "garrysmod":
+        gamedefinition = "['GarrysMod', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        hammerconfig("binwin/", False)
     else:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         hammerconfig("binwin/", True)
