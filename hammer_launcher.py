@@ -858,7 +858,7 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     if subwintype == 'protonenable':
         #root.geometry('414x100')
         if gamename == "garrysmod":
-            lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam, then enable Proton AND!! enable the x86_64 branch for\nGarrys Mod before continuing!! You can turn off Proton later.\n\n \
+            lbl = Label(root, text = "Windows bin folder not detected.\nOpen Steam, enable the x86_64 branch, and enable Proton for\nGarry's Mod before continuing! You can turn off Proton later.\n\n \
             This window should auto-detect Proton on its own.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
             lbl.grid(row=0, column=0)
             root.update()
