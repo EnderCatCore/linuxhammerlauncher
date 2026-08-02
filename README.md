@@ -2,6 +2,12 @@
 
 A launcher, installer and updater for Hammer++ on Linux, for many different Source Engine games.
 
+Created by [EnderCatCore](https://endercatcore.neocities.org) & [Tamasina](https://tamasina.com).
+
+<details>
+<summary>Screenshots</summary>
+test
+</details>
 
 ## Prerequisites
 - Wine *(while LHL automatically installs Wine 9, Wine is still required on your system for it to work properly)*
@@ -34,7 +40,10 @@ Please note that immutable distros (such as SteamOS and Bazzite) will most likel
 | Black Mesa | **NO** | N/A | No | No |
 
 Any games that do **NOT** support Hammer++ MUST have the "Use vanilla Hammer in setup" option enabled or else it will not work.
+
 If a game that supports launching on compile doesn't launch, it may be due to Steam being installed using a Flatpak or not being able to be found.
+
+---
 
 If a game is not listed here, you can still try setting up Hammer/Hammer++ for it.
 Don't be suprised if Hammer/Hammer++ does not run though.
@@ -74,7 +83,7 @@ python3 ./hammer_launcher.py
 
 **GARRY'S MOD REQUIRES THE x86-64 BRANCH TO BE ENABLED IN STEAM!**
 
-You can set up a Hammer/Hammer++ instance by pressing the "Set up Hammer" button.
+You can set up a Hammer/Hammer++ instance by pressing the *Set up Hammer* button.
 
 You will then be prompted to enter the game directory of the game you want to make maps for. You can do this by hitting the "Browse" button. If the "Browse" button doesn't work, you can copy and paste the path to the game into the textbox instead.
 
@@ -98,4 +107,32 @@ You can now launch the Hammer/Hammer++ instance for your game. If an update is a
 ## Deleting a Hammer/Hammer++ Instance
 **WARNING!!! DELETING A HAMMER INSTANCE WILL COMPLETELY REMOVE EVERYTHING RELATED TO HAMMER++ AND DELETE THE ENTIRE BINWIN FOLDER USED BY LHL FOR THAT GAME. USE WITH CAUTION!**
 
-If you're having any issues with a Hammer 
+If you're having any issues with a Hammer/Hammer++ instance, you can delete it entirely.
+
+To do so, press the *Delete Hammer* button on the main menu. Linux Hammer Launcher will then enter Delete Mode.
+
+Once you click on **ANY** Hammer/Hammer++ instance, it will ask you if you want to delete it. If you're sure, click *Continue*. Linux Hammer Launcher will automatically delete that instance for you.
+
+You can then hit *Exit Delete Mode* to return to the main menu.
+
+## Changing Settings
+
+If you'd like to change some settings in Linux Hammer Launcher, you can do so by pressing the *Settings* button on the main menu.
+
+---
+
+| Setting | Options *(default marked in ***BOLD***)* | Only used during setup? |
+| :--- | :---: | :---: |
+| Use vanilla Hammer in setup | Yes/**NO** | **YES** |
+| Disable Hammer++ update check | Yes/**NO** | No |
+| Use 'mapsrc' folder instead of 'maps' folder | **YES**/No | **YES** |
+| Current Theme | **VGUI**, SFM | No |
+
+- Use vanilla Hammer in setup: If you don't want to use Hammer++, you can enable this to use the stock version of Hammer already included with your game. Please note that using this on games that already support Hammer++ is **not recommended** and you may run into issues.
+- Disable Hammer++ update check: If you want to stay on a specific Hammer++ version, you can enable this to launch Hammer++ instances without being asked to update. **This applies to all instances of Hammer++.**
+- Use 'mapsrc' folder instead of 'maps' folder: If you prefer your default VMF location to be stored in the *maps* folder instead of the *mapsrc* folder, you can enable this before you set up a Hammer instance.
+- Current Theme: Click on this to swap between the VGUI or SFM theme. 
+
+---
+
+Once you're done changing things to how you like, you can press the *Back* button to return to the main menu.

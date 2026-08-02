@@ -2234,7 +2234,7 @@ def rendersettingswindow():
     updatedisableicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_disablehppupdates).lower()+".png")
     updatedisableicn = Label(root, bg=colors_framebackground, image=updatedisableicon, anchor="e")
     updatedisableicn.image = updatedisableicon
-    updatedisablebtn = Button(root, text = "Disable Hammer++ auto updates", fg=colors_primarytext, command=lambda: togglesettingstate("disableupdates"), bg=colors_framebackground, \
+    updatedisablebtn = Button(root, text = "Disable Hammer++ update check", fg=colors_primarytext, command=lambda: togglesettingstate("disableupdates"), bg=colors_framebackground, \
     activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     updatedisablebtn.grid(row=2, column=1, sticky="ew")
     updatedisableicn.grid(row=2, column=0, sticky="ew")
