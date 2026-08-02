@@ -6,7 +6,9 @@ Created by [EnderCatCore](https://endercatcore.neocities.org) & [Tamasina](https
 
 <details>
 <summary>Screenshots</summary>
+
 ![A screenshot of Hammer++ for TF2 running on Linux using Linux Hammer Launcher](./assetssrc/screenshot1.png)
+
 </details>
 
 ## Prerequisites
