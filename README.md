@@ -2,7 +2,7 @@
 
 A launcher, installer and updater for Hammer++ on Linux, for many different Source Engine games.
 
-Created by [EnderCatCore](https://endercatcore.neocities.org) & [Tamasina](https://tamasina.com).
+Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCore](https://endercatcore.neocities.org) & ![tamasina icon](./assets/buttonicons/credit_tam0.png)[Tamasina](https://tamasina.com).
 
 <details>
 <summary>Screenshots</summary>
