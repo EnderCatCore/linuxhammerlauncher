@@ -6,7 +6,7 @@ Created by [EnderCatCore](https://endercatcore.neocities.org) & [Tamasina](https
 
 <details>
 <summary>Screenshots</summary>
-test
+![A screenshot of Hammer++ for TF2 running on Linux using Linux Hammer Launcher](./assetssrc/screenshot1.png)
 </details>
 
 ## Prerequisites
@@ -130,7 +130,7 @@ If you'd like to change some settings in Linux Hammer Launcher, you can do so by
 
 - Use vanilla Hammer in setup: If you don't want to use Hammer++, you can enable this to use the stock version of Hammer already included with your game. Please note that using this on games that already support Hammer++ is **not recommended** and you may run into issues.
 - Disable Hammer++ update check: If you want to stay on a specific Hammer++ version, you can enable this to launch Hammer++ instances without being asked to update. **This applies to all instances of Hammer++.**
-- Use 'mapsrc' folder instead of 'maps' folder: If you prefer your default VMF location to be stored in the *maps* folder instead of the *mapsrc* folder, you can enable this before you set up a Hammer instance.
+- Use 'mapsrc' folder instead of 'maps' folder: If you prefer your default VMF location to use the *maps* folder instead of the *mapsrc* folder, you can enable this before you set up a Hammer instance. **Disabling this may cause issues for some games.**
 - Current Theme: Click on this to swap between the VGUI or SFM theme. 
 
 ---
