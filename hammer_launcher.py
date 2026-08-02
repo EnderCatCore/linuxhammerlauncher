@@ -732,11 +732,11 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'gamedirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Please navigate to the folder for the \n game you want to map for.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Please enter the folder for the \n game you want to map for.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example: \n/home/USER/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
         pathentrydir=StringVar(value=gamefolderpath)
@@ -763,11 +763,11 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'gamedirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find the bin folder... \n Please use a valid game folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Could not find the bin folder... \n Please enter a valid game folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example: \nhomefolder/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example: \n/home/USER/.steam/steam/\nsteamapps/common/GarrysMod/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
         pathentrydir=StringVar(value=gamefolderpath)
@@ -795,11 +795,11 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'tfdirectorypicker':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\nPlease navigate to your Team Fortress 2 folder.\nNote SFM IS NOT SUPPORTED RIGHT NOW!! this probably wont work.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "SFM requires Team Fortress 2 to be installed for setup.\nPlease enter the path to your Team Fortress 2 folder.\nNote SFM IS NOT SUPPORTED RIGHT NOW!! this probably wont work.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example:\nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example:\n/home/USER/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
         pathentrydir=StringVar(value=tffolderpath)
@@ -826,11 +826,11 @@ Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
     elif subwintype == 'tfdirectorypickerinvalid':
         subwinpressable == 1
         #root.geometry('228x140')
-        lbl = Label(root, text = "Could not find TF2...\nSFM requires Team Fortress 2 to be installed for setup.\nPlease re-select your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Could not find TF2...\nSFM requires Team Fortress 2 to be installed for setup.\nPlease re-enter the path to your Team Fortress 2 folder.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Example:\nhomefolder/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl = Label(root, text = "Example:\n/home/USER/.steam/steam/\nsteamapps/common/Team Fortress 2/", bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         
         pathentrydir=StringVar(value=tffolderpath)
