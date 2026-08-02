@@ -1,6 +1,6 @@
 ![Linux Hammer Launcher](./assetssrc/hammerlauncher_logo_darkmode.png)
 
-A launcher and installer for Hammer++ *(and vanilla Hammer)* on Linux, for many different Source Engine games.
+A launcher, installer and updater for Hammer++ on Linux, for many different Source Engine games.
 
 
 ## Prerequisites
@@ -16,24 +16,25 @@ sudo apt install wine winetricks
 Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be suprised if it won't launch or run correctly. 
 
 ## Game support list
-| Game | Works with Hammer++? | Launches game on compile? | Launches map on compile? |
-| :--- | :--: | :--: | :--: |
-| Half-Life 2 | Yes | Yes | Yes |
-| Half-Life 2: Episode 1 | Yes | Yes | No | 
-| Half-Life 2: Episode 2 | Yes | Yes | No |
-| Half-Life 2: Deathmatch | Yes | Yes | No |
-| Half-Life: Deathmatch Source | Yes | Yes | No |
-| Team Fortress 2 | Yes | Yes | No |
-| Portal | Yes | Yes | Yes |
-| Portal 2 | Yes | Yes | Yes |
-| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | Yes | Yes |
-| Day of Defeat: Source | Yes | Yes | No |
-| Left 4 Dead | **NO** | No | No |
-| Left 4 Dead 2 | Yes | Yes | Yes |
-| Counter-Strike: Source | Yes | Yes | No |
-| Black Mesa | **NO** | No | No |
+| Game | Works with Hammer++? | Supports Hammer++ auto-updates? | Launches game on compile? | Launches map on compile? |
+| :--- | :--: | :--: | :--: | :--: |
+| Half-Life 2 | Yes | Yes | Yes | Yes |
+| Half-Life 2: Episode 1 | Yes | Yes | Yes | No | 
+| Half-Life 2: Episode 2 | Yes | Yes | Yes | No |
+| Half-Life 2: Deathmatch | Yes | Yes | Yes | No |
+| Half-Life: Deathmatch Source | Yes | Yes | Yes | No |
+| Team Fortress 2 | Yes | Yes | Yes | No |
+| Portal | Yes | Yes | Yes | Yes |
+| Portal 2 | Yes | Yes | Yes | Yes |
+| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes |Yes | Yes | Yes |
+| Day of Defeat: Source | Yes | Yes | Yes | No |
+| Left 4 Dead | **NO** | N/A | No | No |
+| Left 4 Dead 2 | Yes | Yes | Yes | Yes |
+| Counter-Strike: Source | Yes | Yes | Yes | No |
+| Black Mesa | **NO** | N/A | No | No |
 
 Any games that do **NOT** support Hammer++ MUST have the "Use vanilla Hammer in setup" option enabled or else it will not work.
+If a game that supports launching on compile doesn't launch, it may be due to Steam being installed using a Flatpak or not being able to be found.
 
 If a game is not listed here, you can still try setting up Hammer/Hammer++ for it.
 Don't be suprised if Hammer/Hammer++ does not run though.
@@ -66,15 +67,35 @@ cd linuxhammerlauncher
 python3 ./hammer_launcher.py
 ```
 
-## Using Linux Hammer Launcher
-Upon launching LHL, you'll be greeted with the main menu.
-
+## Setting up a Hammer/Hammer++ instance
 **BEFORE SETTING UP ANY GAME, YOU MUST LAUNCH IT ON STEAM AT LEAST ONCE FIRST! USING FRESH INSTALLS OF GAMES CAN CAUSE ISSUES.**
-You can set up a Hammer install by pressing the "Set up Hammer" button.
-You will then be prompted to enter the game directory of the game you want to make maps for. You can do this by hitting the "Browse" button. If the "Browse" button doesn't work, you can copy and paste the path to the game into the textbox instead.
-If you're not already using Proton for a game, you'll need to enable Proton for that game **temporarily** in Steam. This is so required files for Hammer to work is available.
-To do that, right-click on the game in the game list, select **Properties**, choose **Compatability** in the popup dialog, enable the checkbox for forcing Steam Play, and set the dropdown to any Proton version.
-Once you do so, close the popup and click on **Update**. Linux Hammer Launcher will automatically continue when it detects the needed files.
-**NOTE:** If you're setting up Portal 2, Left 4 Dead or Left 4 Dead 2, you'll be also required to download the authoring tools for that game. You can download and install the authoring tools for your game in Steam by searching for it in your library. 
 
-If you're using a supported game, all setup from this point should be automatic. Hammer++ will auto launch itself at some points to help set itself up. Once it's done, you can
+**IF YOU'RE MAPPING FOR THE ORIGINAL LEFT 4 DEAD OR BLACK MESA YOU MUST ENABLE THE VANILLA HAMMER OPTION IN THE SETTINGS BEFORE SETTING THEM UP!** 
+
+**GARRY'S MOD REQUIRES THE x86-64 BRANCH TO BE ENABLED IN STEAM!**
+
+You can set up a Hammer/Hammer++ instance by pressing the "Set up Hammer" button.
+
+You will then be prompted to enter the game directory of the game you want to make maps for. You can do this by hitting the "Browse" button. If the "Browse" button doesn't work, you can copy and paste the path to the game into the textbox instead.
+
+If you're not already using Proton for a game, you'll need to enable Proton for that game **temporarily** in Steam. This is so required files for Hammer to work is available.
+
+To do that, right-click on the game in the game list, select **Properties**, choose **Compatability** in the popup dialog, enable the checkbox for forcing Steam Play, and set the dropdown to any Proton version.
+
+Once you do so, close the popup and click on **Update**. Linux Hammer Launcher will automatically continue when it detects the needed files.
+
+**NOTE:** If you're setting up Portal 2, Left 4 Dead or Left 4 Dead 2, you'll be also required to download the authoring tools for that game.
+You can download and install the authoring tools for your game in Steam by searching for it in your library. 
+
+If you're using a supported game, all setup from this point should be automatic. Hammer will auto launch itself at some points to help set itself up.
+
+If not, you'll need to manually download Hammer++ for your game from the [official website](https://ficool2.github.io/HammerPlusPlus-Website/) and install it yourself.
+
+Once Linux Hammer Launcher is done setting up, you can safely disable Proton by following the steps you did before for enabling Proton, but this time *disabling* the checkbox for forcing Steam Play.
+ 
+You can now launch the Hammer/Hammer++ instance for your game. If an update is available for that Hammer++ instance, you will be asked if you want to install it. You can disable update prompts in the Settings.
+
+## Deleting a Hammer/Hammer++ Instance
+**WARNING!!! DELETING A HAMMER INSTANCE WILL COMPLETELY REMOVE EVERYTHING RELATED TO HAMMER++ AND DELETE THE ENTIRE BINWIN FOLDER USED BY LHL FOR THAT GAME. USE WITH CAUTION!**
+
+If you're having any issues with a Hammer 
