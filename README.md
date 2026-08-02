@@ -66,7 +66,7 @@ Debian-based distros:
 ```
 sudo apt update
 sudo apt install git wine winetricks python3 python3-tk python3-requests python3-pip
-pip install crossfiledialog
+python3 -m pip install crossfiledialog
 ```
 
 ### Running LHL from source
