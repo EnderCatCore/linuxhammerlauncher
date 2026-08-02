@@ -8,6 +8,7 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 <summary>Screenshots</summary>
 
 ![A screenshot of Hammer++ for TF2 running on Linux using Linux Hammer Launcher](./assetssrc/screenshot1.png)
+![A screenshot of Hammer++ for TF2 running on Linux using Linux Hammer Launcher](./assetssrc/screenshot2.png)
 
 </details>
 
