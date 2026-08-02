@@ -1695,7 +1695,7 @@ def setuphammer_part2():
                 subwindow("toolsplusplusinstall")
                 
                 file_Path = configpath + 'temp/tools_plusplus.zip'
-                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
+                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/latest/download/tools_plusplus.zip"
                 
                 print("Downloading Tools ++")
                 response = requests.get(tools_plusplusurl)

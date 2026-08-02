@@ -1,6 +1,6 @@
 ![Linux Hammer Launcher](./assetssrc/hammerlauncher_logo_darkmode.png)
 
-A launcher, installer and updater for Hammer++ on Linux, for many different Source Engine games.
+A launcher, installer and updater for Hammer++ & Tools++ on Linux, for many different Source Engine games.
 
 Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCore](https://endercatcore.neocities.org) & ![tamasina icon](./assets/buttonicons/credit_tam0.png)[Tamasina](https://tamasina.com).
 
@@ -23,27 +23,27 @@ sudo apt install wine winetricks
 
 Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be suprised if it won't launch or run correctly. 
 
-## Game support list
-| Game | Works with Hammer++? | Supports Hammer++ auto-updates? | Launches game on compile? | Launches map on compile? |
+## Game support
+| Game | Works with Hammer++? | Has update detection? | Sets up Tools++? | Launches game on compile? | Launches map on compile? |
 | :--- | :--: | :--: | :--: | :--: |
-| Half-Life 2 | Yes | Yes | Yes | Yes |
-| Half-Life 2: Episode 1 | Yes | Yes | Yes | No | 
-| Half-Life 2: Episode 2 | Yes | Yes | Yes | No |
-| Half-Life 2: Deathmatch | Yes | Yes | Yes | No |
-| Half-Life: Deathmatch Source | Yes | Yes | Yes | No |
-| Team Fortress 2 | Yes | Yes | Yes | No |
-| Portal | Yes | Yes | Yes | Yes |
-| Portal 2 | Yes | Yes | Yes | Yes |
-| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes |Yes | Yes | Yes |
-| Day of Defeat: Source | Yes | Yes | Yes | No |
-| Left 4 Dead | **NO** | N/A | No | No |
-| Left 4 Dead 2 | Yes | Yes | Yes | Yes |
-| Counter-Strike: Source | Yes | Yes | Yes | No |
-| Black Mesa | **NO** | N/A | No | No |
+| Half-Life 2 | Yes | Yes | No | Yes | Yes |
+| Half-Life 2: Episode 1 | Yes | Yes | No | Yes | No | 
+| Half-Life 2: Episode 2 | Yes | Yes | No | Yes | No |
+| Half-Life 2: Deathmatch | Yes | Yes | Yes | Yes | No |
+| Half-Life: Deathmatch Source | Yes | Yes | Yes | Yes | No |
+| Team Fortress 2 | Yes | Yes | Yes | Yes | No |
+| Portal | Yes | Yes | Yes | Yes | Yes |
+| Portal 2 | Yes | Yes | No | Yes | Yes |
+| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | Yes | No | Yes | Yes |
+| Day of Defeat: Source | Yes | Yes | Yes | Yes | No |
+| Left 4 Dead | **NO** | N/A | N/A | No | No |
+| Left 4 Dead 2 | Yes | Yes | No | Yes | Yes |
+| Counter-Strike: Source | Yes | Yes | Yes | Yes | No |
+| Black Mesa | **NO** | N/A | N/A | No | No |
 
 Any games that do **NOT** support Hammer++ MUST have the "Use vanilla Hammer in setup" option enabled or else it will not work.
 
-If a game that supports launching on compile doesn't launch, it may be due to Steam being installed using a Flatpak or not being able to be found.
+If a game that supports launching on compile doesn't launch, it may be due to your Steam client being installed using Flatpak or that LHL couldn't find Steam.
 
 ---
 
