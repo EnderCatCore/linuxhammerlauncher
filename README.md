@@ -17,6 +17,7 @@ Please note that immutable distros (such as SteamOS and Bazzite) will most likel
 
 ## Game support list
 | Game | Works with Hammer++? | Launches game on compile? | Launches map on compile? |
+| :--- | :--: | :--: | :--: |
 | Half-Life 2 | Yes | Yes | Yes |
 | Half-Life 2: Episode 1 | Yes | Yes | No | 
 | Half-Life 2: Episode 2 | Yes | Yes | No |
