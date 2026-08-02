@@ -51,8 +51,8 @@ If a game is not listed here, you can still try setting up Hammer/Hammer++ for i
 Don't be suprised if Hammer/Hammer++ does not run though.
 
 ## Running Linux Hammer Launcher
-- Go to [Releases](https://github.com/EnderCatCore/linuxhammerlauncher/releases/latest) and download the latest zip, and extract the zip anywhere.
-- Give the Linux Hammer Launcher binary executable permissions, then open it to start the launcher.
+Go to [Releases](https://github.com/EnderCatCore/linuxhammerlauncher/releases/latest) and download the latest zip, and extract the zip anywhere.
+Then give the Linux Hammer Launcher binary executable permissions, then open it to start the launcher.
 
 If you can't change executable permissions using your file manager, try running this command in the LHL folder.
 
