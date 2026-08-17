@@ -1,6 +1,6 @@
 ![Linux Hammer Launcher](./assetssrc/hammerlauncher_logo_darkmode.png)
 
-A launcher, installer and updater for [Hammer++](https://ficool2.github.io/HammerPlusPlus-Website/index.html) & [Tools++](https://ficool2.github.io/HammerPlusPlus-Website/tools.html) on Linux, for many different Source Engine games.
+A launcher, installer and updater for [Hammer++](https://ficool2.github.io/HammerPlusPlus-Website/index.html) & [Tools++](https://ficool2.github.io/HammerPlusPlus-Website/tools.html) (VBSP++, VVIS++, VRAD++) on Linux, for many different Source Engine games.
 
 Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCore](https://endercatcore.neocities.org) & ![tamasina icon](./assets/buttonicons/credit_tam0.png)[Tamasina](https://tamasina.com).
 
