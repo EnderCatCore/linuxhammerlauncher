@@ -1805,7 +1805,7 @@ def setuphammer_part2():
     print(backupgamefolderpath)
     
     
-    nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead', 'counter-strike source']
+    nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
     if gamename in nobinwin:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
@@ -1824,6 +1824,12 @@ def setuphammer_part2():
     elif gamename == "garrysmod":
         gamedefinition = "['GarrysMod', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         hammerconfig("binwin/", False)
+    elif gamename == "counter-strike source":
+        gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
+        if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
+            os.remove(gamefolderpath + "bin/GameConfig.txt")
+        hammerconfig("bin/", True) #second value is for whether or not to config ++ tools
+        os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
     else:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         hammerconfig("binwin/", True)
