@@ -1090,7 +1090,7 @@ def launchhammer(game, title, version, lineupdate):
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
     delcopybins = ['left 4 dead']
-    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa', 'half-life 2']
+    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa', 'half-life 2', 'counter-strike source']
     
     if titlelowered in delcopybins:
         if os.path.isdir(gamefolderfinder + "/bin/"):
@@ -1805,7 +1805,7 @@ def setuphammer_part2():
     print(backupgamefolderpath)
     
     
-    nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
+    nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead', 'counter-strike source']
     if gamename in nobinwin:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
