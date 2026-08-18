@@ -1250,7 +1250,7 @@ def hammerconfig(binfolder, plusplusconfig):
         hammer_gameconfiglocation = "/hammerplusplus/hammerplusplus_gameconfig.txt"
  
     #gameconfig & settings generation
-    timeout_time = 10
+    timeout_time = 17
 
     #create a .sh file to run, timeout doesnt like WINEPREFIX= being there.
     #i do not know why sfm is trying to use a bash file to run. i dont need to know why as long as this works. sfm has its gameconfig made from scratch there is zero reason for it to launch
