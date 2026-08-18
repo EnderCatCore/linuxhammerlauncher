@@ -527,23 +527,18 @@ bintype = "undetected"
 def checkhammer():
     global bintype
     global gamefolderpath
-    
-    if state_htype == False:
-        if os.path.exists(gamefolderpath + "bin/win64/hammerplusplus.exe") == True:
-            bintype = "win64"
-        elif os.path.exists(gamefolderpath + "bin/x64/hammerplusplus.exe") == True:
-            bintype = "x64"
-        elif os.path.exists(gamefolderpath + "bin/hammerplusplus.exe") == True:
-                bintype = "."
+
+    hammertouse = "hammerplusplus.exe"
     if state_htype == True:
-        print("HELLO??? WORK?")
-        if os.path.exists(gamefolderpath + "bin/win64/hammer.exe") == True:
-            bintype = "win64"
-        elif os.path.exists(gamefolderpath + "bin/x64/hammer.exe") == True:
-            bintype = "x64"
-        elif os.path.exists(gamefolderpath + "bin/hammer.exe") == True:
-            bintype = "."
+        hammertouse = "hammer.exe"
     
+    if os.path.exists(gamefolderpath + "bin/win64/" + hammertouse) == True:
+        bintype = "win64"
+    elif os.path.exists(gamefolderpath + "bin/x64/" + hammertouse) == True:
+        bintype = "x64"
+    elif os.path.exists(gamefolderpath + "bin/" + hammertouse) == True:
+        bintype = "."
+
     print("FRICK")
     if bintype == "undetected":
         time.sleep(1)
@@ -1090,7 +1085,7 @@ def launchhammer(game, title, version, lineupdate):
     #game specific commands
     #hl2 shares the same bin between versions excluding a small handful of files (for only some people??) for some reason, remove bin and create new one from binwin with said files
     delcopybins = ['left 4 dead']
-    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa', 'half-life 2', 'counter-strike source']
+    mergecopybins = ['portal', 'portal 2', 'half-life 1 source deathmatch', 'left 4 dead 2', 'black mesa', 'half-life 2', 'counter-strike source', 'garrysmod']
     
     if titlelowered in delcopybins:
         if os.path.isdir(gamefolderfinder + "/bin/"):
@@ -1689,7 +1684,7 @@ def setuphammer_part2():
     #only install ++ tools if hammer++ isnt disabled
     if state_htype == False:
         #install plusplus tools, some games dont work for this
-        noplusplus = ['portal 2', 'half-life 2', 'portal', 'garrysmod']
+        noplusplus = ['portal 2', 'half-life 2', 'portal']
         if gamename not in noplusplus:
             try:
                 subwindow("toolsplusplusinstall")
@@ -1806,6 +1801,7 @@ def setuphammer_part2():
     
     
     nobinwin = ['half-life 2','portal','portal 2', 'left 4 dead 2', 'black mesa' , 'left 4 dead']
+    plusplusfix = ['counter-strike source', 'garrysmod']
     if gamename in nobinwin:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
@@ -1821,14 +1817,11 @@ def setuphammer_part2():
     elif gamename == "game":
         gamedefinition = "['SourceFilmmaker', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         hammerconfig("binwin/", True)
-    elif gamename == "garrysmod":
-        gamedefinition = "['GarrysMod', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
-        hammerconfig("binwin/", False)
-    elif gamename == "counter-strike source":
+    elif gamename in plusplusfix:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "bin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
         if os.path.exists(gamefolderpath + "bin/GameConfig.txt") == True:
             os.remove(gamefolderpath + "bin/GameConfig.txt")
-        hammerconfig("bin/", True) #second value is for whether or not to config ++ tools
+        hammerconfig("bin/", True)
         os.system("cp '" + gamefolderpath + "bin/hammerplusplus/hammerplusplus_gameconfig.txt' '" + gamefolderpath + "binwin/hammerplusplus/hammerplusplus_gameconfig.txt'")
     else:
         gamedefinition = "['" + os.path.basename(gamefolderpath[:-1]) + "', '" + gamefolderpath + "binwin/" + bintype + "/" + hammerexe + "', '"+version+"']" + "\n"
@@ -2389,7 +2382,7 @@ def deletehammer(game, title, version, lineupdate):
         os.system('rm -r "' + gamefolderfinder + '/binwin/"')
         #get bintype
         print(gamefolderfinder + "/bin/win64/hammer.exe")
-        if os.path.exists(gamefolderfinder + "/bin/win64/hammer.exe") == True:
+        if os.path.exists(gamefolderfinder + "/bin/win64/hammer.exe") or os.path.exists(gamefolderfinder + "/bin/win64/d3dcompiler_43.dll") == True:
             bintype = "win64"
         elif os.path.exists(gamefolderfinder + "/bin/x64/hammer.exe") == True:
             bintype = "x64"

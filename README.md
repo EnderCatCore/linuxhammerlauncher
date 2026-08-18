@@ -35,7 +35,7 @@ Please note that immutable distros (such as SteamOS and Bazzite) will most likel
 | Team Fortress 2 | Yes | Yes | Yes | Yes | No |
 | Portal | Yes | Yes | Yes | Yes | Yes |
 | Portal 2 | Yes | Yes | No | Yes | Yes |
-| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | Yes | No | Yes | Yes |
+| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | Yes | Yes | Yes | Yes |
 | Day of Defeat: Source | Yes | Yes | Yes | Yes | No |
 | Left 4 Dead | **NO** | N/A | N/A | No | No |
 | Left 4 Dead 2 | Yes | Yes | No | Yes | Yes |
