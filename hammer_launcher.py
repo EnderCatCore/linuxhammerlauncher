@@ -671,11 +671,10 @@ def subwindow(subwintype):
     #    root.wm_attributes('-type', 'dialog')
 
     root.update()
-
-#
+    
     #winetrickscheck
     if subwintype == 'winetricksnotfound':
-        lbl = Label(root, text = "WARNING: winetricks is not installed!!\nPlease install winetricks for the launcher to function properly. \nOnce you have \
+        lbl = Label(root, text = "WARNING: winetricks is not installed!\nPlease install winetricks for the launcher to function properly. \nOnce you have \
 installed winetricks, restart the program.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
@@ -690,12 +689,11 @@ Void Linux install command: 'sudo xbps-install winetricks'",\
         lbl.grid(row=3, column=0)
         lbl = Label(root, text = "If you believe this is a mistake and would wish to continue,\n you can click 'Continue'.", \
         bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
-        lbl.grid(row=4, column=0, ipadx=15)
+        lbl.grid(row=4, column=0, ipadx=10)
         
         # button frame
         btnfr = Frame(root, bg=colors_background)
         btnfr.grid(row=5, column=0, pady=10)
-        btnfr.columnconfigure(1, weight=1)   # Set weight to row and 
 
         # quit button  
         quitbutton = Button(btnfr, text = "Quit", fg=colors_primarytext, command=lambda: exit(), bg=colors_framebackground, \
@@ -711,7 +709,7 @@ Void Linux install command: 'sudo xbps-install winetricks'",\
 
     #zstdcheck
     if subwintype == 'zstdnotfound':
-        lbl = Label(root, text = "WARNING: zstd is not installed!!\nPlease install zstd for the launcher to function properly. \nOnce you have \
+        lbl = Label(root, text = "WARNING: zstd is not installed!\nPlease install zstd for the launcher to function properly. \nOnce you have \
 installed zstd, restart the program.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
@@ -726,12 +724,11 @@ Void Linux install command: 'sudo xbps-install zstd'",\
         lbl.grid(row=3, column=0)
         lbl = Label(root, text = "If you believe this is a mistake and would wish to continue,\n you can click 'Continue'.", \
         bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
-        lbl.grid(row=4, column=0, ipadx=15)
+        lbl.grid(row=4, column=0, ipadx=10)
         
         # button frame
         btnfr = Frame(root, bg=colors_background)
         btnfr.grid(row=5, column=0, pady=10)
-        btnfr.columnconfigure(1, weight=1)   # Set weight to row and 
 
         # quit button  
         quitbutton = Button(btnfr, text = "Quit", fg=colors_primarytext, command=lambda: exit(), bg=colors_framebackground, \
