@@ -16,11 +16,12 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 - Wine *(while LHL automatically installs Wine 9, Wine is still required on your system for it to work properly)*
 - Winetricks
 - Zstd
+- Python 3
 
 You can install Wine & Winetricks on Debian-based distros by running these comamnds:
 ```
 sudo apt update
-sudo apt install wine winetricks zstd
+sudo apt install wine winetricks zstd python3
 ```
 
 Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be suprised if it won't launch or run correctly. 
@@ -69,7 +70,7 @@ If you can't run Linux Hammer Launcher's binary version for any reason, or you w
 Debian-based distros:
 ```
 sudo apt update
-sudo apt install git wine winetricks python3 python3-tk python3-requests python3-pip
+sudo apt install git wine winetricks zstd python3 python3-tk python3-requests python3-pip
 python3 -m pip install crossfiledialog
 ```
 
