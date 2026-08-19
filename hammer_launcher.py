@@ -687,7 +687,7 @@ Void Linux install command: 'sudo xbps-install winetricks'",\
         lbl.grid(row=2, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=3, column=0)
-        lbl = Label(root, text = "If you believe this is a mistake and would wish to continue,\n you can click 'Continue'.", \
+        lbl = Label(root, text = "If you believe this is a mistake, you can click\n 'Continue' to ignore this warning.", \
         bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=4, column=0, ipadx=10)
         
