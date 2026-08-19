@@ -53,6 +53,12 @@ def checkdependencies():
     if os.popen("whereis winetricks").read() == "winetricks:\n":
         print("WINETRICKSNOTFOUND")
         subwindow("winetricksnotfound")
+    
+    #check if zstd is installed
+    print(os.popen("whereis zstd").read())
+    if os.popen("whereis zstd").read() == "zstd:\n":
+        print("ZSTDISNOTFOUND")
+        subwindow("zstdnotfound")
 
 #fallback settings, set these, then apply settings.ini, that way if settings.ini is freaked and doesnt have a value the program doesnt frickigng die
 state_htype = False
@@ -669,35 +675,76 @@ def subwindow(subwintype):
 #
     #winetrickscheck
     if subwintype == 'winetricksnotfound':
-        lbl = Label(root, text = "WARNING: Winetricks is not installed!!\nPlease install winetricks for the launcher to function properly. \nOnce you have \
+        lbl = Label(root, text = "WARNING: winetricks is not installed!!\nPlease install winetricks for the launcher to function properly. \nOnce you have \
 installed winetricks, restart the program.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
         lbl.grid(row=0, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=1, column=0)
-        lbl = Label(root, text = "Debian/Ubuntu winetricks install command: 'sudo apt install winetricks'\n\
-Fedora winetricks install command: 'sudo dnf install winetricks'\n\
-Arch Linux winetricks install command: 'sudo pacman -S winetricks'", \
+        lbl = Label(root, text = "Debian/Ubuntu install command: 'sudo apt install winetricks'\n\
+Fedora install command: 'sudo dnf install winetricks'\n\
+Arch Linux install command: 'sudo pacman -S winetricks'\n\
+Void Linux install command: 'sudo xbps-install winetricks'",\
         bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
         lbl.grid(row=2, column=0)
         lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
         lbl.grid(row=3, column=0)
-        lbl = Label(root, text = "If you believe this is a mistake and would wish to continue, you can\nclick 'Continue anyways'.", \
+        lbl = Label(root, text = "If you believe this is a mistake and would wish to continue,\n you can click 'Continue'.", \
         bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
-        lbl.grid(row=4, column=0)
+        lbl.grid(row=4, column=0, ipadx=15)
         
-        
-        ''' idk how to aliggn this stealing from openpopup isnt working
-        quitbutton = Button(root, text = "Quit", fg=colors_primarytext, command=lambda: environment.exit(), bg=colors_framebackground, \
-        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
-        quitbutton.grid(row=3, column=1, pady=30)
-        '''
-        
-        continuebtn = Button(root, text = "Continue anyways", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
-        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, anchor="center", highlightthickness=0)
-        continuebtn.grid(row=5, column=0, pady=30)
-        
+        # button frame
+        btnfr = Frame(root, bg=colors_background)
+        btnfr.grid(row=5, column=0, pady=10)
+        btnfr.columnconfigure(1, weight=1)   # Set weight to row and 
+
+        # quit button  
+        quitbutton = Button(btnfr, text = "Quit", fg=colors_primarytext, command=lambda: exit(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, highlightthickness=0)
+        quitbutton.grid(row=5, column=0, padx=10, sticky="e")
+
+        # continue button
+        continuebtn = Button(btnfr, text = "Continue", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, highlightthickness=0)
+        continuebtn.grid(row=5, column=1, sticky="w")
         
         root.update()
+
+    #zstdcheck
+    if subwintype == 'zstdnotfound':
+        lbl = Label(root, text = "WARNING: zstd is not installed!!\nPlease install zstd for the launcher to function properly. \nOnce you have \
+installed zstd, restart the program.", bg=colors_background, fg=colors_primarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=0, column=0)
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=1, column=0)
+        lbl = Label(root, text = "Debian/Ubuntu install command: 'sudo apt install zstd'\n\
+Fedora install command: 'sudo dnf install zstd'\n\
+Arch Linux install command: 'sudo pacman -S zstd'\n\
+Void Linux install command: 'sudo xbps-install zstd'",\
+        bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=2, column=0)
+        lbl = Label(root, text = "------", bg=colors_background, fg=colors_secondarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=3, column=0)
+        lbl = Label(root, text = "If you believe this is a mistake and would wish to continue,\n you can click 'Continue'.", \
+        bg=colors_background, fg=colors_tertiarytext, font=(style_font, style_fontsize))
+        lbl.grid(row=4, column=0, ipadx=15)
+        
+        # button frame
+        btnfr = Frame(root, bg=colors_background)
+        btnfr.grid(row=5, column=0, pady=10)
+        btnfr.columnconfigure(1, weight=1)   # Set weight to row and 
+
+        # quit button  
+        quitbutton = Button(btnfr, text = "Quit", fg=colors_primarytext, command=lambda: exit(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, highlightthickness=0)
+        quitbutton.grid(row=5, column=0, padx=10, sticky="e")
+
+        # continue button
+        continuebtn = Button(btnfr, text = "Continue", fg=colors_primarytext, command=lambda: startmainwindow(), bg=colors_framebackground, \
+        activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', font=(style_font, style_fontsize), borderwidth=1, highlightthickness=0)
+        continuebtn.grid(row=5, column=1, sticky="w")
+        
+        root.update()
+
     #wine set up window
     if subwintype == 'winesetup':
         #root.geometry('210x100')
