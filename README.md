@@ -15,13 +15,12 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 ## Prerequisites
 - Wine *(while LHL automatically installs Wine 9, Wine is still required on your system for it to work properly)*
 - Winetricks
-- Libunwind8
 - Zstd
 
 You can install Wine & Winetricks on Debian-based distros by running these comamnds:
 ```
 sudo apt update
-sudo apt install wine winetricks libunwind8 zstd
+sudo apt install wine winetricks zstd
 ```
 
 Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be suprised if it won't launch or run correctly. 
