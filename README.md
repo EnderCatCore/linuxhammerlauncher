@@ -18,7 +18,7 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 - Zstd
 - Python 3
 
-You can install Wine & Winetricks on Debian-based distros by running these comamnds:
+You can install these dependencies on Debian-based distros by running these comamnds:
 ```
 sudo apt update
 sudo apt install wine winetricks zstd python3
