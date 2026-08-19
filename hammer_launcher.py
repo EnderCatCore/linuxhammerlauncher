@@ -2141,6 +2141,15 @@ def rendermainwindow():
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
 
+    if style_showicons == True:
+        contricon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
+        crediticn = Label(optionsframe, bg=colors_framebackground, image=contricon, anchor="e")
+        crediticn.image = contricon #see above
+        crediticn.grid(row=linenum+13, column=0, sticky="ew")
+    creditbtn = Button(optionsframe, text = "Contributors", fg=colors_primarytext, command=lambda: webbrowser.open("https://github.com/EnderCatCore/linuxhammerlauncher/graphs/contributors?all=1",new=2, autoraise=True), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn.grid(row=linenum+13, column=1, sticky="ew")
+
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
     
