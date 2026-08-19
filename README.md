@@ -15,7 +15,7 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 ## Prerequisites
 - Wine *(while LHL automatically installs Wine 9, Wine is still required on your system for it to work properly)*
 - Winetricks
-- Libunwind
+- Libunwind8
 - Zstd
 
 You can install Wine & Winetricks on Debian-based distros by running these comamnds:
