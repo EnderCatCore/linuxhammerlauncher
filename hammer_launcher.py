@@ -1912,36 +1912,10 @@ def creategamebutton(height, title, hammerpath, version, mode):
     titlelowered = title.casefold()
     if style_showicons == True:
         gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_hammer.png")
-        if titlelowered == "garrysmod":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/garrysmod.png")
-        elif titlelowered == "left 4 dead 2":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/l4d2.png")
-        elif titlelowered == "left 4 dead":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/l4d.png")
-        elif titlelowered == "black mesa":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/bms.png")
-        elif titlelowered == "portal 2":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal2.png")
-        elif titlelowered == "portal":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/portal.png")
-        elif titlelowered == "counter-strike source":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/cstrike.png")
-        elif titlelowered == "counter-strike global offensive":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/csgo.png")
-        elif titlelowered == "day of defeat source":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/dod.png")
-        elif titlelowered == "half-life 2":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2.png")
-        elif titlelowered == "sourcefilmmaker":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/sfm.png")
-        elif titlelowered == "team fortress 2":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/tf2.png")
-        elif titlelowered == "team fortress 2 classified":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/tf2classified.png")
-        elif titlelowered == "half-life 1 source deathmatch":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl1mp.png")
-        elif titlelowered == "half-life 2 deathmatch":
-            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/hl2mp.png")
+        if os.path.exists(os.path.dirname(__file__)+"/assets/buttonicons/games/"+titlelowered+".png"):
+            gameicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/games/"+titlelowered+".png")
+        else:
+            print("Could not find gameicon for "+titlelowered+"!")
         gameicn = Label(optionsframe, bg=colors_framebackground, image=gameicon, anchor="e")
         gameicn.image = gameicon
         gameicn.grid(row=height, column=0, sticky="ew")
@@ -2077,31 +2051,13 @@ def rendermainwindow():
         divider = Frame(optionsframe,bg='#282e22',height=2)
         divider.grid(row=linenum+5, column=1,sticky="ew")
     
-    if style_showicons == True:
-        hammericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
-        setupicn = Label(optionsframe, bg=colors_framebackground, image=hammericon, anchor="e")
-        setupicn.image = hammericon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
-        setupicn.grid(row=linenum+6, column=0, sticky="ew")
     #set up button
     setupbtn = Button(optionsframe, text = "Set up Hammer", fg=colors_primarytext, command=lambda: setuphammer(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     #settings button
-    if style_showicons == True:
-        settingsicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
-        settingsicn = Label(optionsframe, bg=colors_framebackground, image=settingsicon, anchor="e")
-        settingsicn.image = settingsicon #see above
-        settingsicn.grid(row=linenum+7, column=0, sticky="ew")
-        
-
-
     settingsbtn = Button(optionsframe, text = "Settings", fg=colors_primarytext, command=lambda: startsettingswindow(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     #delete button
-    if style_showicons == True:
-        deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_delete.png")
-        deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
-        deleteicn.image = deleteicon
-        deleteicn.grid(row=linenum+8, column=0, sticky="ew")
     deletebtn = Button(optionsframe, text = "Delete Hammer", fg=colors_primarytext, command=lambda: opendeletemodeconfirm(), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
 
@@ -2123,32 +2079,49 @@ def rendermainwindow():
         divider = Frame(optionsframe,bg='#282e22',height=2)
         divider.grid(row=linenum+10, column=1,sticky="ew")
     
-    if style_showicons == True:
-        endericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_end.png")
-        crediticn = Label(optionsframe, bg=colors_framebackground, image=endericon, anchor="e")
-        crediticn.image = endericon #see above
-        crediticn.grid(row=linenum+11, column=0, sticky="ew")
     creditbtn = Button(optionsframe, text = "EnderCatCore", fg=colors_primarytext, command=lambda: webbrowser.open("https://endercatcore.neocities.org",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+11, column=1, sticky="ew")
     
-    if style_showicons == True:
-        tamasicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam"+tamarand+".png")
-        crediticn = Label(optionsframe, bg=colors_framebackground, image=tamasicon, anchor="e")
-        crediticn.image = tamasicon #see above
-        crediticn.grid(row=linenum+12, column=0, sticky="ew")
     creditbtn = Button(optionsframe, text = "Tamasina", fg=colors_primarytext, command=lambda: webbrowser.open("https://tamasina.com",new=2, autoraise=True), bg=colors_framebackground, \
     activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
     creditbtn.grid(row=linenum+12, column=1, sticky="ew")
 
+    creditbtn = Button(optionsframe, text = "Contributors", fg=colors_primarytext, command=lambda: webbrowser.open("https://github.com/EnderCatCore/linuxhammerlauncher/graphs/contributors?all=1",new=2, autoraise=True), bg=colors_framebackground, \
+    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    creditbtn.grid(row=linenum+13, column=1, sticky="ew")
+
+    #icons
     if style_showicons == True:
+        setupicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
+        setupicn = Label(optionsframe, bg=colors_framebackground, image=setupicon, anchor="e")
+        setupicn.image = setupicon #the fact that you have to do this just to keep an image alive is extremely stupid dumb dumb stupid dumb stupid. stupid face
+        setupicn.grid(row=linenum+6, column=0, sticky="ew")
+
+        settingsicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_reset.png")
+        settingsicn = Label(optionsframe, bg=colors_framebackground, image=settingsicon, anchor="e")
+        settingsicn.image = settingsicon #see above
+        settingsicn.grid(row=linenum+7, column=0, sticky="ew")
+
+        deleteicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_delete.png")
+        deleteicn = Label(optionsframe, bg=colors_framebackground, image=deleteicon, anchor="e")
+        deleteicn.image = deleteicon
+        deleteicn.grid(row=linenum+8, column=0, sticky="ew")
+
+        endericon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_end.png")
+        crediticn = Label(optionsframe, bg=colors_framebackground, image=endericon, anchor="e")
+        crediticn.image = endericon #see above
+        crediticn.grid(row=linenum+11, column=0, sticky="ew")
+
+        tamasicon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/credit_tam"+tamarand+".png")
+        crediticn = Label(optionsframe, bg=colors_framebackground, image=tamasicon, anchor="e")
+        crediticn.image = tamasicon #see above
+        crediticn.grid(row=linenum+12, column=0, sticky="ew")
+
         contricon = Image("photo", file=os.path.dirname(__file__)+"/assets/buttonicons/sdk_setup.png")
         crediticn = Label(optionsframe, bg=colors_framebackground, image=contricon, anchor="e")
         crediticn.image = contricon #see above
         crediticn.grid(row=linenum+13, column=0, sticky="ew")
-    creditbtn = Button(optionsframe, text = "Contributors", fg=colors_primarytext, command=lambda: webbrowser.open("https://github.com/EnderCatCore/linuxhammerlauncher/graphs/contributors?all=1",new=2, autoraise=True), bg=colors_framebackground, \
-    activebackground=colors_highlight, highlightbackground=colors_highlight,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    creditbtn.grid(row=linenum+13, column=1, sticky="ew")
 
     dummy = Frame(root,bg=colors_background,height=5)
     dummy.grid(sticky="w")
