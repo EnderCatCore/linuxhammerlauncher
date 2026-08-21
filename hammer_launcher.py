@@ -1342,8 +1342,15 @@ def hammerconfig(binfolder, plusplusconfig):
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                 data = file.read()
                 data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
-            with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
-                file.write(data)
+            #studiomdl. only for tf2 branch games
+            smppsupport = ['team fortress 2', 'half-life 2 deathmatch', 'counter-strike source', 'day of defeat source', 'half-life 1 source deathmatch']
+            if gamename in smppsupport:
+                print("studiomdl++ configured")
+                with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
+                    data = file.read()
+                    data = data.replace("\\studiomdl.exe", "\\studiomdlplusplus.exe")
+                with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
+                    file.write(data)
         #binwin, if HL2 or any other game that cant run from binwin, dont config this.
         if binfolder == "binwin/":
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
@@ -1493,6 +1500,13 @@ def gameconfigmake(game):
         codename = "left4dead"
         fgdname = "left4dead"
         pluspluscomp = ""
+
+    #studiomdl++. only supported for tf2 branch games
+    smppcomp = ""
+    smppsupport = ['team fortress 2', 'half-life 2 deathmatch', 'counter-strike source', 'day of defeat source', 'half-life 1 source deathmatch']
+    if pluspluscomp == "plusplus" and gamename in smppsupport:
+        smppcomp = "plusplus"
+        print("studiomdl++ configured")
         
     hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
     + '			"Hammer"\n			{\n				"GameData0"		"' + gamefolderwindowified + '\\binwin\\' + fgdname + '.fgd"\n' + '				"TextureFormat"		"5"\n\
@@ -1503,7 +1517,7 @@ def gameconfigmake(game):
     'vbsp' + pluspluscomp + '.exe"\n' + \
     '				"Vis"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'vvis' + pluspluscomp + '.exe"\n' + \
     '				"Light"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'vrad' + pluspluscomp + '.exe"\n' + \
-    '				"MDL"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'studiomdl.exe"\n' + \
+    '				"MDL"		"' + gamefolderwindowified + "\\" + binfolderwindowified + bintypewindowified + "\\" + 'studiomdl' + smppcomp + '.exe"\n' + \
     '				"GameExeDir"		"' + gamefolderwindowified + '"\n' + \
     '				"MapDir"		"' + gamefolderwindowified + '\\mapsrc"\n' + \
     '				"BSPDir"		"' + gamefolderwindowified + "\\" + codename + '\\maps"\n' + \
