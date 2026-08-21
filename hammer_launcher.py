@@ -1342,6 +1342,8 @@ def hammerconfig(binfolder, plusplusconfig):
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                 data = file.read()
                 data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
+            with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
+                file.write(data)
             #studiomdl. only for tf2 branch games
             smppsupport = ['team fortress 2', 'half-life 2 deathmatch', 'counter-strike source', 'day of defeat source', 'half-life 1 source deathmatch']
             if gamename in smppsupport:
