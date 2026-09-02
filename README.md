@@ -12,19 +12,20 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 
 </details>
 
-## Prerequisites
+## Requirements
 - Wine *(while LHL automatically installs Wine 9, Wine is still required on your system for it to work properly)*
 - Winetricks
 - Zstd
 - Python 3
+- At least 3 GB of free disk space
 
-You can install these dependencies on Debian-based distros by running these comamnds:
+You can install the required dependencies on Debian-based distros by running these comamnds:
 ```
 sudo apt update
 sudo apt install wine winetricks zstd python3
 ```
 
-Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be suprised if it won't launch or run correctly. 
+Please note that immutable distros (such as SteamOS and Bazzite) will most likely **not** work with Linux Hammer Launcher. You can try, but don't be surprised if it won't launch or run correctly. 
 
 ## Game support
 | Game | Works with Hammer++? | Has update detection? | Sets up Tools++? | Launches game on compile? | Launches map on compile? |
