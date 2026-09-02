@@ -17,7 +17,7 @@ Created by ![endercatcore icon](./assets/buttonicons/credit_end.png)[EnderCatCor
 - Winetricks
 - Zstd
 - Python 3
-- At least 4 GB of free disk space
+- At least 4 GB of free disk space for initial setup
 
 You can install the required dependencies on Debian-based distros by running these comamnds:
 ```
