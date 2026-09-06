@@ -38,6 +38,8 @@ import getpass
 
 -somehow get the linux version of tools++ to run in the compile?? im not sure if this could be possible but. maybe by using .bat stuff like how launching is handled we could pass to wine to make it run on native??????????????????
 
+-test tools++ with all games. since tools++ now supports every game apparently.. now we can probably just set up tools++ for every game without any issue. hopefully.
+
 '''
 #--------
 
