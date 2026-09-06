@@ -36,6 +36,8 @@ import getpass
 
 -make urls in setup clickable/buttons.
 
+-somehow get the linux version of tools++ to run in the compile?? im not sure if this could be possible but. maybe by using .bat stuff like how launching is handled we could pass to wine to make it run on native??????????????????
+
 '''
 #--------
 
@@ -1329,19 +1331,19 @@ def hammerconfig(binfolder, plusplusconfig):
             #vbsp
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                 data = file.read()
-                data = data.replace("\\vbsp.exe", "\\vbspplusplus.exe")
+                data = data.replace("\\vbsp.exe", "\\vbsp++.exe")
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                 file.write(data)
             #vvis
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                 data = file.read()
-                data = data.replace("\\vvis.exe", "\\vvisplusplus.exe")
+                data = data.replace("\\vvis.exe", "\\vvis++.exe")
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                 file.write(data)
             #vrad
             with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                 data = file.read()
-                data = data.replace("\\vrad.exe", "\\vradplusplus.exe")
+                data = data.replace("\\vrad.exe", "\\vrad++.exe")
             with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                 file.write(data)
             #studiomdl. only for tf2 branch games
@@ -1350,7 +1352,7 @@ def hammerconfig(binfolder, plusplusconfig):
                 print("studiomdl++ configured")
                 with open(combi3paths + hammer_gameconfiglocation, 'r') as file:
                     data = file.read()
-                    data = data.replace("\\studiomdl.exe", "\\studiomdlplusplus.exe")
+                    data = data.replace("\\studiomdl.exe", "\\studiomdl++.exe")
                 with open(combi3paths + hammer_gameconfiglocation, 'w') as file:
                     file.write(data)
         #binwin, if HL2 or any other game that cant run from binwin, dont config this.
@@ -1485,19 +1487,19 @@ def gameconfigmake(game):
     if game == "tf2c":
         codename = "tf2classified"
         fgdname = "tf2c"
-        pluspluscomp = "plusplus"
+        pluspluscomp = "++"
     if game == "hl1mp":
         codename = "hl1mp"
         fgdname = "halflife2"
-        pluspluscomp = "plusplus"
+        pluspluscomp = "++"
     if game == "sfm":
         codename = "usermod"
         fgdname = "tf"
-        pluspluscomp = "plusplus"
+        pluspluscomp = "++"
     if game == "hl2mp":
         codename = "hl2mp"
         fgdname = "hl2mp"
-        pluspluscomp = "plusplus"
+        pluspluscomp = "++"
     if game == "l4d":
         codename = "left4dead"
         fgdname = "left4dead"
@@ -1506,8 +1508,8 @@ def gameconfigmake(game):
     #studiomdl++. only supported for tf2 branch games
     smppcomp = ""
     smppsupport = ['team fortress 2', 'half-life 2 deathmatch', 'counter-strike source', 'day of defeat source', 'half-life 1 source deathmatch']
-    if pluspluscomp == "plusplus" and gamename in smppsupport:
-        smppcomp = "plusplus"
+    if pluspluscomp == "++" and gamename in smppsupport:
+        smppcomp = "++"
         print("studiomdl++ configured")
         
     hammerconfig = '"Configs"\n{\n	"Games"\n	{\n		"' + os.path.basename(gamefolderpath[:-1]) + '"\n		{\n			"GameDir"		"' + gamefolderwindowified + "\\" + codename + '"\n' \
@@ -1749,8 +1751,8 @@ def setuphammer_part2():
             try:
                 subwindow("toolsplusplusinstall")
                 
-                file_Path = configpath + 'temp/tools_plusplus.zip'
-                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/latest/download/tools_plusplus.zip"
+                file_Path = configpath + 'temp/tools++_windows.zip'
+                tools_plusplusurl = "https://github.com/ficool2/misc_tools/releases/latest/download/tools++_windows.zip"
                 
                 print("Downloading Tools ++")
                 response = requests.get(tools_plusplusurl)
@@ -1774,8 +1776,11 @@ def setuphammer_part2():
             
             if btnresult != True:
                 print("copying tools files to bin")
-                print("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
-                os.system("cd " + configpath + "temp/ && unzip tools_plusplus.zip" + " && " + "cp '" + configpath + "temp/tools_plusplus/tools/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                # ok so... tools++ was updated and this broke . the folder layout for tools++ for windows uses the windows backslash so hopefully unzip wont cause any issues. i hope.
+                print("cd " + configpath + "temp/ && unzip tools++_windows.zip" + " && " + "cp -v '" + configpath + "temp/tools++_windows/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                os.system("cd " + configpath + "temp/ && unzip tools++_windows.zip" + " && " + "cp -v '" + configpath + "temp/tools++_windows/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                print("cd " + configpath + "temp/ && cp -v '" + configpath + "temp/tools++_windows/'* '" + gamefolderpath + "bin/" + bintype + "/'")
+                os.system("cd " + configpath + "temp/ && cp -v '" + configpath + "temp/tools++_windows/'* '" + gamefolderpath + "bin/" + bintype + "/'")
         else:
             subwindow("waiting")
             time.sleep(10)
