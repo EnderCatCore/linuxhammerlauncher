@@ -38,7 +38,7 @@ Please note that immutable distros (such as SteamOS and Bazzite) will most likel
 | Team Fortress 2 | Yes | Yes | Yes | Yes | No |
 | Portal | Yes | Yes | Yes | Yes | Yes |
 | Portal 2 | Yes | Yes | No | Yes | Yes |
-| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | Yes | Yes | Yes | Yes |
+| Garry's Mod **(x86-64 branch *****ONLY*****)** | Yes | **NO** ([More info](https://github.com/EnderCatCore/linuxhammerlauncher/issues/11)) | Yes | Yes | Yes |
 | Day of Defeat: Source | Yes | Yes | Yes | Yes | No |
 | Left 4 Dead | **NO** | N/A | N/A | No | No |
 | Left 4 Dead 2 | Yes | Yes | No | Yes | Yes |
@@ -132,11 +132,13 @@ If you'd like to change some settings in Linux Hammer Launcher, you can do so by
 | Use vanilla Hammer in setup | Yes/**NO** | **YES** |
 | Disable Hammer++ update check | Yes/**NO** | No |
 | Use 'mapsrc' folder instead of 'maps' folder | **YES**/No | **YES** |
+| Use System Wine (not recommended) | Yes/**NO** | No |
 | Current Theme | **VGUI**, SFM | No |
 
 - Use vanilla Hammer in setup: If you don't want to use Hammer++, you can enable this to use the stock version of Hammer already included with your game. Please note that using this on games that already support Hammer++ is **not recommended** and you may run into issues.
 - Disable Hammer++ update check: If you want to stay on a specific Hammer++ version, you can enable this to launch Hammer++ instances without being asked to update. **This applies to all instances of Hammer++.**
 - Use 'mapsrc' folder instead of 'maps' folder: If you prefer your default VMF location to use the *maps* folder instead of the *mapsrc* folder, you can enable this before you set up a Hammer instance. **Disabling this may cause issues for some games.**
+- Use System Wine (not recommended): If you don't want to use Linux Hammer Launcher's built-in Wine, enable this to use your system's Wine binaries. **You may run into issues doing this.**
 - Current Theme: Click on this to swap between the VGUI or SFM theme. 
 
 ---
