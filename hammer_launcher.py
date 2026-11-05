@@ -69,6 +69,7 @@ state_htype = False
 state_disablehppupdates = False
 state_theme = 0
 state_usemapsrc = True
+state_usesyswine = False
 
 # random number for tamas icon.
 # why? i cant decide on a single variant to use!!! too BAD
@@ -121,6 +122,7 @@ if os.path.exists(configpath + "settings.ini") == False:
     settingsini.close()
     print("settings ini not found, created new one.")
 
+
 #SETTINGS READING AND WRITING
 #SETTINGS READING AND WRITING
 #SETTINGS READING AND WRITING
@@ -134,6 +136,7 @@ def writetosettings():
     'state_disablehppupdates = ' + str(state_disablehppupdates) + '\n'\
     'state_theme = ' + str(state_theme) + '\n'\
     'state_usemapsrc = ' + str(state_usemapsrc) + '\n'\
+    'state_usesyswine = ' + str(state_usesyswine) + '\n'\
     )
     settingsini.close()
 
@@ -143,6 +146,7 @@ def loadsettings():
     global state_disablehppupdates
     global state_theme
     global state_usemapsrc
+    global state_usesyswine
     
     print("hello? this thing working???")
     #no it isnt sory :(
@@ -177,6 +181,13 @@ def loadsettings():
                 state_usemapsrc = True
             elif line[line.find(" = ") + 3:] == "False":
                 state_usemapsrc = False
+        if "state_usesyswine = " in line: #find and load H++ update setting
+            print("Setting SysWine is:")
+            print(line[line.find(" = ") + 3:])
+            if line[line.find(" = ") + 3:] == "True":
+                state_usesyswine = True
+            elif line[line.find(" = ") + 3:] == "False":
+                state_usesyswine = False
             
 
 loadsettings()
@@ -603,6 +614,8 @@ def autohammer(updatefolder,updatename):
         hammerplusplustype = "2013mp"
     elif gamename in gmodbranch:
         hammerplusplustype = "gmod"
+        version = "8872"
+        frozenbuild = True
     elif gamename in portal2branch:
         hammerplusplustype = "portal2"
     elif gamename in l4d2branch:
@@ -1194,8 +1207,12 @@ def launchhammer(game, title, version, lineupdate):
     cleantemp()
 
     #launch wine9 with hammer using correct prefix
-    print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
-    os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
+    if state_usesyswine == False:
+        print('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
+        os.system('WINEPREFIX="' + configpath + 'prefix/" ' + configpath + 'runner/wine-9.0.1/bin/wine ' + '"' + game + '"')
+    elif state_usesyswine == True:
+        print('WINEPREFIX="' + configpath + 'prefix/" ' + 'wine ' + '"' + game + '"')
+        os.system('WINEPREFIX="' + configpath + 'prefix/" ' + 'wine ' + '"' + game + '"')
     root.quit()
 
 def clicked():
@@ -1849,7 +1866,7 @@ def setuphammer_part2():
         print("couldnt get version number from online")
 
     #game specific configuring.
-    noupdate = ['csgo legacy','counter-strike global offensive']
+    noupdate = ['csgo legacy','counter-strike global offensive', 'garrysmod']
     if gamename in noupdate:
         print("not autoupdating this hammer++")
         version = "0"
@@ -2304,9 +2321,19 @@ def rendersettingswindow():
     themenumicn.image = themenumicon
     themenumbtn = Button(root, text = "Current Theme: " + themenames[state_theme], fg=colors_primarytext, command=lambda: togglesettingstate("themeswitch"), bg=colors_framebackground, \
     activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
-    themenumbtn.grid(row=4, column=1, sticky="ew")
-    themenumicn.grid(row=4, column=0, sticky="ew")
+    themenumbtn.grid(row=5, column=1, sticky="ew")
+    themenumicn.grid(row=5, column=0, sticky="ew")
     
+
+    #system wine
+    syswineicon = Image("photo", file=os.path.dirname(__file__)+style_graphicspath+"tick_"+str(state_usesyswine).lower()+".png")
+    syswineicn = Label(root, bg=colors_framebackground, image=syswineicon, anchor="e")
+    syswineicn.image = syswineicon
+    syswinebtn = Button(root, text = "Use System Wine (not recommended)", fg=colors_primarytext, command=lambda: togglesettingstate("systemwine"), bg=colors_framebackground, \
+    activebackground=colors_framebackground, highlightbackground=colors_framebackground,activeforeground='white', relief="flat", font=(style_font, style_fontsize), borderwidth=0, anchor="w", highlightthickness=0)
+    syswinebtn.grid(row=4, column=1, sticky="ew")
+    syswineicn.grid(row=4, column=0, sticky="ew")
+
     
     #alert
     lbl = Label(root, text = "Options followed by a '*' only apply during Hammer setup.", bg=colors_framebackground, fg=colors_tertiarytext, font=(style_font, style_fontsize))
@@ -2325,6 +2352,7 @@ def togglesettingstate(statetomodif):
     global state_disablehppupdates
     global state_theme
     global state_usemapsrc
+    global state_usesyswine
     
     if statetomodif == "htype":
         state_htype = toggle_bool(state_htype)
@@ -2344,6 +2372,10 @@ def togglesettingstate(statetomodif):
     elif statetomodif == "mapsrcfolderuse":
         state_usemapsrc = toggle_bool(state_usemapsrc)
         print("USEMAPSRC CHANGED: "+str(state_usemapsrc))
+        rendersettingswindow()
+    elif statetomodif == "systemwine":
+        state_usesyswine = toggle_bool(state_usesyswine)
+        print("USESYSWINE CHANGED: "+str(state_usesyswine))
         rendersettingswindow()
     writetosettings()
 
